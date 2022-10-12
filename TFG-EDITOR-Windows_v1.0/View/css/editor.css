@@ -1,0 +1,152 @@
+:root {
+    --themeDarkEditorBG: rgb(0, 0, 0);
+    --themeDarkFileBG: rgb(40, 44, 52);
+
+    --themeLightEditorBG: rgb(255, 255, 255);
+    --themeLightFileBG: rgb(255, 255, 255);
+
+    --themeActiveEditorBG: var(--themeLightEditorBG);
+    --themeActiveFileBG: var(--themeLightFileBG);
+}
+
+.dark-theme {
+    --themeActiveEditorBG: var(--themeDarkEditorBG);
+    --themeActiveFileBG: var(--themeDarkFileBG);
+}
+
+.problem-title {
+    font-size: 20px;
+}
+
+.collapsible {
+    width: auto;
+    margin-bottom: 0;
+}
+
+.content {
+    background-color: var(--themeActiveCollapsibleBGColor);
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.editor-sub-container {
+    flex: auto;
+}
+
+#editor {
+    height: 600px;
+}
+
+#answer {
+    padding: 4px;
+    border: 1px solid black;
+    height: 200px;
+    overflow: scroll;
+    resize: none;
+}
+
+#editor-container {
+    background-color: var(--themeActiveEditorBG);
+    border-radius: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 90%;
+    padding: 10px;
+    display: flex;
+}
+
+.students-list-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.students-list {
+    max-height: 900px;
+    overflow-y: scroll;
+}
+
+.students-list ul {
+    padding: 10px;
+}
+
+.students-list ul li {
+    list-style: none;
+    margin-top: 10px;
+    column-gap: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.students-list ul .email {
+    width: 200px;
+    min-width: 200px;
+    overflow-y: clip;
+}
+
+.selected a {
+    color: gray !important;
+}
+
+.container-fluid {
+    margin-top: 20px;
+    width: 90%;
+}
+
+#edition_msg {
+    display: flex;
+    justify-content: space-between;
+}
+
+#edition_msg .alert-buttons {
+    display: flex;
+    column-gap: 10px;
+}
+
+.file {
+    place-items: center;
+    display: inline-flex;
+    column-gap: 2px;
+    color: var(--themeActiveTextColor);
+}
+
+.file_extension img{
+    -webkit-filter: invert(calc(var(--invertIconColor) * 100%));
+    filter: invert(calc(var(--invertIconColor) * 100%));
+    height: 30px;
+}
+
+.close_button {
+    color: red;
+    border: none;
+    background-color: transparent;
+}
+
+#files {
+    overflow-x: scroll;
+}
+
+#files .navbar-nav, #files .navbar {
+    flex-direction: row;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    width: 100px;
+}
+
+.navbar-nav li {
+    border-top-right-radius: 10px !important;
+    border-top-left-radius: 10px !important;
+    background-color: var(--themeActiveFileBG);
+}
+
+.title {
+    color: var(--themeActiveTextColor);
+}
+
+#answer {
+    border-color: var(--themeActiveTextColor);
+}
+
+pre {
+    color: var(--themeActiveTextColor);
+}

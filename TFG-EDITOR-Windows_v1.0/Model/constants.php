@@ -1,0 +1,31 @@
+<?php
+
+const PROFESSOR = 0;
+const STUDENT = 1;
+
+# Views
+# This is the default screen
+const VIEW_SUBJECT_LIST = 0;
+const VIEW_PROBLEMS_LIST = 1;
+const VIEW_LOGIN_FORM = 2;
+const VIEW_REGISTER_FORM = 3;
+const VIEW_PROBLEM_CREATE = 4;
+const VIEW_EDITOR = 7;
+const VIEW_SUBJECT_CREATE = 10;
+const VIEW_SOMETHING = 11 ;
+const VIEW_PROBLEM_EDIT = 12;
+const VIEW_SESSION_FORM = 13;
+const VIEW_SESSION_LIST = 14;
+const VIEW_SESSION_PROBLEMS_LIST = 15;
+const VIEW_PROBLEM_CREATE_GIT = 16;
+
+CONST STUDENT_VIEWS = [VIEW_SUBJECT_LIST, VIEW_PROBLEMS_LIST, VIEW_EDITOR, VIEW_SESSION_LIST,
+    VIEW_SESSION_PROBLEMS_LIST];
+CONST ANONYMOUS_USER_VIEWS = [VIEW_SUBJECT_LIST, VIEW_LOGIN_FORM, VIEW_REGISTER_FORM];
+
+# Professor view mode of a student
+const VIEW_MODE_EDIT = 1;
+const VIEW_MODE_READ_ONLY = 2;
+
+# Allowed file extensions
+const ALLOWED_FILE_EXTENSIONS = ["cpp", "h", "py", "python", "txt", "ipynb"];
