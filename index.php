@@ -4,6 +4,7 @@ include_once __DIR__ . "/Model/constants.php";
 include_once __DIR__ . "/Model/redirectionUtils.php";
 
 error_reporting(E_ERROR | E_PARSE);
+echo "Prueba";
 
 $query = $_GET["query"] ?? VIEW_SUBJECT_LIST;
 
