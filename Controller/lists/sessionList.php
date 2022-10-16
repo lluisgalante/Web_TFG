@@ -5,7 +5,9 @@ require_once __DIR__ . "/../../Model/connection.php";
 require_once __DIR__ . "/../../Model/session.php";
 
 $subjectId = $_GET['subject'];
-$sessions = getActiveSessions(subjectId: $subjectId);
+$group = $_GET['group'];
+echo $group;
+$sessions = getActiveSessionsFromGroup(subjectId: $subjectId, class_group: $group);
 
 $listPage['title'] = 'Sessions actives';
 $listPage['customJS'] = 'session.js';
@@ -17,10 +19,17 @@ foreach ($sessions as $session) {
         'href' => buildUrl(VIEW_SESSION_PROBLEMS_LIST, array('session' => $sessionId)),
         'title' => $session['name']);
     if (isset($_SESSION['user_type']) && $_SESSION['user_type'] == PROFESSOR) {
+
+        $visibilityImage = $session['status'] == 'deactivated'? 'not-visible': 'visible';
+
+        $item['buttons'][] = array('type' => 'js', 'classes' => 'change_visibility','title' => 'Canviar visibilitat',
+            'image' => $visibilityImage, 'alt' => 'Canviar visibilitat');
+
         $item['buttons'][] = array('type' => 'modalToggle', 'title' => 'Duplicar',
             'target' => 'duplicate_session_modal', 'image' => 'clone', 'alt' => 'Duplicar Sessió');
         $item['buttons'][] = array('type' => 'js', 'title' => 'Esborrar', 'onClick' => "deleteSession($sessionId)",
             'image' => 'trash', 'alt' => 'Esborrar Sessió');
+
     }
     $listPage['items'][] = $item;
 }

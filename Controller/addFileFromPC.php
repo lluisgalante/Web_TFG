@@ -7,6 +7,7 @@ include_once __DIR__ . "/../Model/addFilesToProblem.php";
 session_start();
 
 $files = array_filter($_FILES['file']['name']);
+
 $route = str_replace('\\', '/', realpath($_POST['solution_path']));
 $problemId = $_POST['problem'];
 $rootEdited = filter_var($_POST['root_edited'], FILTER_VALIDATE_BOOLEAN);

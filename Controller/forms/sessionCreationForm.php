@@ -24,6 +24,7 @@ if (empty($selectorOptions)) {
     $formPage['title'] = 'Crear nova sessió';
     $formPage['fields'] = [
         array('type' => 'text', 'id' => 'name', 'placeholder' => 'Nom', 'required' => 'required'),
+        array('type'=>'int','id' => 'class_group', 'placeholder'=>'Grup de la sesió','required' => 'required'),
         array('type' => 'selector', 'id' => 'multiple-checkboxes', 'name' => 'problems[]', 'placeholder' => 'Problemes',
             'options' => $selectorOptions, 'multiple' => 'multiple', 'required' => 'required')
     ];

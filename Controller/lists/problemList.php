@@ -33,6 +33,18 @@ foreach ($problems as $problem) {
     $problemId = $problem['id'];
     $problemTitle = $problem['title'];
 
+    $problem = getProblemWithId($problemId); //NUEVA
+    $subject = $problem["subject_id"];
+    $problem_route = $problem["route"];
+
+
+
+    $cleaned_problem_route = str_replace('\\', '/', realpath(dirname(__DIR__ ). $problem_route));
+    var_dump($cleaned_problem_route);
+
+
+
+
     if (isset($_GET['updated']) && $problemId === intval($_GET['updated'])) {
         $listPage['infoMessage'] = "Problema '$problemTitle' actualitzat.";
     } else if (isset($_GET['created']) && $problemId === intval($_GET['created'])) {
@@ -48,6 +60,13 @@ foreach ($problems as $problem) {
         $item['buttons'][] = array('type' => 'a',
             'href' => buildUrl(VIEW_EDITOR, array('problem' => $problemId, 'edit' => 1)),
             'image' => 'edit-source', 'alt' => 'Editar codi');
+        $item['buttons'][]= array('type' => 'modalToggle', 'title' => 'PujarSolucio', 'target' => 'pujar_solucio',
+            'image' => 'edit_solution', 'alt' => 'Editar solució'
+        );
+        $item['buttons'][]= array('type' => 'a',
+            'href' => buildUrl(VIEW_PROBLEM_SOLUTION, array('problem' => $problemId)),
+            'image' => 'view_solution', 'alt' => 'Veure solució'
+            );
         $visibilityImage = $problem['visibility'] == 'Private'? 'not-visible': 'visible';
         $item['buttons'][] = array('type' => 'js', 'classes' => 'change_visibility','title' => 'Canviar visibilitat',
             'image' => $visibilityImage, 'alt' => 'Canviar visibilitat');
@@ -56,12 +75,16 @@ foreach ($problems as $problem) {
     }
     $listPage['items'][] = $item;
 }
-
 $listPage['modals'] = [
     array('id' => 'delete_problem_modal', 'title' => "Estàs segur?",
         'content'=> "L'operació serà immediata i sense possibilitat de retorn.",
         'buttonTitle' => 'Esborrar', 'buttonOnClick' => 'deleteProblem()', 'buttonText' => 'Esborrar',
-        'dismissButtonText' => 'Cancel·lar')
+        'dismissButtonText' => 'Cancel·lar'),
+    array('id' => 'pujar_solucio', 'title' => "Editar solució",
+        'content'=> "Seleccione Importar per a poder pujar una solució.",
+        'buttonTitle' => 'Importar', 'buttonOnClick' => 'receiveFile()', 'buttonText' => 'Importar',
+        'dismissButtonText' => 'Cancel·lar'),
+
 ];
 
 require_once __DIR__ . "/../../View/html/genericList.php";

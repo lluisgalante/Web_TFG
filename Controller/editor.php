@@ -56,8 +56,15 @@ if ($problem['language'] == 'Notebook') {
 # Get the problem files from the machine
 $subject = $problem["subject_id"];
 $problem_route = $problem["route"];
+
+print_r($problem_route);
+print_r(__DIR__);
+echo" ====== ";
+print_r(__DIR__ . $problem_route );
+
 $cleaned_problem_route = str_replace('\\', '/', realpath(__DIR__ . $problem_route));
 
+//var_dump($cleaned_problem_route);
 # Create the folder for the user if it doesn't already exist
 $user_route = "./../app/solucions/$email";
 if (!file_exists(__DIR__ . $user_route) && !mkdir(__DIR__ . $user_route)) {

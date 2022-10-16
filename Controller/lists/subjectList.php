@@ -46,7 +46,7 @@ foreach ($subjects as $subject) {
         ]);
     if ($subject['has_active_sessions']) {
         $groupItem['buttons'][] = array('type' => 'a',
-            'href' => buildUrl(VIEW_SESSION_LIST, array('subject'=>$subjectId)),
+            'href' => buildUrl(VIEW_SESSION_LIST_GROUPS, array('subject'=>$subjectId)),
             'classes' => '', 'image' => 'session', 'alt' => 'Sessions actives');
     }
     if (isset($_SESSION['user_type']) && $_SESSION['user_type'] == PROFESSOR) {
