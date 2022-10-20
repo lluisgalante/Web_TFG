@@ -100,7 +100,7 @@ if (!file_exists(__DIR__ . $user_solution_route)) {
         if (!$created) {
             echo "Error creating the solution";
             return;
-        }
+        }   
     }
 }
 

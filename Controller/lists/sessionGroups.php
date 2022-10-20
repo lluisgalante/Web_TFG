@@ -13,6 +13,7 @@ $listPage['customJS'] = 'session.js';
 // Classify the items and create a list for each element of the list
 foreach ($groups as $group) {
 
+
     $item = array('id' => $group,
         'href' => buildUrl(VIEW_SESSION_LIST, array('subject'=>$subjectId, 'group'=>$group)),
         'title' => $group);

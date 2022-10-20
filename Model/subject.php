@@ -22,9 +22,12 @@ function deleteSubject($subjectId) : bool
 {
     try {
         $connection = connectDB();
-
-        $statement = $connection->prepare("DELETE FROM subject WHERE id=:subjectId");
-        $statement->execute(array(":subjectId" => $subjectId));
+        $statement1 =$connection->prepare("DELETE FROM session WHERE subject_id=:subjectId");
+        $statement1->execute(array(":subjectId" => $subjectId));
+        $statement2 =$connection->prepare("DELETE FROM problem WHERE subject_id=:subjectId");
+        $statement2->execute(array(":subjectId" => $subjectId));
+        $statement3 = $connection->prepare("DELETE FROM subject WHERE id=:subjectId");
+        $statement3->execute(array(":subjectId" => $subjectId));
 
         $deleted = true;
         $connection = null;

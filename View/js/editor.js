@@ -367,7 +367,7 @@ function deleteFile() {
 }
 
 function receiveFile() {
-    console.log(document.getElementById('new_file'))
+    //console.log(document.getElementById('new_file'))
     let control = document.getElementById('new_file');
     control.click();
     control.onchange = function (event) {

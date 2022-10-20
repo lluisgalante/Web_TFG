@@ -15,23 +15,30 @@ $listPage['customJS'] = 'session.js';
 // Classify the items and create a list for each element of the list
 foreach ($sessions as $session) {
     $sessionId = $session['id'];
-    $item = array('id' => $sessionId,
-        'href' => buildUrl(VIEW_SESSION_PROBLEMS_LIST, array('session' => $sessionId)),
-        'title' => $session['name']);
-    if (isset($_SESSION['user_type']) && $_SESSION['user_type'] == PROFESSOR) {
 
-        $visibilityImage = $session['status'] == 'deactivated'? 'not-visible': 'visible';
 
-        $item['buttons'][] = array('type' => 'js', 'classes' => 'change_visibility','title' => 'Canviar visibilitat',
-            'image' => $visibilityImage, 'alt' => 'Canviar visibilitat');
-
-        $item['buttons'][] = array('type' => 'modalToggle', 'title' => 'Duplicar',
-            'target' => 'duplicate_session_modal', 'image' => 'clone', 'alt' => 'Duplicar Sessió');
-        $item['buttons'][] = array('type' => 'js', 'title' => 'Esborrar', 'onClick' => "deleteSession($sessionId)",
-            'image' => 'trash', 'alt' => 'Esborrar Sessió');
-
+    if($session['status'] == 'deactivated' && isset($_SESSION['user_type']) && $_SESSION['user_type'] == STUDENT){
+    //**
     }
-    $listPage['items'][] = $item;
+    else{
+        $item = array('id' => $sessionId,
+            'href' => buildUrl(VIEW_SESSION_PROBLEMS_LIST, array('session' => $sessionId)),
+            'title' => $session['name']);
+        if (isset($_SESSION['user_type']) && $_SESSION['user_type'] == PROFESSOR) {
+
+            $visibilityImage = $session['status'] == 'deactivated' ? 'not-visible' : 'visible';
+
+            $item['buttons'][] = array('type' => 'js', 'classes' => 'change_visibility', 'title' => 'Canviar visibilitat',
+                'image' => $visibilityImage, 'alt' => 'Canviar visibilitat');
+
+            $item['buttons'][] = array('type' => 'modalToggle', 'title' => 'Duplicar',
+                'target' => 'duplicate_session_modal', 'image' => 'clone', 'alt' => 'Duplicar Sessió');
+            $item['buttons'][] = array('type' => 'js', 'title' => 'Esborrar', 'onClick' => "deleteSession($sessionId)",
+                'image' => 'trash', 'alt' => 'Esborrar Sessió');
+
+        }
+        $listPage['items'][] = $item;
+    }
 }
 
 $listPage['modals'] = [
