@@ -26,7 +26,7 @@ foreach ($sessions as $session) {
             'title' => $session['name']);
         if (isset($_SESSION['user_type']) && $_SESSION['user_type'] == PROFESSOR) {
 
-            $visibilityImage = $session['status'] == 'deactivated' ? 'not-visible' : 'visible';
+            $visibilityImage = $session['status'] == 'deactivated' ? 'deactivated' : 'activated';
 
             $item['buttons'][] = array('type' => 'js', 'classes' => 'change_visibility', 'title' => 'Canviar visibilitat',
                 'image' => $visibilityImage, 'alt' => 'Canviar visibilitat');

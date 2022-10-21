@@ -63,8 +63,7 @@ $(document).ready(function () {
     $('.change_visibility').on('click', function () {
         let image = $(this).children('img').attr('src');
         // Find in the shown image name if it's visible or not and toggle it
-        console.log( image.search('not-visible'));
-        let newVisibility = image.search('not-visible') === -1? 'deactivated': 'activated';
+        let newVisibility = image.search('deactivated') === -1? 'deactivated': 'activated';
         console.log(newVisibility);
         let sessionId = $(this).closest('.card').attr('id');
         $.ajax({

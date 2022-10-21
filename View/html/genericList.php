@@ -25,7 +25,15 @@
 
     <?php function generateListItem($item) { ?>
         <div id="<?php echo $item['id'] ?>" class="card">
-            <div class="card-body">
+            <div class="card-body"<?php  $color = null;
+                foreach ($item['buttons'] as $button){
+                    if($button['image'] == 'activated'){ $color = "red";}
+                    else if($button['image'] == 'deactivated'){$color = "green";}
+                    //else{;}
+                }
+                if($color == "green"){?> style="background-color:indianred ; border-radius: 10px;" <?php }
+                if($color == "red"){?> style="background-color:darkseagreen; border-radius: 10px;" <?php } ?>
+            >
                 <div>
                     <?php if (isset($item['href'])) { ?>
                         <a href="<?php echo $item['href'] ?>">
