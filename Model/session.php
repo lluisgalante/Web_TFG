@@ -121,7 +121,7 @@ function duplicateSession(string $sessionName, int $sessionId): bool
         $connection = connectDB();
 
         // Get the data of the session that we want to duplicate
-        $statement = $connection->prepare("SELECT professor_id, subject_id FROM session WHERE id=:session_id");
+        $statement = $connection->prepare("SELECT professor_id, subject_id, class_group FROM session WHERE id=:session_id");
         $statement->execute(array(":session_id" => $sessionId));
         $session = $statement->fetch();
 
@@ -130,7 +130,7 @@ function duplicateSession(string $sessionName, int $sessionId): bool
         $problemIds = $statement->fetchAll(PDO::FETCH_COLUMN);
 
         // Use the data to create the new session
-        createSession($sessionName, $session["professor_id"], $session["subject_id"], $problemIds);
+        createSession($sessionName, $session["professor_id"], $session["subject_id"], $problemIds, $session["class_group"]);
 
         $connection = null;
         $duplicated = True;

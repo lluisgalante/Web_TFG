@@ -21,21 +21,82 @@
                         </option>
                     <?php } ?>
                 </select>
-            <?php } else { ?>
-                <input id="<?php echo $formField['id'] ?>" name="<?php echo $formField['id'] ?>"
-                       class="input <?php echo $formField['inputClasses'] ?>" type="<?php echo $formField['type'] ?>"
-                    <?php echo $formField['required'] ?> placeholder=" "
-                    <?php echo $formField['maxlength']? 'maxlength='.$formField['maxlength']: "" ?>
-                    <?php echo $formField['minlength']? 'minlength='.$formField['minlength']: "" ?>
-                    <?php echo $formField['max']? 'max='.$formField['max']: "" ?>
-                    <?php echo $formField['min']? 'min='.$formField['min']: "" ?>
-                    <?php echo $formField['multiple']? 'multiple': "" ?>
-                    <?php echo $formField['value']? 'value='.$formField['value']: "" ?>>
+            <?php }
+            else { ?>
+
+
+                <?php if( $formField['id'] == "class_group"){?>
+
+                    <div id="wrapper">
+                        <div id="first">
+                            <input id="<?php echo $formField['id'] ?>" name="<?php echo $formField['id'] ?>"
+                                   class="input <?php echo $formField['inputClasses'] ?>" type="<?php echo $formField['type'] ?>"
+                                <?php echo $formField['required'] ?> placeholder=" "
+                                <?php echo $formField['maxlength']? 'maxlength='.$formField['maxlength']: "" ?>
+                                <?php echo $formField['minlength']? 'minlength='.$formField['minlength']: "" ?>
+                                <?php echo $formField['max']? 'max='.$formField['max']: "" ?>
+                                <?php echo $formField['min']? 'min='.$formField['min']: "" ?>
+                                <?php echo $formField['multiple']? 'multiple': "" ?>
+                                <?php echo $formField['value']? 'value='.$formField['value']: "" ?>>
+                            <div class="cut"></div>
+                            <label for="<?php echo $formField['id'] ?>" class="placeholder <?php echo $formField['labelClasses'] ?>">
+                                <?php echo $formField['placeholder'] ?>
+                            </label>
+                        </div>
+                        <div id="second">
+                            <span    class="info"
+                                     data-toggle="tooltip"
+                                     data-placement="right"
+                                     title="Un grup: x / Varis grups: x, y">
+                                <img src="View/images/icon-info-sign.png" height="30" width="30">
+                            </span>
+                            <style>
+                                .info {
+                                    display: inline-block;
+                                    float: left;
+                                    clear: both;
+                                }
+                                .tooltip-custom .tooltip-inner{
+                                    background-color: cornflowerblue !important;
+                                }
+                                .bs-tooltip-right .arrow::before,
+                                bs-tooltip-auto[x-placement="right"] .arrow::before{
+                                    border-right-color: cornflowerblue;
+                                }
+                                #wrapper {
+                                    width: 500px;
+                                    overflow: hidden; /* will contain if #first is longer than #second */
+                                }
+                                #first {
+                                    width: 300px;
+                                    float:left; /* add this */
+                                }
+                                #second {
+                                    padding-left: 10px;
+                                    overflow: hidden; /* if you don't want #second to wrap below #first */
+                                }
+                            </style>
+                        </div>
+                    </div>
+
+                <?php } else {?>
+                    <input id="<?php echo $formField['id'] ?>" name="<?php echo $formField['id'] ?>"
+                           class="input <?php echo $formField['inputClasses'] ?>" type="<?php echo $formField['type'] ?>"
+                        <?php echo $formField['required'] ?> placeholder=" "
+                        <?php echo $formField['maxlength']? 'maxlength='.$formField['maxlength']: "" ?>
+                        <?php echo $formField['minlength']? 'minlength='.$formField['minlength']: "" ?>
+                        <?php echo $formField['max']? 'max='.$formField['max']: "" ?>
+                        <?php echo $formField['min']? 'min='.$formField['min']: "" ?>
+                        <?php echo $formField['multiple']? 'multiple': "" ?>
+                        <?php echo $formField['value']? 'value='.$formField['value']: "" ?>>
+
+                    <div class="cut"></div>
+                    <label for="<?php echo $formField['id'] ?>" class="placeholder <?php echo $formField['labelClasses'] ?>">
+                        <?php echo $formField['placeholder'] ?>
+                    </label>
+                <?php}?>
             <?php } ?>
-            <div class="cut"></div>
-            <label for="<?php echo $formField['id'] ?>" class="placeholder <?php echo $formField['labelClasses'] ?>">
-                <?php echo $formField['placeholder'] ?>
-            </label>
         <?php } ?>
     </div>
+<?php } ?>
 <?php } ?>

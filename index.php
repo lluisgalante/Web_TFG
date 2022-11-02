@@ -18,9 +18,9 @@ if (isset($_SESSION["email"])) {
         header("Location:/index.php?error=1");
     }
 }
+print_r($query);
 
- print_r($query);
-
+//print_r($_POST);
 switch ($query) {
     case VIEW_PROBLEMS_LIST: //1
         include __DIR__ . "/Controller/lists/problemList.php";

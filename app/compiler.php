@@ -1,12 +1,12 @@
 <?php
 $language = strtolower($_POST['language']);
-echo $language;
+//echo $language;
 $code = $_POST['code'];
 $route = $_POST['route'];
 $fileToExecute = $_POST['file_to_execute'];
 
 $filePath = $route . "/" . $fileToExecute;
-echo $filePath;
+//echo $filePath;
 $programFile = fopen($filePath, "w");
 fwrite($programFile, $code);
 fclose($programFile);
@@ -14,7 +14,7 @@ $filePath = '"' . $route . "/" . $fileToExecute . '"';
 
 
 if ($language == "python") {
-    $output = shell_exec("C:\Program Files\MySQL\MySQL Shell 8.0\lib\Python3.10\Lib\venv\scripts\nt\python.exe $filePath 2>&1");
+    $output = shell_exec("python $filePath 2>&1");
     echo "<pre>";
     print_r($output);
     echo "</pre>";

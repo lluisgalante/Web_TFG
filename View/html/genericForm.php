@@ -15,6 +15,7 @@
         <script src="/View/js/external/bootstrap.min.js"></script>
         <script src="/View/js/external/bootstrap-toggle.min.js"></script>
         <script src="/View/js/external/all.min.js"></script>
+
         <?php if(isset($formPage['validationJS'])) { ?>
             <script src="/View/js/<?php echo $formPage['validationJS'] ?>"></script>
         <?php } ?>
@@ -66,6 +67,7 @@
                             <?php echo $option['optionText'] ?>
                         </a>
                     <?php } ?>
+
                     <input type="submit" class="btn" value="<?php echo $formPage['submitText'] ?>">
                 </div>
             <?php } ?>

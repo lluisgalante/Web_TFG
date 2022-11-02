@@ -1,29 +1,26 @@
 let toCloneSession;
 let alreadyCalled = 0;
-/*$(document).ready(function () {
-    $('#delete_problem_modal').on('show.bs.modal', function (e) {
-        let invoker = $(e.relatedTarget);
-        toDeleteProblem = parseInt(invoker.closest('.card').attr('id'));
-    });
 
-    $('.change_visibility').on('click', function () {
-        let image = $(this).children('img').attr('src');
-        // Find in the shown image name if it's visible or not and toggle it
-        let newVisibility = image.search('not-visible') === -1? 'Private': 'Public';
-        let problemId = $(this).closest('.card').attr('id');
-        $.ajax({
-            url: "/Model/changeVisibility.php",
-            method: "POST",
-            data: {
-                problemId: parseInt(problemId),
-                newVisibility: newVisibility,
-            },
-            success: function () {
-                location.reload();
-            }
-        })
+//Inicializa pluggin Tooltip Bottstrap
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip({
+        trigger:'hover',
+        boundary:'window',
+        template:
+            '<div class="tooltip tooltip-custom" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'
+    })
+})
+$('.info').popover();
+$(':not(#anything)').on('click', function (e) {
+    $('.info').each(function () {
+        //the 'is' for buttons that trigger popups
+        //the 'has' for icons and other elements within a button that triggers a popup
+        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+            $(this).popover('hide');
+            return;
+        }
     });
-})*/
+});
 $(document).ready(function () {
     $('form').one('submit', function () {
         let name = document.getElementById("name").value;
@@ -139,7 +136,6 @@ function duplicateSession() {
     }
     alreadyCalled = 1;
     let session_name = document.getElementById("new_session_name").value;
-    console.log(class_group);
     if (session_name !== "") {
         $.ajax({
             url: "/Controller/sessionDuplicate.php",

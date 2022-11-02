@@ -90,6 +90,14 @@
                 title="Pujar a GitHub">
             <img class="icon github" src="/View/images/save.png" alt="Pujar a GitHub">
         </button>
+
+        <?php if ($_SESSION['user_type'] == PROFESSOR) { ?>
+
+            <button class="btn add_solution" data-toggle="modal" data-target="#PS" title="Importar Solució">
+                <img class="icon" src="/View/images/edit_solution.png" alt="Afegida Solucio">
+            </button>
+        <?php } ?>
+
         <?php if($problem["description"]) { ?>
             <div class="content"><p><?php echo htmlspecialchars($problem["description"]); ?></p></div>
         <?php } ?>
@@ -153,7 +161,28 @@
         </div>
     </div>
 </div>
+<!-- NUEVO Start -->
+<div id="PS" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Importa Solució Problema</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
 
+            <div class="modal-body">
+                <form id="1" action="/Controller/UploadSolutionFile.php" method="post" enctype="multipart/form-data">
+                    <button type="submit" onclick="receiveFile1()" class="btn" data-dismiss="modal">
+                        Importar
+                    </button>
+                    <input id="new_file1" type="file" name="file[]" hidden multiple>
+                    <input type="hidden" name="solution_path" value="<?php echo $folder_route?? ""; ?>"/>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- NUEVO End -->
 <div id="add_file_modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -164,11 +193,11 @@
 
             <div class="modal-body">
                 <div class="modal-buttons">
-                    <form action="/Controller/addFileFromPC.php" method="post" enctype="multipart/form-data">
-                        <button type="submit" onclick="receiveFile()" class="btn" data-dismiss="modal">
+                    <form id="2" action="/Controller/addFileFromPC.php" method="post" enctype="multipart/form-data">
+                        <button type="submit" onclick="receiveFile2()" class="btn" data-dismiss="modal">
                             Importar
                         </button>
-                        <input id="new_file" type="file" name="file[]" hidden multiple>
+                        <input id="new_file2" type="file" name="file[]" hidden multiple>
                         <input type="hidden" name="solution_path" value="<?php echo $folder_route?? ""; ?>"/>
                     </form>
                     <button type="button" class="btn" onclick="newFile()" data-dismiss="modal">

@@ -153,12 +153,6 @@
                                         onclick="<?php echo $modal['buttonOnClick'] ?>">
                                     <?php echo $modal['buttonText'] ?>
                                 </button>
-                                <?php if ($modal['buttonText'] == 'Importar'){?>
-                                    <form action ="/Controller/addFileFromPC.php" method="post" enctype="multipart/form-data">
-                                            <input id="new_file" type="file" name="file[]" hidden multiple>
-                                    </form>
-
-                                <?php } ?>
                             </div>
                         </div>
                     </div>

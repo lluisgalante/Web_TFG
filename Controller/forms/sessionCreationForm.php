@@ -24,9 +24,13 @@ if (empty($selectorOptions)) {
     $formPage['title'] = 'Crear nova sessió';
     $formPage['fields'] = [
         array('type' => 'text', 'id' => 'name', 'placeholder' => 'Nom', 'required' => 'required'),
-        array('type'=>'int','id' => 'class_group', 'placeholder'=>'Grup de la sesió','required' => 'required'),
+        array('type'=>'int','id' => 'class_group', 'placeholder' => 'Grups de classe', 'required' => 'required'),
         array('type' => 'selector', 'id' => 'multiple-checkboxes', 'name' => 'problems[]', 'placeholder' => 'Problemes',
             'options' => $selectorOptions, 'multiple' => 'multiple', 'required' => 'required')
+    ];
+
+    $formPage['info']=[
+        array('image'=>'icon-info-sign', 'span'=>'A little column extra info')
     ];
     $formPage['submitText'] = 'Crear sessió';
 }
