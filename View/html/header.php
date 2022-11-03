@@ -61,7 +61,9 @@
                 </a>
             </li>
         <?php } ?>
+
     </ul>
+    <div><?php echo var_dump($_GET["query"]); ?> hhhh</div>
 </header>
 
 <?php

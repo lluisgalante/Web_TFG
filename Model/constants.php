@@ -2,25 +2,26 @@
 
 const PROFESSOR = 0;
 const STUDENT = 1;
+$_SESSION['histori']=null;
 
 # Views
 # This is the default screen
-const VIEW_SUBJECT_LIST = 0;
-const VIEW_PROBLEMS_LIST = 1;
-const VIEW_LOGIN_FORM = 2;
-const VIEW_REGISTER_FORM = 3;
-const VIEW_PROBLEM_CREATE = 4;
-const VIEW_EDITOR = 7;
-const VIEW_SUBJECT_CREATE = 10;
-const VIEW_SOMETHING = 11 ;
-const VIEW_PROBLEM_EDIT = 12;
-const VIEW_SESSION_FORM = 13;
-const VIEW_SESSION_LIST = 14;
-const VIEW_SESSION_PROBLEMS_LIST = 15;
-const VIEW_PROBLEM_CREATE_GIT = 16;
-const VIEW_PROBLEM_SOLUTION =17;
-const VIEW_PROBLEM_SOLUTION_UPLOAD =18;
-const VIEW_SESSION_LIST_GROUPS=19;
+const VIEW_SUBJECT_LIST = "Llista assignatures"; # = 0;
+const VIEW_PROBLEMS_LIST="Llista Problemes"; # = 1;
+const VIEW_LOGIN_FORM="Pàgina LogIn";# = 2;
+const VIEW_REGISTER_FORM="Pàgina Registre";# = 3;
+const VIEW_PROBLEM_CREATE="Crear nou problema";# = 4;
+const VIEW_EDITOR="Editor Problemas";# = 7;
+const VIEW_SUBJECT_CREATE="Crear assignatura";# = 10;
+const VIEW_SOMETHING="Inici";# = 11 ;
+const VIEW_PROBLEM_EDIT="Editar Problemas";# = 12;
+const VIEW_SESSION_FORM="Visualitzar sessions";# = 13;
+const VIEW_SESSION_LIST="Llista de sessions";# = 14;
+const VIEW_SESSION_PROBLEMS_LIST="Llista de problemes";# = 15;
+const VIEW_PROBLEM_CREATE_GIT="Crear Problema from Git";# = 16;
+const VIEW_PROBLEM_SOLUTION="Solucio Probelma";# =17;
+const VIEW_PROBLEM_SOLUTION_UPLOAD="Penjar solucio problema";# =18;
+const VIEW_SESSION_LIST_GROUPS="Grups amb sessions";#=19;
 
 
 CONST STUDENT_VIEWS = [VIEW_SUBJECT_LIST, VIEW_PROBLEMS_LIST, VIEW_EDITOR, VIEW_SESSION_LIST,

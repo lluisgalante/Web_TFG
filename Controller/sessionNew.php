@@ -14,13 +14,16 @@ if ($user_type != PROFESSOR) {
 $name = $_POST['name'];
 $subjectId = $_POST['subject'];
 $problemIds = $_POST['problems'];
-$class_group = $_POST['class_group'];
+$class_groups = $_POST['class_group'];
+//Separar los grupos
+$class_groups_array= explode( ',', $class_groups );//Each group is an element of the array
 
 $professorEmail = $_SESSION['email'];
 $professor = getProfessor(professorEmail: $professorEmail);
 $professorId = $professor['id'];
-
-$sessionId = createSession(name:$name, professorId:$professorId, subjectId: $subjectId, problemIds:$problemIds, class_group: $class_group);
+foreach ($class_groups_array as $class_group) {
+    $sessionId = createSession(name:$name, professorId:$professorId, subjectId: $subjectId, problemIds:$problemIds, class_group: $class_group);
+}
 if ($sessionId === 0) {
     redirectLocation();
 }

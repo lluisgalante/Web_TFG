@@ -4,8 +4,23 @@ include_once __DIR__ . "/Model/constants.php";
 include_once __DIR__ . "/Model/redirectionUtils.php";
 
 error_reporting(E_ERROR | E_PARSE);
+var_dump(isset($_SESSION['hist']));
+#var_dump(isset($_SESSION["email"]));
 
+print_r($_SESSION['hist']);
 $query = $_GET["query"] ?? VIEW_SUBJECT_LIST;
+
+if(isset($_SESSION['hist'])){
+    $page = $query;
+    array_push($_SESSION['hist'],$page );
+
+}
+else{
+    $page = $query;
+    $_SESSION['hist']= [$page ];
+}
+
+var_dump(isset($_SESSION['hist']));
 
 if (isset($_SESSION["email"])) {
     # If the user is a Student the views are restricted
@@ -18,8 +33,8 @@ if (isset($_SESSION["email"])) {
         header("Location:/index.php?error=1");
     }
 }
-print_r($query);
-
+//print_r($query);
+var_export($_SESSION);
 //print_r($_POST);
 switch ($query) {
     case VIEW_PROBLEMS_LIST: //1

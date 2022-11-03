@@ -47,7 +47,7 @@
                             <span    class="info"
                                      data-toggle="tooltip"
                                      data-placement="right"
-                                     title="Un grup: x / Varis grups: x, y">
+                                     title="Un grup: x / Varis grups: x,y,z">
                                 <img src="View/images/icon-info-sign.png" height="30" width="30">
                             </span>
                             <style>
