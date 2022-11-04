@@ -57,10 +57,10 @@ if ($problem['language'] == 'Notebook') {
 $subject = $problem["subject_id"];
 $problem_route = $problem["route"];
 
-print_r($problem_route);
-print_r(__DIR__);
-echo" ====== ";
-print_r(__DIR__ . $problem_route );
+//print_r($problem_route);
+//print_r(__DIR__);
+//echo" ====== ";
+//print_r(__DIR__ . $problem_route );
 
 $cleaned_problem_route = str_replace('\\', '/', realpath(__DIR__ . $problem_route));
 
