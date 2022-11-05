@@ -31,7 +31,7 @@
                     else if($button['image'] == 'deactivated' || $button['image'] == 'no-edit'){$color = "green";}
                     //else{;}
                 }
-                if($color == "green"){?> style="background-color:indianred ; border-radius: 10px;" <?php }
+                if($color == "green"){?> style="background-color:#FF6666 ; border-radius: 10px;" <?php }
                 if($color == "red"){?> style="background-color:darkseagreen; border-radius: 10px;" <?php } ?>
             >
                 <div>

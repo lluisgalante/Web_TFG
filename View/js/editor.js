@@ -23,8 +23,6 @@ $(document).ready(function () {
         enableLiveAutocompletion: false,
     });
     editor.setFontSize(16);
-    document.getElementsByClassName("ace_text-input").disabled = "disabled";
-
     const observer = new MutationObserver((mutationsList) => {
         for (const mutation of mutationsList) {
             if (mutation.type !== "attributes" || mutation.attributeName !== "class") {
@@ -147,8 +145,6 @@ $(document).ready(function () {
         let alert = document.getElementById('error_msg_libraries');
         $(alert).attr("hidden", "");
     })
-
-    //document.querySelector("textarea").setAttribute("disabled", "disabled");
 });
 
 function setSolutionEditingFalse() {
@@ -457,7 +453,7 @@ function acceptChanges(id) {
     })
 }
 function disableEdit(){ //This function will remove from students the avility to edit in the editor. It will be activated when users enter to a deactivated session.
-    console.log("Dentro disableEdit");
+    //console.log("Dentro disableEdit");
     document.querySelector("textarea").setAttribute("disabled", "disabled");
 
 }
