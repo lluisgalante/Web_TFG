@@ -6,7 +6,7 @@ require_once __DIR__ . "/../../Model/session.php";
 
 $subjectId = $_GET['subject'];
 $group = $_GET['group'];
-echo $group;
+//echo $group;
 $sessions = getActiveSessionsFromGroup(subjectId: $subjectId, class_group: $group);
 
 $listPage['title'] = 'Sessions actives';

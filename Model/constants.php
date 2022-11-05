@@ -15,7 +15,7 @@ const VIEW_EDITOR="Editor Problemas";# = 7;
 const VIEW_SUBJECT_CREATE="Crear assignatura";# = 10;
 const VIEW_SOMETHING="Inici";# = 11 ;
 const VIEW_PROBLEM_EDIT="Editar Problemas";# = 12;
-const VIEW_SESSION_FORM="Visualitzar sessions";# = 13;
+const VIEW_SESSION_FORM="Crear nova sessió";# = 13;
 const VIEW_SESSION_LIST="Llista de sessions";# = 14;
 const VIEW_SESSION_PROBLEMS_LIST="Llista de problemes";# = 15;
 const VIEW_PROBLEM_CREATE_GIT="Crear Problema from Git";# = 16;

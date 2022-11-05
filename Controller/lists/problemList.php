@@ -40,7 +40,7 @@ foreach ($problems as $problem) {
 
 
     $cleaned_problem_route = str_replace('\\', '/', realpath(dirname(__DIR__ ). $problem_route));
-    var_dump($cleaned_problem_route);
+    //var_dump($cleaned_problem_route);
 
 
 

@@ -2,28 +2,11 @@
 session_start();
 include_once __DIR__ . "/Model/constants.php";
 include_once __DIR__ . "/Model/redirectionUtils.php";
+require_once __DIR__ . "/Controller/Breadcrumb.php";
 
 error_reporting(E_ERROR | E_PARSE);
 
-
-//print_r($_SESSION['hist']);
 $query = $_GET["query"] ?? VIEW_SUBJECT_LIST;
-unset($_SESSION['histori']);
-if(isset($_SESSION['hist'])){
-    if($query=="Llista assignatures"){
-
-        $_SESSION['hist']=['Home'];
-    }
-    else{
-    $page = $query;
-    array_push($_SESSION['hist'],$page ); }
-
-
-}
-else{
-    $page = $query;
-    $_SESSION['hist']= [$page ];
-}
 
 
 if (isset($_SESSION["email"])) {
@@ -37,9 +20,7 @@ if (isset($_SESSION["email"])) {
         header("Location:/index.php?error=1");
     }
 }
-//print_r($query);
-//var_export($_SESSION);
-//print_r($_POST);
+//print_r($query); //var_export($_SESSION); //print_r($_POST);
 switch ($query) {
     case VIEW_PROBLEMS_LIST: //1
         include __DIR__ . "/Controller/lists/problemList.php";

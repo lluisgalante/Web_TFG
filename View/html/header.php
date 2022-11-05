@@ -22,8 +22,8 @@
                 </li>
             <?php } ?>
             <div class="breadcrumb flat"style="padding-top: 0px;padding-bottom: 0px; margin-top: 16px;margin-left: 20px;padding-right: 0px;padding-left: 0px;">
-                    <?php foreach($_SESSION['hist'] as $item){
-                        ?><a href="#"><?php echo $item ?></a>
+                    <?php foreach(array_keys($_SESSION['hist']) as $item_key){
+                        ?><a href="<?php echo $_SESSION['hist'][$item_key]?>"><?php echo $item_key ?></a>
                     <?php } ?>
             </div>
         </ul>
