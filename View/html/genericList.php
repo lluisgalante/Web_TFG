@@ -27,8 +27,8 @@
         <div id="<?php echo $item['id'] ?>" class="card">
             <div class="card-body"<?php  $color = null;
                 foreach ($item['buttons'] as $button){
-                    if($button['image'] == 'activated'){ $color = "red";}
-                    else if($button['image'] == 'deactivated'){$color = "green";}
+                    if($button['image'] == 'activated' || $button['image'] == 'edit' ){ $color = "red";}
+                    else if($button['image'] == 'deactivated' || $button['image'] == 'no-edit'){$color = "green";}
                     //else{;}
                 }
                 if($color == "green"){?> style="background-color:indianred ; border-radius: 10px;" <?php }
@@ -44,6 +44,7 @@
                         <p class="card-text"> <?php echo $item['description'] ?></p>
                     <?php } ?>
                 </div>
+
                 <div>
                     <?php foreach ($item['buttons'] as $button) {
                         if($button['type'] === 'a') { ?>

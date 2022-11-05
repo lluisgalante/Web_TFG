@@ -1,6 +1,7 @@
 <?php
 include_once __DIR__ . "/../Model/connection.php";
 include_once __DIR__ . "/../Model/redirectionUtils.php";
+include_once __DIR__ . "/../Model/session.php";
 include_once __DIR__ . "/../Model/dockerUtils.php";
 include_once __DIR__ . "/../Model/diskManager.php";
 include_once __DIR__ . "/../Model/problemsGet.php";
@@ -22,6 +23,12 @@ if ($problem['visibility'] === 'Private' && isset($_SESSION['user_type']) && $_S
 $session_id = null;
 if (isset($_GET["session"])) {
     $session_id = $_GET["session"];
+    if(getSessionStatus($session_id) == 'activated' && isset($_SESSION['user_type']) && $_SESSION['user_type'] === STUDENT){
+        echo "Estudiante,Sesion Activa";
+    }
+    elseif (getSessionStatus($session_id) == 'deactivated' && isset($_SESSION['user_type']) && $_SESSION['user_type'] === STUDENT){
+        echo "Estudiante,Sesion Desactivada";
+    }
 }
 
 # The email will be the user's, unless the user is a professor spectating a student

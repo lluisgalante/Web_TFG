@@ -103,7 +103,12 @@
         <?php } ?>
 
         <div id="files" class="mt-1"></div>
-        <div id="editor" contenteditable="true"></div>
+        <div id="editor" onclick="<?php if (getSessionStatus($_GET["session"]) == 'deactivated' && isset($_SESSION['user_type']) && $_SESSION['user_type'] === STUDENT){
+        echo "disableEdit()";
+        }
+        else{
+            echo "Nothing()";
+        }?>"></div>
         <div id="notebook"></div>
         <div id="answer"></div>
     </div>

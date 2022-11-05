@@ -97,6 +97,23 @@ function getGroupsActiveSessions(int $subjectId): array
     }
     return array_unique($cleaned_groups);
 }
+function getSessionStatus(int $sessionId): string
+{
+    try{
+        $connection = connectDB();
+        $statement = $connection->prepare("SELECT status FROM session WHERE id=:session_id");
+        $statement->execute(array(":session_id" => $sessionId));
+        $sessionStatus= $statement->fetchAll(PDO::FETCH_ASSOC);
+
+
+    }catch (PDOException $e){
+        echo 'Error retrieving sessions groups: ' . $e->getMessage();
+
+    }
+    /*var_dump($sessionStatus);*/
+    return $sessionStatus[0]['status'];
+
+}
 
 function addStudentToSession(int $sessionId, string $email) : bool
 {

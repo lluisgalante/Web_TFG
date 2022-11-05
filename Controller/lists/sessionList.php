@@ -9,7 +9,7 @@ $group = $_GET['group'];
 //echo $group;
 $sessions = getActiveSessionsFromGroup(subjectId: $subjectId, class_group: $group);
 
-$listPage['title'] = 'Sessions actives';
+$listPage['title'] = 'Sessions disponibles';
 $listPage['customJS'] = 'session.js';
 
 // Classify the items and create a list for each element of the list
@@ -17,28 +17,30 @@ foreach ($sessions as $session) {
     $sessionId = $session['id'];
 
 
-    if($session['status'] == 'deactivated' && isset($_SESSION['user_type']) && $_SESSION['user_type'] == STUDENT){
-    //**
+    /*if($session['status'] == 'deactivated' && isset($_SESSION['user_type']) && $_SESSION['user_type'] == STUDENT){}*/
+
+    $item = array('id' => $sessionId,
+        'href' => buildUrl(VIEW_SESSION_PROBLEMS_LIST, array('session' => $sessionId)),
+        'title' => $session['name']);
+
+    if (isset($_SESSION['user_type']) && $_SESSION['user_type'] == STUDENT){
+        $editStatus = $session['status'] == 'deactivated' ? 'no-edit' : 'edit';
+        $item['buttons'][] = array('image' => $editStatus, 'alt' => $editStatus);
     }
-    else{
-        $item = array('id' => $sessionId,
-            'href' => buildUrl(VIEW_SESSION_PROBLEMS_LIST, array('session' => $sessionId)),
-            'title' => $session['name']);
-        if (isset($_SESSION['user_type']) && $_SESSION['user_type'] == PROFESSOR) {
+    if (isset($_SESSION['user_type']) && $_SESSION['user_type'] == PROFESSOR) {
 
-            $visibilityImage = $session['status'] == 'deactivated' ? 'deactivated' : 'activated';
+        $visibilityImage = $session['status'] == 'deactivated' ? 'deactivated' : 'activated';
+        $item['buttons'][] = array('type' => 'js', 'classes' => 'change_visibility', 'title' => 'Canviar visibilitat',
+            'image' => $visibilityImage, 'alt' => 'Canviar visibilitat');
 
-            $item['buttons'][] = array('type' => 'js', 'classes' => 'change_visibility', 'title' => 'Canviar visibilitat',
-                'image' => $visibilityImage, 'alt' => 'Canviar visibilitat');
+        $item['buttons'][] = array('type' => 'modalToggle', 'title' => 'Duplicar',
+            'target' => 'duplicate_session_modal', 'image' => 'clone', 'alt' => 'Duplicar Sessió');
+        $item['buttons'][] = array('type' => 'js', 'title' => 'Esborrar', 'onClick' => "deleteSession($sessionId)",
+            'image' => 'trash', 'alt' => 'Esborrar Sessió');
 
-            $item['buttons'][] = array('type' => 'modalToggle', 'title' => 'Duplicar',
-                'target' => 'duplicate_session_modal', 'image' => 'clone', 'alt' => 'Duplicar Sessió');
-            $item['buttons'][] = array('type' => 'js', 'title' => 'Esborrar', 'onClick' => "deleteSession($sessionId)",
-                'image' => 'trash', 'alt' => 'Esborrar Sessió');
-
-        }
-        $listPage['items'][] = $item;
     }
+    $listPage['items'][] = $item;
+
 }
 
 $listPage['modals'] = [
