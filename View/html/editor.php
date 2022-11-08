@@ -68,7 +68,7 @@
     <p id="programming_language" hidden><?php echo $problem["language"]; ?></p>
 
     <div class="editor-sub-container">
-        <button id="execute" class="btn" onclick="executeCode()" title="Executar">
+        <button id="execute" class="btn" onclick="executeCode('<?php echo "{$_SESSION['email']}"?>', <?php echo $_GET['session']?>, <?php echo $_SESSION['user_type']?>, '<?php echo "{$_GET['user']}"?>')" title="Executar">
             <img class="icon" src="/View/images/execute.png" alt="Executar">
         </button>
         <?php if($problem["description"]) { ?>
@@ -122,10 +122,10 @@
                     </div>
                     <?php foreach ($students as $student) { ?>
                         <li <?php echo $_GET['user'] === $student['user']? "class='selected'": "" ?>>
-                            <a href="<?php echo "/index.php?query=7&problem=".$_GET['problem']."&view-mode=1&user=".
+                            <a href="<?php echo "/index.php?query=Editor Problemas&problem=".$_GET['problem']."&view-mode=1&user=".
                                 $student["user"]."&session=".$_GET['session'] ?>"
                                class="btn email"><?php echo $student["user"] ?></a>
-                            <a href="<?php echo "/index.php?query=7&problem=".$_GET['problem']."&view-mode=2&user=".
+                            <a href="<?php echo "/index.php?query=Editor Problemas&problem=".$_GET['problem']."&view-mode=2&user=".
                                 $student["user"]."&session=".$_GET['session'] ?>"
                                class="btn view" title="Veure"><i class="fas fa-eye"></i></a>
                         </li>

@@ -223,7 +223,9 @@ function checkChanges() {
     })
 }
 
-function executeCode() {
+function executeCode(email, session_id, userType, usuario_visualizado) {
+    console.log(email);
+    console.log(session_id);
     let text = editor.getSession().getValue();
     let answer = document.getElementById("answer");
     if (text.includes("import os") || text.includes("import sys")) {
@@ -246,8 +248,24 @@ function executeCode() {
         },
         success: function (response) {
             answer.innerHTML = response;
+            console.log(response);
+            /* Call the second validation */
+            Validation2(email, session_id, userType, response, usuario_visualizado);
         }
     })
+    const Validation2 = (email, session_id, userType, response, usuario_visualizado) => {
+        $.ajax({
+            url: "/Controller/online_visualization_improvements.php",
+            method: "POST",
+            data: {
+                email: email,
+                id: session_id,
+                userType: userType,
+                output: response,
+                usuario_visualizado: usuario_visualizado
+            }
+        });
+    }
 }
 
 function openFile(fileName) {
