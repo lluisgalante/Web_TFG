@@ -68,7 +68,7 @@
     <p id="programming_language" hidden><?php echo $problem["language"]; ?></p>
 
     <div class="editor-sub-container">
-        <button id="execute" class="btn" onclick="executeCode('<?php echo "{$_SESSION['email']}"?>', <?php echo $_GET['session']?>, <?php echo $_SESSION['user_type']?>, '<?php echo "{$_GET['user']}"?>')" title="Executar">
+        <button id="execute" class="btn" onclick="executeCode('<?php echo "{$_SESSION['email']}"?>', <?php if(isset($_GET['session'])){echo $_GET['session'];} else{ ?> '<?php echo "NO"; ?> ' <?php  }?>, <?php echo $_SESSION['user_type']?>, '<?php echo "{$_GET['user']}"?>')" title="Executar">
             <img class="icon" src="/View/images/execute.png" alt="Executar">
         </button>
         <?php if($problem["description"]) { ?>
@@ -109,12 +109,12 @@
     </div>
     <?php if ($_SESSION['user_type'] == PROFESSOR) { ?>
         <div class="students-list">
-            <ul>
+            <ul id=>
                 <?php if (!empty($students)) { ?>
                     <div class="students-list-header">
                         <?php if (isset($_GET["view-mode"])) { ?>
                             <a class="btn"
-                               href="<?php echo"/index.php?query=7&problem=".$_GET['problem']."&session=".$_GET['session']?>">
+                               href="<?php echo"/index.php?query=Editor Problemas&problem=".$_GET['problem']."&session=".$_GET['session']?>">
                                 &#8592;
                             </a>
                         <?php } ?>
@@ -129,6 +129,24 @@
                                 $student["user"]."&session=".$_GET['session'] ?>"
                                class="btn view" title="Veure"><i class="fas fa-eye"></i></a>
                         </li>
+                        <h6 id="follow_up_student_info">
+                                <li id = "executed_count">Execucions alumne:  <?php echo $student["executed_times_count"]?></li><hr />
+                                <li id = "teacher_executed_count">Execucions tutor:  <?php echo$student["teacher_executed_times_count"]?></li><hr />
+                                <p>Output: <span class= "extra"> <?php echo $student["output"]?></span></p>
+                        </h6>
+                        <style>
+                            #follow_up_student_info{
+                                margin-top: 10px;
+                                background-color: rgba(130,163,255, 0.5) !important;
+                                padding: 10px 10px 5px 10px;
+                                border-radius: 10px;
+                                font-size: 1rem;
+                            }
+                            #follow_up_student_info li{
+                                margin:0px 0px 0px 0px;
+                            }
+
+                        </style>
                     <?php }
                 } ?>
             </ul>

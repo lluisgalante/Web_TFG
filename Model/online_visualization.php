@@ -49,10 +49,25 @@ function updateData(string $email, int $session_id, string $output):void
         echo "Student_Session not created: " . $e->getMessage();
     }
 }
-function teacherUpdatesStudentCode(string $email, int $session_id):void
+function teacherUpdatesStudentCode(string $email, int $session_id, string $output):void
 {
     $connection = connectDB();
-    $statement = $connection->prepare("UPDATE student_session_online SET teacher_executed_times_count = teacher_executed_times_count + 1  WHERE student_email=:student_email and session_id=:session_id");
-    $statement->execute(array(":student_email" => $email, ":session_id" => $session_id));
+    $statement = $connection->prepare("UPDATE student_session_online SET teacher_executed_times_count = teacher_executed_times_count + 1, output = :output  WHERE student_email=:student_email and session_id=:session_id");
+    $statement->execute(array(":output"=>$output, ":student_email" => $email, ":session_id" => $session_id));
+    $statement->closeCursor();
+    $connection = null;
 }
+function getStudentsSessionExtraData(int $session_id):array
+{
+    try {
+        $connection = connectDB();
+        $statement = $connection->prepare("SELECT output, executed_times_count, teacher_executed_times_count FROM student_session_online WHERE session_id=:session_id  ");
+        $statement->execute(array(":session_id" => $session_id));
+        $array_result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $connection = null;
 
+    } catch (PDOException $e) {
+        echo 'Error en getStudentsSessionExtraData() : ' . $e->getMessage();
+    }
+    return $array_result;
+}

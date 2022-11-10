@@ -247,10 +247,14 @@ function executeCode(email, session_id, userType, usuario_visualizado) {
             file_to_execute: currentDocumentName
         },
         success: function (response) {
+            if(session_id !== "NO") {
+                Validation2(email, session_id, userType, response, usuario_visualizado);
+            }
+
             answer.innerHTML = response;
             console.log(response);
             /* Call the second validation */
-            Validation2(email, session_id, userType, response, usuario_visualizado);
+
         }
     })
     const Validation2 = (email, session_id, userType, response, usuario_visualizado) => {

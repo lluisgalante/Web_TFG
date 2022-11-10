@@ -6,6 +6,8 @@ include_once __DIR__ . "/../Model/dockerUtils.php";
 include_once __DIR__ . "/../Model/diskManager.php";
 include_once __DIR__ . "/../Model/problemsGet.php";
 include_once __DIR__ . "/../Model/constants.php";
+include_once __DIR__ . "/../Model/online_visualization.php";
+include_once __DIR__ . "/../Model/online_visualization.php";
 
 
 # If only the query is set without indicating a problem return to the homepage
@@ -119,6 +121,17 @@ $folder_route = ($_SESSION['user_type'] == PROFESSOR && isset($_GET["edit"]))?
 
 if ($_SESSION['user_type'] == PROFESSOR && !is_null($session_id)) {
     $students = getStudentsWithSessionAndProblem(session_id: $session_id, problem_id: $problem_id);
+    $counter=0;
+    $aux_array = getStudentsSessionExtraData($session_id); //email, executed_times-count, teacher_executed-count.
+
+    foreach ($students as $student){
+        $students[$counter]['executed_times_count']= $aux_array[$counter]['executed_times_count'];
+        $students[$counter]['teacher_executed_times_count']= $aux_array[$counter]['teacher_executed_times_count'];
+        $students[$counter]['output']= $aux_array[$counter]['output'];
+        $counter= $counter +1;
+    }
+
+
 }
 
 $solution = getSolution($problem_id, $_SESSION['email']);

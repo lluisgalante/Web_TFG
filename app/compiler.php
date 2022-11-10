@@ -1,6 +1,5 @@
 <?php
 $language = strtolower($_POST['language']);
-//echo $language;
 $code = $_POST['code'];
 $route = $_POST['route'];
 $fileToExecute = $_POST['file_to_execute'];
@@ -47,6 +46,15 @@ if ($language == "python") {
         unlink($executable);
     }
     echo "<pre>";
-    print_r($result);
+    if ($language  != "python"){ //c,cpp, c++
+        foreach ($result as $item_result){
+
+            print_r($item_result);
+            echo "<br>";
+        }
+    }
+    else{
+        print_r($result);
+    }
     echo "</pre>";
 }

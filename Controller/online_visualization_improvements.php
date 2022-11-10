@@ -26,7 +26,7 @@ if($user_type == 1) {// STUDENT
 else{ //$user_type == 0 -> El profesor está editando el código de un alunmno guardado en la variable $_POST['usuario_visualizado']
 
     $mate = $_POST['usuario_visualizado']; //El PROFESOR(0) está ejecutando el código de este alumno.
-    teacherUpdatesStudentCode($mate, $session_id );
+    teacherUpdatesStudentCode($mate, $session_id, $output);
 
 
 }
