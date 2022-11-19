@@ -67,6 +67,9 @@ switch ($query) {
     case VIEW_PROBLEM_SOLUTION_UPLOAD:
         include __DIR__ . "/Controller/forms/problemSolutionUploadEdForm.php";
         break;
+    case VIEW_MESSAGES_CHAT:
+        include __DIR__ . "/Controller/Messages.php";
+        break;
     default: //0
         include __DIR__ . "/Controller/lists/subjectList.php";
         break;

@@ -124,10 +124,12 @@
                         <li <?php echo $_GET['user'] === $student['user']? "class='selected'": "" ?>>
                             <a href="<?php echo "/index.php?query=Editor Problemas&problem=".$_GET['problem']."&view-mode=1&user=".
                                 $student["user"]."&session=".$_GET['session'] ?>"
-                               class="btn email"><?php echo $student["user"] ?></a>
+                               class="btn email" id ="btn-eamail"><?php echo $student["user"] ?></a>
                             <a href="<?php echo "/index.php?query=Editor Problemas&problem=".$_GET['problem']."&view-mode=2&user=".
                                 $student["user"]."&session=".$_GET['session'] ?>"
                                class="btn view" title="Veure"><i class="fas fa-eye"></i></a>
+                            <a href="<?php echo "/index.php?query=Ver chat&problem=".$_GET['problem']."&show-chat=1&user=".
+                                $student["user"]."&session=".$_GET['session'] ?>" class = "btn chat"></a>
                         </li>
                         <h6 id="follow_up_student_info">
                                 <li id = "executed_count">Execucions alumne:  <?php echo $student["executed_times_count"]?></li><hr />
@@ -141,9 +143,8 @@
                                 padding: 10px 10px 5px 10px;
                                 border-radius: 10px;
                                 font-size: 1rem;
-                            }
-                            #follow_up_student_info li{
-                                margin:0px 0px 0px 0px;
+                                max-width: 350px;
+                                min-width: 350px;
                             }
 
                         </style>

@@ -49,7 +49,6 @@ if (isset($_GET["view-mode"]) && isset($_GET["user"])) {
         setSolutionAsEditing(problem_id: $problem_id, student_email: $email, editing_before: 0, editing_after: 1);
     }
 }
-
 // Start a new jupyter container for the user if it's needed
 if ($problem['language'] == 'Notebook') {
     if (isset($_SESSION['containerId'])) {
@@ -123,6 +122,8 @@ if ($_SESSION['user_type'] == PROFESSOR && !is_null($session_id)) {
     $students = getStudentsWithSessionAndProblem(session_id: $session_id, problem_id: $problem_id);
     $counter=0;
     $aux_array = getStudentsSessionExtraData($session_id); //email, executed_times-count, teacher_executed-count.
+    //var_dump($students);
+    //print_r($aux_array);
 
     foreach ($students as $student){
         $students[$counter]['executed_times_count']= $aux_array[$counter]['executed_times_count'];
