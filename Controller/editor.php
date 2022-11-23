@@ -8,6 +8,7 @@ include_once __DIR__ . "/../Model/problemsGet.php";
 include_once __DIR__ . "/../Model/constants.php";
 include_once __DIR__ . "/../Model/online_visualization.php";
 include_once __DIR__ . "/../Model/online_visualization.php";
+include_once __DIR__ . "/../Model/Messages.php";
 
 
 # If only the query is set without indicating a problem return to the homepage
@@ -35,6 +36,10 @@ if (isset($_GET["session"])) {
 
 # The email will be the user's, unless the user is a professor spectating a student
 $email = $_SESSION["email"];
+
+if(isset($_GET["session"]) && isset($_SESSION['user_type']) && $_SESSION['user_type'] === STUDENT ){
+    $messages = viewchatsAsStudent($email, $_GET['session'], $problem_id );
+}
 
 if (isset($_GET["view-mode"]) && isset($_GET["user"])) {
     # If the view_mode doesn't exist redirect to the homepage

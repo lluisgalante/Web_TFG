@@ -107,6 +107,77 @@
         <div id="notebook"></div>
         <div id="answer"></div>
     </div>
+
+
+    <?php if ($_SESSION['user_type'] == STUDENT && isset($_GET['session'])) { ?>
+    <div class="messages" style="width:350px">
+        <p>Prueba Chat sudent</p>
+        <?php if(!empty($messages)){
+            foreach($messages as $message){?>
+                <div class="<?php if($message['incoming_mail_id']==$_SESSION['email']){echo "other"; }else{echo "self";} ?>"><p><?php echo $message['date'] . ": " . $message['msg']?> </p></div>
+            <?php }
+        }?>
+        <form action="/Controller/sendMessageStudent.php" method="POST"">
+        <input name="o_mail" value="<?php echo $_SESSION["email"]?>" style="display:none">
+        <input name="sessionId" value="<?php echo $_GET['session']?>" style="display:none">
+        <input name="problem" value="<?php echo $_GET['problem']?>" style="display:none">
+
+        <label for="message"></label>
+        <div class="form-inline">
+            <input  placeholder="Type message.." type="text" id="message" name="message" required><br><br>
+            <button type="submit" class="btn" id="submit" >
+                <img class="icon" src="/View/images/send.png">
+            </button>
+        </div>
+
+    </div>
+
+    <style>
+
+        #submit{
+            border:none !important;
+            border-radius:50px !important;
+            background-color: transparent !important;
+        }
+        .form-inline{
+            display: flex;
+            justify-content: center;
+
+        }
+        input[type=text] {
+            border: 0;
+            background-color: white;
+            border-radius: 5px;
+            padding:10px;
+            /*width: 50%;
+            margin: 0;
+            color: #fff;
+            border-left: 0;
+            font-family: inherit;
+            font-size: 1em;
+            transition: 200ms all ease-in;*/
+        }
+        input[type=text]:hover{
+            width: 70%;
+        }
+        p{
+            padding: 12px;
+            text-align: center;
+        }
+        .self{
+            background-color: rgba(60, 179, 113, 0.8) !important;
+            border-radius: 10px;
+
+        }
+        .other{
+            background-color: rgba(105, 150, 255, 0.8) !important;
+            border-radius: 10px;
+        }
+
+    </style>
+
+
+    <?php } ?>
     <?php if ($_SESSION['user_type'] == PROFESSOR) { ?>
         <div class="students-list">
             <ul id=>

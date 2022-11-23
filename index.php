@@ -2,7 +2,7 @@
 session_start();
 include_once __DIR__ . "/Model/constants.php";
 include_once __DIR__ . "/Model/redirectionUtils.php";
-require_once __DIR__ . "/Controller/Breadcrumb.php";
+require_once __DIR__ . "/Controller/breadcrumb.php";
 
 error_reporting(E_ERROR | E_PARSE);
 
@@ -68,7 +68,7 @@ switch ($query) {
         include __DIR__ . "/Controller/forms/problemSolutionUploadEdForm.php";
         break;
     case VIEW_MESSAGES_CHAT:
-        include __DIR__ . "/Controller/Messages.php";
+        include __DIR__ . "/Controller/messages.php";
         break;
     default: //0
         include __DIR__ . "/Controller/lists/subjectList.php";
