@@ -23,16 +23,19 @@
     <script src="/View/js/external/all.min.js"></script>
     <script src="/View/js/external/editor/ace.js"></script>
     <script src="/View/js/external/editor/theme-monokai.js"></script>
-    <script src="/View/js/editor.js"></script>
+    <script src="/View/js/chat.js"></script>
     <script src="/View/js/global.js"></script>
+
 </head>
 <body  class="d-flex flex-column min-vh-100" <?php echo $_SESSION['theme'] ?> >
-<?php include_once(__DIR__ . '/header.php') ?>
+<?php include_once(__DIR__ . '/header.php');
+include_once __DIR__ . "/../Model/connection.php";
+include_once __DIR__ . "/../Model/Messages.php";?>
 
 
 <div class="chat-popup" id="myForm">
     <div class="form-container">
-    <h1>Chat</h1>
+    <h1>Chat - <?php echo $student_data['name'] . " ". $student_data['surname'] ?></h1><p>Sessió <?php echo $_GET['session']?> - Problema  <?php echo$_GET['problem']?></p>
         <br>
         <div class="messages">
         <?php if(!empty($messages)){
@@ -56,12 +59,11 @@
             </button>
         </div>
     </div>
+
     <style>
         .form-container{
-            margin-left:900px;
-            margin-right:900px;
+            margin-bottom:20px;
         }
-
         #submit{
             border:none !important;
             border-radius:50px !important;
@@ -76,84 +78,32 @@
             background-color: white;
             border-radius: 5px;
             padding:10px;
-            /*-webkit-appearance: none;
-            appearance: none;
-            width: 25%;
-            margin: 0;
-            color: #fff;
-            border-left: 0;
-            font-family: inherit;
-            font-size: 1em;
-            transition: 200ms all ease-in;*/
+            width: 15%;
+            transition: 200ms all ease-in;
+
         }
         input[type=text]:hover{
-            width: 40%;
+            width: 25%;
         }
         p{
             padding: 12px;
             text-align: center;
         }
+        .messages{
+            margin-left:30%;
+            margin-right:30%;
+        }
         .self{
+            margin-left:40%;
             background-color: rgba(60, 179, 113, 0.8) !important;
             border-radius: 10px;
         }
         .other{
+            margin-right:40%;
             background-color: rgba(105, 150, 255, 0.8) !important;
             border-radius: 10px;
         }
-
     </style>
-    <script>
-        function closeForm() {
-            document.getElementById("myForm").style.display = "none";
-        }
-        window.setInterval(refreshMessages,2000);
-        function refreshMessages(){
-            let outgoing_email= document.getElementById("o_mail").value;
-            let incoming_email = document.getElementById("i_mail").value;
-            let sessionId = document.getElementById("sessionId").value;
-            let problemId = document.getElementById("problem").value;
-
-            $.ajax({
-                url: "/Controller/UpdateChatsAjax.php",
-                method: "POST",
-                data:{
-                    outgoing_email: outgoing_email,
-                    incoming_email: incoming_email,
-                    sessionId: sessionId,
-                    problemId: problemId,
-                },
-                success: function(response) {
-
-                    /*if(jQuery.inArray("Primer mensaje. De Ernest a Lluis",response) !== -1){
-                        console.log("Funciona");
-                    }else{
-                        console.log("No funciona");
-                    }*/
-                    let messages_aux= JSON.parse(response);
-                    let messages= [];
-                    for(let i=0; i < messages_aux.length; i++){
-                        messages.push(messages_aux[i]['msg']);
-                    }
-                    console.log(messages);
-                    var text = $.trim($('.messages').text());//to remove the leading and trailing whitespace only
-
-
-                    screenMessages = text.split('\n ');
-                    let trim_screenMessages =[];
-                    for(let i=0; i < screenMessages.length; i++){
-                        trim_screenMessages.push(screenMessages[i].trimStart());
-                    }
-                    trim_screenMessages.push("PRUEBA");
-                    console.log(trim_screenMessages);//Mensajes en la pantalla
-                    console.log(messages);//Mensajes en la BD.
-
-                    let difference = trim_screenMessages.filter(x => !messages.includes(x));//https://stackoverflow.com/questions/1187518/how-to-get-the-difference-between-two-arrays-in-javascript
-                    console.log(difference);
-                },
-            })
-        }
-    </script>
 
 </div>
 

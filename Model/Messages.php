@@ -42,7 +42,7 @@ function viewchatsAsStudent(string $student_mail, int $session_id, int $problem_
     try{
         $connection = connectDB();
 
-        $statement = $connection->prepare("SELECT msg, date, incoming_mail_id FROM messages WHERE (incoming_mail_id=:incoming_mail_id OR outgoing_mail_id=:outgoing_mail_id )AND session_id=:session_id AND problem_id=:problem_id");
+        $statement = $connection->prepare("SELECT msg, date, incoming_mail_id FROM messages WHERE (incoming_mail_id=:incoming_mail_id OR outgoing_mail_id=:outgoing_mail_id) AND session_id=:session_id AND problem_id=:problem_id");
         $statement->execute(array(":incoming_mail_id"=> $student_mail,":outgoing_mail_id"=> $student_mail, ":session_id"=> $session_id, ":problem_id"=>$problem_id));
         $messages = $statement->fetchAll(PDO::FETCH_ASSOC);
 
@@ -68,5 +68,25 @@ function getTeacherEmailFromChat(string $student_mail, int $session_id, int $pro
         echo 'Error getting teacher email: ' . $e->getMessage();
     }
     return $teacher_email;
+}
+function unviwedStudentsChat():array
+{
+    try{
+        $connection = connectDB();
 
+        $statement = $connection->prepare("SELECT incoming_mail_id FROM messages WHERE viewed=:cero");
+        $statement->execute(array(":cero"=>'0'));
+        $emails = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        $cleaned_emails =[];
+        foreach ($emails as $e){
+            array_push($cleaned_emails,$e['incoming_mail_id']);
+        }
+        $cleaned_emails =array_unique($cleaned_emails); //Removes duplicate values from an array
+
+
+    }catch (PDOException $e){
+        echo 'Error getting unviwed emails: ' . $e->getMessage();
+    }
+    return $cleaned_emails;
 }

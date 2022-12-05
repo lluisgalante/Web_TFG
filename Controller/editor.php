@@ -127,16 +127,19 @@ if ($_SESSION['user_type'] == PROFESSOR && !is_null($session_id)) {
     $students = getStudentsWithSessionAndProblem(session_id: $session_id, problem_id: $problem_id);
     $counter=0;
     $aux_array = getStudentsSessionExtraData($session_id); //email, executed_times-count, teacher_executed-count.
+
     //var_dump($students);
     //print_r($aux_array);
 
+    $unviwed_emails = unviwedStudentsChat();
+    print_r($unviwed_emails);
+    //REPASAR
     foreach ($students as $student){
         $students[$counter]['executed_times_count']= $aux_array[$counter]['executed_times_count'];
         $students[$counter]['teacher_executed_times_count']= $aux_array[$counter]['teacher_executed_times_count'];
         $students[$counter]['output']= $aux_array[$counter]['output'];
         $counter= $counter +1;
     }
-
 
 }
 
