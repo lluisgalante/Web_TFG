@@ -128,11 +128,10 @@ if ($_SESSION['user_type'] == PROFESSOR && !is_null($session_id)) {
     $counter=0;
     $aux_array = getStudentsSessionExtraData($session_id); //email, executed_times-count, teacher_executed-count.
 
-    //var_dump($students);
-    //print_r($aux_array);
+    //var_dump($students); //print_r($aux_array);
+    //IMPORTANT to show red color to unread new chats. Only available for Teachers
+    $unviwed_chats = unviwedStudentsChat(); //Array that keeps mails of students who have chats that the teacher has not read yet.
 
-    $unviwed_emails = unviwedStudentsChat();
-    print_r($unviwed_emails);
     //REPASAR
     foreach ($students as $student){
         $students[$counter]['executed_times_count']= $aux_array[$counter]['executed_times_count'];
@@ -140,7 +139,6 @@ if ($_SESSION['user_type'] == PROFESSOR && !is_null($session_id)) {
         $students[$counter]['output']= $aux_array[$counter]['output'];
         $counter= $counter +1;
     }
-
 }
 
 $solution = getSolution($problem_id, $_SESSION['email']);

@@ -1,7 +1,6 @@
 <?php if (!isset($problem)) {
     redirectLocation();
 } ?>
-
 <!DOCTYPE html>
 <html lang="es" xmlns="http://www.w3.org/1999/html">
 <head>
@@ -334,9 +333,25 @@ include_once __DIR__ . "/../Model/Messages.php";?>
                 display: block;
             }
         </style>
-        <script>
-
-        </script>
+    <script>
+        window.setInterval(refreshMessages, 2000);
+        function refreshMessages() {
+            $.ajax({
+                url: "/Controller/updateChatsAjaxRedColor.php",
+                method: "POST",
+                success: function (response) {
+                    let unviwed_chats = JSON.parse(response); // This array keeps the emails of the students that have messages that the teacher has not read yet.
+                    for (let i=0; i< unviwed_chats.length; i++){
+                        let all_emails = $("*").find("a#btn-eamail.btn.email").text();
+                        console.log(all_emails);
+                        if(all_emails.search(unviwed_chats[i]) != -1){
+                            $('a#btn-eamail.btn.email:contains('+unviwed_chats[i]+')').next().next().find('svg').attr("fill","red");
+                        }
+                    }
+                }
+            })
+        }
+    </script>
     <?php } ?>
 </div>
 

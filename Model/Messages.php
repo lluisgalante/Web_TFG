@@ -74,19 +74,30 @@ function unviwedStudentsChat():array
     try{
         $connection = connectDB();
 
-        $statement = $connection->prepare("SELECT incoming_mail_id FROM messages WHERE viewed=:cero");
+        $statement = $connection->prepare("SELECT outgoing_mail_id FROM messages WHERE viewed=:cero");
         $statement->execute(array(":cero"=>'0'));
         $emails = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         $cleaned_emails =[];
-        foreach ($emails as $e){
-            array_push($cleaned_emails,$e['incoming_mail_id']);
-        }
-        $cleaned_emails =array_unique($cleaned_emails); //Removes duplicate values from an array
-
+        foreach ($emails as $e){array_push($cleaned_emails,$e['outgoing_mail_id']);}
+        $cleaned_emails = array_unique($cleaned_emails); //Removes duplicate values from an array
 
     }catch (PDOException $e){
-        echo 'Error getting unviwed emails: ' . $e->getMessage();
+        echo 'Error getting emails of users with unviwed chats by the teacher: ' . $e->getMessage();
     }
     return $cleaned_emails;
+}
+
+function changeViewedChatStatus(string $mail1):bool
+{
+    try{
+        $connection = connectDB();
+        $statement = $connection->prepare("UPDATE messages SET viewed=:one WHERE outgoing_mail_id=:mail1");
+        $statement->execute(array(":one"=>'1', ":mail1"=>$mail1));
+
+    }catch (PDOException $e){
+        echo 'Error changing chats viewed status: ' . $e->getMessage();
+        return false;
+    }
+    return true;
 }
