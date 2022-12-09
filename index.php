@@ -63,12 +63,16 @@ switch ($query) {
         include __DIR__ . "/Controller/forms/problemNewGithubForm.php";
         break;
     case VIEW_PROBLEM_SOLUTION:
+        include __DIR__ . "/Controller/problemSolutionFiles.php";
         break;
     case VIEW_PROBLEM_SOLUTION_UPLOAD:
-        include __DIR__ . "/Controller/forms/problemSolutionUploadEdForm.php";
+        include __DIR__ . "/Controller/forms/problemSolutionUploadForm.php";
         break;
     case VIEW_MESSAGES_CHAT:
         include __DIR__ . "/Controller/messages.php";
+        break;
+    case VIEW_COMUN_MESSAGES:
+        include __DIR__ . "/Controller/messagesComun.php";
         break;
     default: //0
         include __DIR__ . "/Controller/lists/subjectList.php";

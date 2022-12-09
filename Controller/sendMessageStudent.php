@@ -4,6 +4,7 @@ include_once __DIR__ . "/../Model/connection.php";
 include_once __DIR__ . "/../Model/constants.php";
 include_once __DIR__ . "/../Model/redirectionUtils.php";
 include_once __DIR__ . "/../Model/Messages.php";
+include_once __DIR__ . "/../Model/session.php";
 
 $outgoing_email = $_POST["o_mail"]; //Estudiante
 //$incoming_email= $_POST["i_mail"];
@@ -12,8 +13,16 @@ $message = $_POST["message"];
 $problemId = $_POST['problem'];
 $date = date('d/m H:i');
 
+if(count(viewchatsAsStudent($outgoing_email, $sessionId, $problemId))==0){
+    $teacherdata = getTeacherCreatedSession($sessionId);
+    print_r($teacherdata);
+    $teacher_email = $teacherdata[0]['email'];
 
-$teacher_email = getTeacherEmailFromChat($outgoing_email, $sessionId, $problemId);
+}
+else{
+    $teacher_email = getTeacherEmailFromChat($outgoing_email, $sessionId, $problemId);
+}
+
 
 $incoming_email = $teacher_email;
 

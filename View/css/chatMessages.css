@@ -1,0 +1,41 @@
+.form-container{
+    margin-bottom:20px;
+}
+#submit{
+    border:none !important;
+    border-radius:50px !important;
+    background-color: transparent !important;
+}
+.form-inline{
+    display: flex;
+    justify-content: center;
+}
+input[type=text] {
+    border: 0;
+    background-color: white;
+    border-radius: 5px;
+    padding:10px;
+    width: 15%;
+    transition: 200ms all ease-in;
+}
+input[type=text]:hover{
+    width: 25%;
+}
+p{
+    padding: 12px;
+    text-align: center;
+}
+.messages{
+    margin-left:30%;
+    margin-right:30%;
+}
+.self{
+    margin-left:40%;
+    background-color: rgba(60, 179, 113, 0.8) !important;
+    border-radius: 10px;
+}
+.other{
+    margin-right:40%;
+    background-color: rgba(105, 150, 255, 0.8) !important;
+    border-radius: 10px;
+}

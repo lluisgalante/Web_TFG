@@ -126,9 +126,11 @@ $folder_route = ($_SESSION['user_type'] == PROFESSOR && isset($_GET["edit"]))?
 if ($_SESSION['user_type'] == PROFESSOR && !is_null($session_id)) {
     $students = getStudentsWithSessionAndProblem(session_id: $session_id, problem_id: $problem_id);
     $counter=0;
-    $aux_array = getStudentsSessionExtraData($session_id); //email, executed_times-count, teacher_executed-count.
+    $aux_array = getStudentsSessionExtraData($session_id, $problem_id); //email, executed_times-count, teacher_executed-count.
+    //checkAllStudentsRecivedComunMessage($students,$session_id,$problem_id);
 
     //var_dump($students); //print_r($aux_array);
+
     //IMPORTANT to show red color to unread new chats. Only available for Teachers
     $unviwed_chats = unviwedStudentsChat(); //Array that keeps mails of students who have chats that the teacher has not read yet.
 
@@ -136,6 +138,8 @@ if ($_SESSION['user_type'] == PROFESSOR && !is_null($session_id)) {
     foreach ($students as $student){
         $students[$counter]['executed_times_count']= $aux_array[$counter]['executed_times_count'];
         $students[$counter]['teacher_executed_times_count']= $aux_array[$counter]['teacher_executed_times_count'];
+        $students[$counter]['number_lines_file']= $aux_array[$counter]['number_lines_file'];
+        $students[$counter]['solution_quality']= $aux_array[$counter]['solution_quality'];
         $students[$counter]['output']= $aux_array[$counter]['output'];
         $counter= $counter +1;
     }

@@ -44,3 +44,32 @@ function createProblem($route, $title, $description, $max_memory_usage, $visibil
     }
     return $problemId;
 }
+function addProblemTeacherSolutionRoute(int $problemId, string $route):bool
+{
+    try{
+
+        $connection = connectDB();
+        $statement = $connection->prepare("UPDATE problem SET route_solution=:route_solution WHERE id=:problemId");
+        $statement->execute(array(":route_solution" => $route, ":problemId" => $problemId));
+
+    }catch (Exception $e) {
+        echo "Error uploading the solution of the problem: " . $e->getMessage();
+        return false;
+    }
+    return true;
+}
+
+function addProblemExtraData(int $problemId, int $numerLines, string $quality): bool
+{
+    try{
+
+        $connection = connectDB();
+        $statement = $connection->prepare("UPDATE problem SET solution_lines=:solution_lines, solution_quality=:solution_quality WHERE id=:problemId");
+        $statement->execute(array(":solution_lines" => $numerLines, ":solution_quality" => $quality, ":problemId"=>$problemId));
+
+    }catch (Exception $e) {
+        echo "Error uploading the solution of the problem: " . $e->getMessage();
+        return false;
+    }
+    return true;
+}

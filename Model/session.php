@@ -80,7 +80,6 @@ function getActiveSessionsFromGroup(int $subjectId, string $class_group) : array
 
 function getGroupsActiveSessions(int $subjectId): array
 {
-    $groups = [];
     try{
         $connection = connectDB();
         $statement = $connection->prepare("SELECT `class_group` FROM session WHERE subject_id= :subject_id");
@@ -113,6 +112,26 @@ function getSessionStatus(int $sessionId): string
     /*var_dump($sessionStatus);*/
     return $sessionStatus[0]['status'];
 
+}
+function getTeacherCreatedSession(int $sessionId):array
+{
+    try{
+        $connection = connectDB();
+        $statement = $connection->prepare("SELECT professor_id FROM session WHERE id=:session_id");
+        $statement->execute(array(":session_id" => $sessionId));
+        $professorId = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        print_r($professorId);
+
+        $statement = $connection->prepare("SELECT name, email, surname FROM professor WHERE id=:professorId");
+        $statement->execute(array(":professorId" => $professorId[0]['professor_id']));
+        $professorData = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+    }catch (PDOException $e){
+        echo 'Error getting teacher id of the session ' . $e->getMessage();
+
+    }
+    return $professorData;
 }
 
 function addStudentToSession(int $sessionId, string $email) : bool

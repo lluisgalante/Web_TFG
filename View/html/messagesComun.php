@@ -22,29 +22,26 @@
     <script src="/View/js/external/all.min.js"></script>
     <script src="/View/js/external/editor/ace.js"></script>
     <script src="/View/js/external/editor/theme-monokai.js"></script>
-    <script src="/View/js/chat.js"></script>
     <script src="/View/js/global.js"></script>
 
 </head>
 <body  class="d-flex flex-column min-vh-100" <?php echo $_SESSION['theme'] ?> >
-<?php include_once(__DIR__ . '/header.php');
-include_once __DIR__ . "/../Model/connection.php";
-include_once __DIR__ . "/../Model/Messages.php";?>
+<?php include_once(__DIR__ . '/header.php');?>
 
 
 <div class="chat-popup" id="myForm">
     <div class="form-container">
-    <h1>Chat - <?php echo $student_data['name'] . " ". $student_data['surname'] ?></h1><p>Sessió <?php echo $_GET['session']?> - Problema  <?php echo$_GET['problem']?></p>
+        <h1>Chat Comú </h1><p>Sessió <?php echo $_GET['session']?> - Problema  <?php echo$_GET['problem']?></p>
         <br>
         <div class="messages">
-        <?php if(!empty($messages)){
-            foreach($messages as $message){?>
-                <div class="<?php if($message['incoming_mail_id']==$_SESSION['email']){echo "other"; }else{echo "self";} ?>"><p><?php echo $message['msg']?></p></div>
-            <?php }
-        }?>
+            <?php if(!empty($messages)){
+                foreach($messages as $message){?>
+                    <div class="<?php if($message['incoming_mail_id']==$_SESSION['email']){echo "other"; }else{echo "self";} ?>"><p><?php echo $message['msg']?></p></div>
+                <?php }
+            }?>
         </div>
 
-        <form action="/Controller/sendMessageTeacher.php" method="POST"">
+        <form action="/Controller/sendComunMessageTeacher.php" method="POST"">
         <input id = "o_mail" name="o_mail" value="<?php echo $_SESSION["email"]?>" style="display:none">
         <input id ="i_mail" name="i_mail" value="<?php echo $_GET['user']?>" style="display:none">
         <input id ="sessionId" name="sessionId" value="<?php echo $_GET['session']?>" style="display:none">

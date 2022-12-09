@@ -19,10 +19,11 @@ const VIEW_SESSION_FORM="Crear nova sessió";# = 13;
 const VIEW_SESSION_LIST="Llista de sessions";# = 14;
 const VIEW_SESSION_PROBLEMS_LIST="Llista de problemes";# = 15;
 const VIEW_PROBLEM_CREATE_GIT="Crear Problema from Git";# = 16;
-const VIEW_PROBLEM_SOLUTION="Solucio Probelma";# =17;
+const VIEW_PROBLEM_SOLUTION="Solucio Problema";# =17;
 const VIEW_PROBLEM_SOLUTION_UPLOAD="Penjar solucio problema";# =18;
 const VIEW_SESSION_LIST_GROUPS="Grups amb sessions";#=19;
 const VIEW_MESSAGES_CHAT = "Ver chat";
+const VIEW_COMUN_MESSAGES="Chat comu";
 
 
 CONST STUDENT_VIEWS = [VIEW_SUBJECT_LIST, VIEW_PROBLEMS_LIST, VIEW_EDITOR, VIEW_SESSION_LIST,
