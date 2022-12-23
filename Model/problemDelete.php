@@ -21,15 +21,30 @@ function remove_dir($route) {
 $connection = connectDB();
 $problem_id = $_POST['id'];
 try {
+
     $statement = $connection->prepare("SELECT * FROM problem WHERE id= :problem_id");
     $statement->execute(array(":problem_id" => $problem_id));
     $problem = $statement->fetch(PDO::FETCH_ASSOC);
-    
+    print_r("1");
+} catch (PDOException $e) {
+    echo 'Error deleting the problem 1' . $e->getMessage();
+}
+
+try {
+    $statement = $connection->prepare('DELETE FROM session_problems WHERE problem_id = :problem_id');
+    $statement->execute(array(":problem_id" => $problem_id));
+    print_r("2");
+} catch (PDOException $e) {
+    echo 'Error deleting the problem 2' . $e->getMessage();
+}
+try {
+    print_r($problem_id);
     $statement = $connection->prepare('DELETE FROM problem WHERE id = :problem_id');
     $statement->execute(array(":problem_id" => $problem_id));
     $connection = null;
+    print_r("3");
 } catch (PDOException $e) {
-    echo 'Error deleting the problem' . $e->getMessage();
+    echo 'Error deleting the problem 3' . $e->getMessage();
 }
 
 $route = $problem['route'];

@@ -9,10 +9,10 @@ $incoming_email= $_GET['user'];//student
 $sessionId=$_GET['session'];
 $problemId = $_GET['problem'];
 
-$messages= viewchats($incoming_email, $outgoing_email, $sessionId, $problemId);
+$messages = viewchats($incoming_email, $outgoing_email, $sessionId, $problemId);
 
 changeViewedChatStatus($incoming_email); //Canviar status de los mesajes de estudiante del qual el profesor este entrando y leyendo su chat. Su status pasará de ser 0 (univewd) a 1(viwed)
 
-$student_data = getName($incoming_email);
-
+$student_data = getNameStudent($incoming_email);
+$teacher_data = getNameTeacher($outgoing_email);
 include_once __DIR__ . "/../View/html/chatMessages.php";

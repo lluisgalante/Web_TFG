@@ -208,3 +208,33 @@ function updateProblem($problem_id, $description, $max_memory_usage, $max_execut
     }
     return $updated;
 }
+function getProblemExtraData(int $problemId):array
+{
+    $extraData=[];
+    try{
+
+        $connection = connectDB();
+        $statement = $connection->prepare("SELECT solution_lines, solution_quality FROM problem WHERE id=:problemId");
+        $statement->execute(array(':problemId'=>$problemId));
+        $extraData = $statement->fetch(PDO::FETCH_ASSOC);
+        $connection = null;
+
+    } catch (PDOException $e) {
+    echo 'Error updating the problem: ' . $e->getMessage();
+    }
+    return $extraData;
+}
+function getProblemSolutionVisibility(int $problemId ):string
+{
+    try{
+        $connection = connectDB();
+        $statement = $connection->prepare("SELECT solution_visibility FROM problem WHERE id=:problemId");
+        $statement->execute(array(':problemId'=>$problemId));
+        $visibility = $statement->fetch(PDO::FETCH_ASSOC);
+        $connection = null;
+
+    }catch (PDOException $e) {
+        echo 'Error updating the problem: ' . $e->getMessage();
+    }
+    return $visibility['solution_visibility'];
+}

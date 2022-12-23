@@ -99,7 +99,6 @@ if (!file_exists(__DIR__ . $user_solution_route)) {
         return;
     }
     $cleaned_user_solution_route = str_replace('\\', '/', realpath(__DIR__ . $user_solution_route));
-    var_dump($cleaned_problem_route);
     # Create the files of the problem if the folder was created right now
     $problem_files = getDirectoryFiles($cleaned_problem_route);
     foreach ($problem_files as $file) {
@@ -117,6 +116,7 @@ if (!file_exists(__DIR__ . $user_solution_route)) {
     }
 }
 
+$teacher_solution_visibility = getProblemSolutionVisibility($problem_id);
 $cleaned_user_solution_route = str_replace('\\', '/', realpath(__DIR__ . $user_solution_route));
 
 // If the professor is editing the root, set the route as the problem route
@@ -129,17 +129,31 @@ if ($_SESSION['user_type'] == PROFESSOR && !is_null($session_id)) {
     $aux_array = getStudentsSessionExtraData($session_id, $problem_id); //email, executed_times-count, teacher_executed-count.
     //checkAllStudentsRecivedComunMessage($students,$session_id,$problem_id);
 
-    //var_dump($students); //print_r($aux_array);
+
+    //TESTAR PARA LOS CASOS  EN QUE EL PROBLEMA NO TENGA SOLUCION SUBIDA POR EL PROFESOR.
+    $extraData = getProblemExtraData($problem_id);
+    $official_solution_quality = $extraData['solution_quality'];
+    $official_solution_lines = $extraData['solution_lines'];
+
 
     //IMPORTANT to show red color to unread new chats. Only available for Teachers
-    $unviwed_chats = unviwedStudentsChat(); //Array that keeps mails of students who have chats that the teacher has not read yet.
+    $unviwed_chats = unviwedStudentsChat($session_id, $problem_id); //Array that keeps mails of students who have chats that the teacher has not read yet.
 
     //REPASAR
     foreach ($students as $student){
-        $students[$counter]['executed_times_count']= $aux_array[$counter]['executed_times_count'];
-        $students[$counter]['teacher_executed_times_count']= $aux_array[$counter]['teacher_executed_times_count'];
-        $students[$counter]['number_lines_file']= $aux_array[$counter]['number_lines_file'];
-        $students[$counter]['solution_quality']= $aux_array[$counter]['solution_quality'];
+        $students[$counter]['executed_times_count'] = $aux_array[$counter]['executed_times_count'];
+        $students[$counter]['teacher_executed_times_count'] = $aux_array[$counter]['teacher_executed_times_count'];
+
+
+        if ($official_solution_lines !=0){
+            $student_lines_percentage = intval((intval($aux_array[$counter]['number_lines_file']) * 100) / $official_solution_lines);
+        }
+
+
+        $students[$counter]['lines_percentage'] = $student_lines_percentage;
+        $students[$counter]['number_lines_file'] = $aux_array[$counter]['number_lines_file'];
+        $students[$counter]['solution_quality'] = $aux_array[$counter]['solution_quality'];
+
         $students[$counter]['output']= $aux_array[$counter]['output'];
         $counter= $counter +1;
     }

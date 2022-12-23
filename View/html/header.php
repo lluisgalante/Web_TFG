@@ -122,7 +122,7 @@
             .flat a, .flat a:after {
                 background: white;
                 color: black;
-                transition: all 0.5s;
+                transition: all 0.6s;
             }
             .flat a:before {
                 background: white;

@@ -90,12 +90,12 @@
             <img class="icon github" src="/View/images/save.png" alt="Pujar a GitHub">
         </button>
 
-        <?php if ($_SESSION['user_type'] == PROFESSOR) { ?>
 
-            <button id="show solution" type="button" class="btn" title="Veure solució" onclick="window.location.href='<?php echo "/index.php?query=Solucio Problema&problem=".$_GET['problem']?>'">
+        <?php if (($_SESSION['user_type'] == STUDENT && $teacher_solution_visibility == 'Public') || $_SESSION['user_type'] == PROFESSOR) {?>
+
+            <button type="button" class="btn" title="Veure solució" onclick="window.location.href='<?php if(isset($_GET['session'])){echo "/index.php?query=Solucio Problema&problem=".$_GET['problem']."&session=".$_GET['session'];}else{echo "/index.php?query=Solucio Problema&problem=".$_GET['problem'];}?>'">
                 <img class="icon" src="/View/images/view_solution.png" alt="veure solucio">
             </button>
-
         <?php } ?>
 
         <?php if($problem["description"]) { ?>
@@ -309,8 +309,39 @@
                         <h6 class="follow_up_student_info">
                                 <li id = "executed_count">Execucions alumne:  <?php echo $student["executed_times_count"]?></li><hr />
                                 <li id = "teacher_executed_count">Execucions tutor:  <?php echo $student["teacher_executed_times_count"]?></li><hr />
-                                <li id = "teacher_executed_count">Linees solucio:  <?php echo $student["number_lines_file"]?></li><hr />
-                                <li id = "teacher_executed_count">Qualitat Codi:  <?php echo $student["solution_quality"]?></li><hr />
+                                <li id = "teacher_executed_count">Linees solucio:  <?php echo $student["number_lines_file"] . " ≈ " . $student["lines_percentage"] . "%"?></li><hr />
+                                <li id = "teacher_executed_count">
+                                    <table>
+                                        <caption style="caption-side:top; text-align: center;padding-top:0px; color:inherit">Qualitat del codi</caption>
+                                        <tr>
+                                            <th> Statements </th>
+                                            <th> Estudiant </th>
+                                            <th> Professor </th>
+                                        </tr>
+                                        <tr>
+                                            <td>If</td>
+                                            <td><?php echo $student["solution_quality"][0]?></td>
+                                            <td><?php echo $official_solution_quality[0]?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>For</td>
+                                            <td><?php echo $student["solution_quality"][1]?></td>
+                                            <td><?php echo $official_solution_quality[1]?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>While</td>
+                                            <td><?php echo $student["solution_quality"][2]?></td>
+                                            <td><?php echo $official_solution_quality[2]?></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td>Switch</td>
+                                            <td><?php echo $student["solution_quality"][3]?></td>
+                                            <td><?php echo $official_solution_quality[3]?></td>
+
+                                        </tr>
+                                    </table>
+                                </li><hr />
                                 <p>Output: <span class= "extra"> <?php echo $student["output"]?></span></p>
                         </h6>
                     <?php }
@@ -318,6 +349,12 @@
             </ul>
         </div>
         <style>
+            table{
+                margin: 0 auto;
+            }
+            table, th, td {
+                border:1px solid #404040;
+            }
             .follow_up_student_info{
                 display:none;
                 margin-top: 10px;
@@ -325,8 +362,8 @@
                 padding: 10px 10px 5px 10px;
                 border-radius: 10px;
                 font-size: 1rem;
-                max-width: 350px;
-                min-width: 350px;
+                max-width: 315px;
+                min-width: 315px;
             }
             .showPro:hover~#follow_up_student_info{
                 display: block;
@@ -334,22 +371,6 @@
         </style>
     <script>
         window.setInterval(refreshMessages, 2000);
-        function refreshMessages() {
-            $.ajax({
-                url: "/Controller/updateChatsAjaxRedColor.php",
-                method: "POST",
-                success: function (response) {
-                    let unviwed_chats = JSON.parse(response); // This array keeps the emails of the students that have messages that the teacher has not read yet.
-                    for (let i=0; i< unviwed_chats.length; i++){
-                        let all_emails = $("*").find("a#btn-eamail.btn.email").text();
-                        console.log(all_emails);
-                        if(all_emails.search(unviwed_chats[i]) != -1){
-                            $('a#btn-eamail.btn.email:contains('+unviwed_chats[i]+')').next().next().find('svg').attr("fill","red");
-                        }
-                    }
-                }
-            })
-        }
     </script>
     <?php } ?>
 </div>

@@ -71,19 +71,18 @@ function getTeacherEmailFromChat(string $student_mail, int $session_id, int $pro
     }
     return $teacher_email;
 }
-function unviwedStudentsChat():array
+function unviwedStudentsChat(int $session_id, int $problem_id):array
 {
     try{
         $connection = connectDB();
 
-        $statement = $connection->prepare("SELECT outgoing_mail_id FROM messages WHERE viewed=:cero");
-        $statement->execute(array(":cero"=>'0'));
+        $statement = $connection->prepare("SELECT outgoing_mail_id FROM messages WHERE viewed=:cero AND session_id=:session_id AND problem_id=:problem_id");
+        $statement->execute(array(":cero"=>'0', ":session_id"=> $session_id, ":problem_id"=>$problem_id));
         $emails = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         $cleaned_emails =[];
         foreach ($emails as $e){array_push($cleaned_emails,$e['outgoing_mail_id']);}
         $cleaned_emails = array_unique($cleaned_emails); //Removes duplicate values from an array
-
     }catch (PDOException $e){
         echo 'Error getting emails of users with unviwed chats by the teacher: ' . $e->getMessage();
     }

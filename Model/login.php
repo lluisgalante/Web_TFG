@@ -27,13 +27,25 @@ function logInStudent($email, $password): bool
     }
     return $loggedIn;
 }
-function getName($email):array
+function getNameStudent($email):array
 {
     try {
     $connection = connectDB();
     $statement = $connection->prepare("SELECT name,surname FROM student WHERE email= :email");
     $statement->execute(array(":email" => $email));
     $name_surname = $statement->fetch(PDO::FETCH_ASSOC);}
+    catch(PDOException $e) {
+        echo 'Error getting student data (Model/login.php): ' . $e->getMessage();
+    }
+    return $name_surname;
+}
+function getNameTeacher($email):array
+{
+    try {
+        $connection = connectDB();
+        $statement = $connection->prepare("SELECT name,surname FROM professor WHERE email= :email");
+        $statement->execute(array(":email" => $email));
+        $name_surname = $statement->fetch(PDO::FETCH_ASSOC);}
     catch(PDOException $e) {
         echo 'Error getting student data (Model/login.php): ' . $e->getMessage();
     }

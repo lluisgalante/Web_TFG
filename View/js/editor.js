@@ -7,6 +7,7 @@ let readOnly = false;
 let toDeleteFileRoute;
 let editing = 0;
 let problemId;
+let sessionId;
 let userType;
 let viewMode = null;
 let containerPort;
@@ -53,6 +54,7 @@ $(document).ready(function () {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     problemId = urlParams.get('problem');
+    sessionId = urlParams.get('session');
     editing = (urlParams.get('edit') !== null);
 
     let keys = {};
@@ -163,6 +165,28 @@ $(document).ready(function () {
     })
 });
 
+function refreshMessages() {
+
+    $.ajax({
+        url: "/Controller/updateChatsAjaxRedColor.php",
+        method: "POST",
+        data: {
+            problemId: problemId,
+            sessionId: sessionId,
+        },
+        success: function (response) {
+            let unviwed_chats = Object.values(JSON.parse(response)); // This array keeps the emails of the students that have messages that the teacher has not read yet.
+            for (let i=0; i< unviwed_chats.length; i++){
+                let all_emails = $("*").find("a#btn-eamail.btn.email").text();
+                console.log(all_emails);
+                console.log(unviwed_chats[i]);
+                if(all_emails.search(unviwed_chats[i]) != -1){
+                    $('a#btn-eamail.btn.email:contains('+unviwed_chats[i]+')').next().next().find('svg').attr("fill","red");
+                }
+            }
+        }
+    })
+}
 function setSolutionEditingFalse() {
     // Set the solution's editing field as false before leaving the page
     $.ajax({

@@ -34,7 +34,8 @@ include_once __DIR__ . "/../Model/Messages.php";?>
 
 <div class="chat-popup" id="myForm">
     <div class="form-container">
-    <h1>Chat - <?php echo $student_data['name'] . " ". $student_data['surname'] ?></h1><p>Sessió <?php echo $_GET['session']?> - Problema  <?php echo$_GET['problem']?></p>
+        <h1><?php echo $teacher_data['name'] . " ". $teacher_data['surname']?> - <?php echo $student_data['name'] . " ". $student_data['surname'] ?></h1>
+        <p>Chat Sessió <?php echo $_GET['session']?> - Problema  <?php echo$_GET['problem']?></p>
         <br>
         <div class="messages">
         <?php if(!empty($messages)){

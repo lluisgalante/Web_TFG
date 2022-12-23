@@ -40,17 +40,11 @@ print(addProblemTeacherSolutionRoute($problemId,$route));
 
 $params = array("problem" => $problemId);// OJO Pude dar conflicto si estamos en una sesión.???
 
-
-
-
 if($_POST["query"] == VIEW_EDITOR ) {
-
 
    redirectLocation(VIEW_EDITOR, params: $params); //REDIRECCIONA A PROBLEMAS NO A SESIONES.
 }
 elseif($_POST["query"] == VIEW_PROBLEM_SOLUTION){
-
-
 
    redirectLocation(VIEW_PROBLEM_SOLUTION, params: $params);
 }
