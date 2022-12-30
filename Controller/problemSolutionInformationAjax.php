@@ -4,6 +4,10 @@ include_once __DIR__ . "/../Model/problemNew.php";
 
 $problemId = $_POST['problemId'];
 $directory = $_POST['route'];
+
+print_r($problemId);
+print_r($directory);
+
 $files_scanned_directory = array_diff(scandir($directory), array('..', '.','__pycache__'));
 $file_text=[];
 
@@ -23,6 +27,10 @@ foreach ($files_scanned_directory as $file) {
 }
 $problemLines = count($file_text);
 $str_file_text = implode($file_text);
-$problemQualityInfo = [substr_count($str_file_text ,'if'), substr_count($str_file_text ,'for'),substr_count($str_file_text ,'while'), substr_count($str_file_text ,'switch')];
+$problemQualityInfo = [substr_count($str_file_text ,'if ') + substr_count($str_file_text ,'if(')
+    , substr_count($str_file_text ,'for ')+ substr_count($str_file_text ,'for('),
+    substr_count($str_file_text ,'while ') + substr_count($str_file_text ,'while('),
+    substr_count($str_file_text ,'switch ') + substr_count($str_file_text ,'switch(')];
 
-addProblemExtraData($problemId, $problemLines,  implode($problemQualityInfo ));//Visibility by default = Private
+
+addProblemExtraData($problemId, $problemLines, implode($problemQualityInfo));//Visibility by default = Private

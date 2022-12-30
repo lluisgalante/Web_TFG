@@ -58,7 +58,7 @@
                 <img class="icon" src="/View/images/file-add.png" alt="Afegit fitxer">
             </button>
             <button class="btn change_visibility" type="button" data-placement="top" title="Canviar visibilitat">
-                <img class="icon" src="<?php if($visibility=="Public"){echo "/View/images/visible.png";} else{ echo "/View/images/not-visible.png"; } ?>" alt="Canviar visibilitat" title="Canviar visibilitat">
+                <img class="icon" src="<?php if($visibility == "Public"){echo "/View/images/visible.png";} else{ echo "/View/images/not-visible.png"; } ?>" alt="Canviar visibilitat" title="Canviar visibilitat">
             </button>
         <?php } ?>
         <?php if($problem["description"]) { ?>
@@ -90,6 +90,7 @@
                     <input id="new_file1" type="file" name="file[]" hidden multiple>
                     <input type="hidden" name="solution_path" value="<?php echo $folder_route?? ""; ?>"/>
                     <input type="hidden" name="query" value="<?php echo $_GET['query'] ?>"/>
+                    <input type="hidden" name="session" value="<?php if(isset($_GET['session'])){echo $_GET['session'];} else { echo NULL;}?>"/>
                 </form>
             </div>
         </div>

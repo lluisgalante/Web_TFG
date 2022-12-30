@@ -61,7 +61,7 @@ function getStudentsSessionExtraData(int $session_id, int $problemId):array
 {
     try {
         $connection = connectDB();
-        $statement = $connection->prepare("SELECT output, executed_times_count, teacher_executed_times_count, number_lines_file, solution_quality  FROM student_session_online WHERE session_id=:session_id and problem_id=:problem_id");
+        $statement = $connection->prepare("SELECT student_email, output, executed_times_count, teacher_executed_times_count, number_lines_file, solution_quality  FROM student_session_online WHERE session_id=:session_id and problem_id=:problem_id");
         $statement->execute(array(":session_id" => $session_id, ":problem_id" => $problemId));
         $array_result = $statement->fetchAll(PDO::FETCH_ASSOC);
         $connection = null;

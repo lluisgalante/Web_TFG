@@ -111,7 +111,6 @@ function sendComunMessage(string $teacher_outgoing_mail, int $session_id, int $p
         $connection = connectDB();
 
         foreach ($active_students as $student) {
-            print($student['user']);
             $statement = $connection->prepare("INSERT INTO messages(incoming_mail_id, outgoing_mail_id, session_id, problem_id, msg, date, comun) 
             VALUES(:incoming_mail_id, :outgoing_mail_id, :session_id, :problem_id, :msg, :date, :comun)");
             $statement->execute(array(":incoming_mail_id" => $student['user'], ":outgoing_mail_id" => $teacher_outgoing_mail, ":session_id" => $session_id, ":problem_id" => $problem_id, ":msg" => $msg, ":date" => $date, ":comun" => 1));
@@ -119,6 +118,19 @@ function sendComunMessage(string $teacher_outgoing_mail, int $session_id, int $p
 
     }catch (PDOException $e){
         echo 'Error sending comun message: ' . $e->getMessage();
+        return false;
+    }
+    return true;
+}
+function sendComunMessageToNewStudent(string $incoming_mail_id, string $outgoing_mail_id, int $session_id, int $problem_id, string $msg, string $date){
+    try{
+        $connection = connectDB();
+        $statement = $connection->prepare("INSERT INTO messages(incoming_mail_id, outgoing_mail_id, session_id, problem_id, msg, date, comun) 
+        VALUES(:incoming_mail_id, :outgoing_mail_id, :session_id, :problem_id, :msg, :date, :comun)");
+            $statement->execute(array(":incoming_mail_id" =>  $incoming_mail_id,":outgoing_mail_id" => $outgoing_mail_id, ":session_id" => $session_id, ":problem_id" => $problem_id, ":msg" => $msg, ":date" => $date, ":comun" => 1));
+
+    }catch (PDOException $e){
+        echo 'Error sending comun message to new Student: ' . $e->getMessage();
         return false;
     }
     return true;
@@ -149,18 +161,15 @@ function checkAllStudentsRecivedComunMessage(array $students, int $session_id,in
     $statement->execute(array(":session_id"=> $session_id, ":problem_id"=>$problem_id, ":one"=>1));
     $messages = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-/*  FALTA ACABARLO
     $students_comun_messages_count= array();
     foreach ($messages as $message){
         foreach ($students as $student) {
             if($message['incoming_mail_id'] == $student['user']){
                 if(array_key_exists($student['user'], $students_comun_messages_count)){
 
-                    //echo "<br>";//print_r($students_comun_messages_count[$student['user']]);//print("+++++++++");// print_r($message);
                     $array_aux =[];
                     array_push($array_aux, $students_comun_messages_count[$student['user']]);
                     array_push($array_aux, $message);
-                    //print("------------------->");//print_r($array_aux); //echo "<br>";
                     $students_comun_messages_count[$student['user']] = $array_aux;
                 }
                 else{
@@ -168,21 +177,22 @@ function checkAllStudentsRecivedComunMessage(array $students, int $session_id,in
                 }
             }
         }
-
     }
-    //print_r($students_comun_messages_count);
+    //print_r($students_comun_messages_count); //Diccionario con los alumnos que han recibido algun mensaje comun y los mensajes que han reibido, indicando la fecha el enviante..
     $max_com_messages = 0;
     $counter = array();
-    foreach ($students as $student){
-        if(is_array($students_comun_messages_count[$student['user']][0])){
+    $max_com_messages_student="";
 
-            $counter[$student['user']] = count($students_comun_messages_count[$student['user']]);
+    foreach ($students as $student){
+        if(is_array($students_comun_messages_count[$student['user']][0])){ //Estudiante con más de un mensaje comun
+
+            $counter[$student['user']] = count($students_comun_messages_count[$student['user']]);//Contamos el num de mensajes del estudiante
         }
         else{
             if(array_key_exists($student['user'], $students_comun_messages_count)){ //SOLO TIENE 1 MENSAJE COMUN
                 $counter[$student['user']] = 1;
             }
-            else{//Tiene 0 mensajes comunes
+            else{ //Tiene 0 mensajes comunes
                 $counter[$student['user']] = 0;
             }
         }
@@ -192,42 +202,27 @@ function checkAllStudentsRecivedComunMessage(array $students, int $session_id,in
         };
     }
 
-    //print_r($counter);
+    //print_r($counter); //print_r($max_com_messages);
 
     foreach ($students as $student) {
-
         if($counter[$student['user']] < $max_com_messages){ //A este alumno le faltan mensajes comunes por recibir que otros alumnos SI han recibido.
+            if( $max_com_messages == 1){
 
-            print_r($student['user']);
+                $message = $students_comun_messages_count[$max_com_messages_student];
+                var_dump($message);
+                if(!array_key_exists($student['user'], $students_comun_messages_count)){
 
-            $difference = $max_com_messages - $counter[$student['user']];
-            foreach ($students_comun_messages_count[$max_com_messages_student] as $message){
-
-
-                print_r($message);
-
-                if($students_comun_messages_count[$student]['date'] != $message['date']){
-
+                    sendComunMessageToNewStudent($student['user'], $message['outgoing_mail_id'], $session_id, $problem_id,$message['msg'],$message['date']);
                 }
-            }
+            }else {
+                foreach ($students_comun_messages_count[$max_com_messages_student] as $message){
+                    if(!array_key_exists($student['user'], $students_comun_messages_count)){
 
-
-        }
-    }*/
-   /* foreach ($messages as $message){
-        foreach ($students as $student){
-            if($message['incoming_mail_id'] == $student['user']){
-                if(array_key_exists($student['user'], $students_comun_messages_count)){
-
-                    $merged = array_merge_recursive($students_comun_messages_count[$student['user']][0], $message);
-                    $students_comun_messages_count[$student['user']] = $merged;
-
-                }
-                else {
-                    $students_comun_messages_count[$student['user']] = [$message];
+                        sendComunMessageToNewStudent($student['user'], $message['outgoing_mail_id'], $session_id, $problem_id,$message['msg'],$message['date']);
+                    }
                 }
             }
         }
-    }*/
+    }
     return true;
 }

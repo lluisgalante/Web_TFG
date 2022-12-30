@@ -29,7 +29,10 @@ foreach ($files_scanned_directory as $file) {
 }
 $problemLines = count($file_text);
 $str_file_text = implode($file_text);
-$problemQualityInfo = implode([substr_count($str_file_text ,'if'), substr_count($str_file_text ,'for'),substr_count($str_file_text ,'while'), substr_count($str_file_text ,'switch')]);
+$problemQualityInfo = implode([substr_count($str_file_text ,'if ') + substr_count($str_file_text ,'if(')
+    , substr_count($str_file_text ,'for ')+ substr_count($str_file_text ,'for('),
+    substr_count($str_file_text ,'while ') + substr_count($str_file_text ,'while('),
+    substr_count($str_file_text ,'switch ') + substr_count($str_file_text ,'switch(')]);
 //*********** END NEW************
 
 if($user_type == 1) {// STUDENT

@@ -62,9 +62,8 @@ function addProblemTeacherSolutionRoute(int $problemId, string $route):bool
 function addProblemExtraData(int $problemId, int $numerLines, string $quality): bool
 {
     try{
-
         $connection = connectDB();
-        $statement = $connection->prepare("UPDATE problem SET solution_lines=:solution_lines, solution_quality=:solution_quality, solution_visility=:privateWHERE id=:problemId");
+        $statement = $connection->prepare("UPDATE problem SET solution_lines=:solution_lines, solution_quality=:solution_quality, visibility=:private WHERE id=:problemId");
         $statement->execute(array(":solution_lines" => $numerLines, ":solution_quality" => $quality, ":private"=>'private', ":problemId"=>$problemId));
 
     }catch (Exception $e) {

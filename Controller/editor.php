@@ -24,15 +24,7 @@ if ($problem['visibility'] === 'Private' && isset($_SESSION['user_type']) && $_S
 
 // Get the session id if it's set
 $session_id = null;
-if (isset($_GET["session"])) {
-    $session_id = $_GET["session"];
-    if(getSessionStatus($session_id) == 'activated' && isset($_SESSION['user_type']) && $_SESSION['user_type'] === STUDENT){
-        echo "Estudiante,Sesion Activa";
-    }
-    elseif (getSessionStatus($session_id) == 'deactivated' && isset($_SESSION['user_type']) && $_SESSION['user_type'] === STUDENT){
-        echo "Estudiante,Sesion Desactivada";
-    }
-}
+if (isset($_GET["session"])) {$session_id = $_GET["session"];}
 
 # The email will be the user's, unless the user is a professor spectating a student
 $email = $_SESSION["email"];
@@ -124,41 +116,57 @@ $folder_route = ($_SESSION['user_type'] == PROFESSOR && isset($_GET["edit"]))?
     $cleaned_problem_route: $cleaned_user_solution_route;
 
 if ($_SESSION['user_type'] == PROFESSOR && !is_null($session_id)) {
-    $students = getStudentsWithSessionAndProblem(session_id: $session_id, problem_id: $problem_id);
-    $counter=0;
-    $aux_array = getStudentsSessionExtraData($session_id, $problem_id); //email, executed_times-count, teacher_executed-count.
-    //checkAllStudentsRecivedComunMessage($students,$session_id,$problem_id);
 
+    $students = getStudentsWithSessionAndProblem(session_id: $session_id, problem_id: $problem_id);
+    $students_solution_data = getStudentsSessionExtraData($session_id, $problem_id); //student_email, output, executed_times_count, teacher_executed_times_count, number_lines_file, solution_quality
+
+    //print_r($students_solution_data);
+    checkAllStudentsRecivedComunMessage($students,$session_id,$problem_id);
 
     //TESTAR PARA LOS CASOS  EN QUE EL PROBLEMA NO TENGA SOLUCION SUBIDA POR EL PROFESOR.
     $extraData = getProblemExtraData($problem_id);
     $official_solution_quality = $extraData['solution_quality'];
     $official_solution_lines = $extraData['solution_lines'];
 
-
     //IMPORTANT to show red color to unread new chats. Only available for Teachers
     $unviwed_chats = unviwedStudentsChat($session_id, $problem_id); //Array that keeps mails of students who have chats that the teacher has not read yet.
 
-    //REPASAR
+    $_students = array();
     foreach ($students as $student){
-        $students[$counter]['executed_times_count'] = $aux_array[$counter]['executed_times_count'];
-        $students[$counter]['teacher_executed_times_count'] = $aux_array[$counter]['teacher_executed_times_count'];
+        $appears = false;
+        foreach ($students_solution_data as $student_solution_data){
 
+            if($student['user'] == $student_solution_data['student_email']){
 
-        if ($official_solution_lines !=0){
-            $student_lines_percentage = intval((intval($aux_array[$counter]['number_lines_file']) * 100) / $official_solution_lines);
+                $appears=true;
+                $aux['user'] = $student['user'];
+                $aux['executed_times_count'] = $student_solution_data['executed_times_count'];
+                $aux['teacher_executed_times_count'] = $student_solution_data['teacher_executed_times_count'];
+
+                if ($official_solution_lines != 0){
+                    $student_lines_percentage = intval((intval($student_solution_data['number_lines_file']) * 100) / $official_solution_lines);
+                }
+
+                $aux['lines_percentage'] = $student_lines_percentage;
+                $aux['number_lines_file'] = $student_solution_data['number_lines_file'];
+                $aux['solution_quality'] = $student_solution_data['solution_quality'];
+
+                $aux['output']= $student_solution_data['output'];
+                array_push($_students, $aux);
+            }
         }
-
-
-        $students[$counter]['lines_percentage'] = $student_lines_percentage;
-        $students[$counter]['number_lines_file'] = $aux_array[$counter]['number_lines_file'];
-        $students[$counter]['solution_quality'] = $aux_array[$counter]['solution_quality'];
-
-        $students[$counter]['output']= $aux_array[$counter]['output'];
-        $counter= $counter +1;
+        if(!$appears){
+            $aux['user'] = $student['user'];
+            $aux['executed_times_count'] = 0;
+            $aux['teacher_executed_times_count'] = 0;
+            $aux['lines_percentage'] = 0;
+            $aux['number_lines_file'] =0;
+            $aux['solution_quality'] ="----";
+            $aux['output'] = "";
+            array_push($_students, $aux);
+        }
     }
 }
-
 $solution = getSolution($problem_id, $_SESSION['email']);
 
 include_once __DIR__ . "/../View/html/editor.php";

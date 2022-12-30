@@ -47,10 +47,15 @@ if ($language == "python") {
     }
     echo "<pre>";
     if ($language  != "python"){ //c,cpp, c++
-        foreach ($result as $item_result){
+        if(is_string($result)){
+            print_r($result);
+        }
+        else {
+            foreach ($result as $item_result) {
 
-            print_r($item_result);
-            echo "<br>";
+                print_r($item_result);
+                echo "<br>";
+            }
         }
     }
     else{
