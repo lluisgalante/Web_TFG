@@ -370,7 +370,8 @@
             }
         </style>
     <script>
-        window.setInterval(refreshMessages, 2000);
+        window.setInterval(refreshMessages, 2000);// To show in red chat icon of students that have sent new messages
+        window.setInterval(refreshListOnlineStudents,2000);// To update teachers' sesion page if a new student has join the session.
     </script>
     <?php } ?>
 </div>

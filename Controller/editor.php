@@ -7,7 +7,6 @@ include_once __DIR__ . "/../Model/diskManager.php";
 include_once __DIR__ . "/../Model/problemsGet.php";
 include_once __DIR__ . "/../Model/constants.php";
 include_once __DIR__ . "/../Model/online_visualization.php";
-include_once __DIR__ . "/../Model/online_visualization.php";
 include_once __DIR__ . "/../Model/Messages.php";
 
 
@@ -61,15 +60,8 @@ if ($problem['language'] == 'Notebook') {
 # Get the problem files from the machine
 $subject = $problem["subject_id"];
 $problem_route = $problem["route"];
-
-//print_r($problem_route);
-//print_r(__DIR__);
-//echo" ====== ";
-//print_r(__DIR__ . $problem_route );
-
 $cleaned_problem_route = str_replace('\\', '/', realpath(__DIR__ . $problem_route));
 
-//var_dump($cleaned_problem_route);
 # Create the folder for the user if it doesn't already exist
 $user_route = "./../app/solucions/$email";
 if (!file_exists(__DIR__ . $user_route) && !mkdir(__DIR__ . $user_route)) {
@@ -104,7 +96,7 @@ if (!file_exists(__DIR__ . $user_solution_route)) {
         if (!$created) {
             echo "Error creating the solution";
             return;
-        }   
+        }
     }
 }
 
@@ -118,52 +110,53 @@ $folder_route = ($_SESSION['user_type'] == PROFESSOR && isset($_GET["edit"]))?
 if ($_SESSION['user_type'] == PROFESSOR && !is_null($session_id)) {
 
     $students = getStudentsWithSessionAndProblem(session_id: $session_id, problem_id: $problem_id);
-    $students_solution_data = getStudentsSessionExtraData($session_id, $problem_id); //student_email, output, executed_times_count, teacher_executed_times_count, number_lines_file, solution_quality
+    if(count($students) > 0) {
+        $students_solution_data = getStudentsSessionExtraData($session_id, $problem_id); //student_email, output, executed_times_count, teacher_executed_times_count, number_lines_file, solution_quality
 
-    //print_r($students_solution_data);
-    checkAllStudentsRecivedComunMessage($students,$session_id,$problem_id);
+        //print_r($students_solution_data);
+        checkAllStudentsRecivedComunMessage($students, $session_id, $problem_id);
 
-    //TESTAR PARA LOS CASOS  EN QUE EL PROBLEMA NO TENGA SOLUCION SUBIDA POR EL PROFESOR.
-    $extraData = getProblemExtraData($problem_id);
-    $official_solution_quality = $extraData['solution_quality'];
-    $official_solution_lines = $extraData['solution_lines'];
+        //TESTAR PARA LOS CASOS  EN QUE EL PROBLEMA NO TENGA SOLUCION SUBIDA POR EL PROFESOR.
+        $extraData = getProblemExtraData($problem_id);
+        $official_solution_quality = $extraData['solution_quality'];
+        $official_solution_lines = $extraData['solution_lines'];
 
-    //IMPORTANT to show red color to unread new chats. Only available for Teachers
-    $unviwed_chats = unviwedStudentsChat($session_id, $problem_id); //Array that keeps mails of students who have chats that the teacher has not read yet.
+        //IMPORTANT to show red color to unread new chats. Only available for Teachers
+        $unviwed_chats = unviwedStudentsChat($session_id, $problem_id); //Array that keeps mails of students who have chats that the teacher has not read yet.
+        $_students = array();
+        foreach ($students as $student) {
+            $appears = false;
+            foreach ($students_solution_data as $student_solution_data) {
 
-    $_students = array();
-    foreach ($students as $student){
-        $appears = false;
-        foreach ($students_solution_data as $student_solution_data){
+                if ($student['user'] == $student_solution_data['student_email']) {
 
-            if($student['user'] == $student_solution_data['student_email']){
+                    $appears = true;
+                    $aux['user'] = $student['user'];
+                    $aux['executed_times_count'] = $student_solution_data['executed_times_count'];
+                    $aux['teacher_executed_times_count'] = $student_solution_data['teacher_executed_times_count'];
 
-                $appears=true;
-                $aux['user'] = $student['user'];
-                $aux['executed_times_count'] = $student_solution_data['executed_times_count'];
-                $aux['teacher_executed_times_count'] = $student_solution_data['teacher_executed_times_count'];
+                    if ($official_solution_lines != 0) {
+                        $student_lines_percentage = intval((intval($student_solution_data['number_lines_file']) * 100) / $official_solution_lines);
+                    }
 
-                if ($official_solution_lines != 0){
-                    $student_lines_percentage = intval((intval($student_solution_data['number_lines_file']) * 100) / $official_solution_lines);
+                    $aux['lines_percentage'] = $student_lines_percentage;
+                    $aux['number_lines_file'] = $student_solution_data['number_lines_file'];
+                    $aux['solution_quality'] = $student_solution_data['solution_quality'];
+
+                    $aux['output'] = $student_solution_data['output'];
+                    array_push($_students, $aux);
                 }
-
-                $aux['lines_percentage'] = $student_lines_percentage;
-                $aux['number_lines_file'] = $student_solution_data['number_lines_file'];
-                $aux['solution_quality'] = $student_solution_data['solution_quality'];
-
-                $aux['output']= $student_solution_data['output'];
+            }
+            if (!$appears) {
+                $aux['user'] = $student['user'];
+                $aux['executed_times_count'] = 0;
+                $aux['teacher_executed_times_count'] = 0;
+                $aux['lines_percentage'] = 0;
+                $aux['number_lines_file'] = 0;
+                $aux['solution_quality'] = "----";
+                $aux['output'] = "";
                 array_push($_students, $aux);
             }
-        }
-        if(!$appears){
-            $aux['user'] = $student['user'];
-            $aux['executed_times_count'] = 0;
-            $aux['teacher_executed_times_count'] = 0;
-            $aux['lines_percentage'] = 0;
-            $aux['number_lines_file'] =0;
-            $aux['solution_quality'] ="----";
-            $aux['output'] = "";
-            array_push($_students, $aux);
         }
     }
 }

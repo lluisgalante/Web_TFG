@@ -187,6 +187,28 @@ function refreshMessages() {
         }
     })
 }
+function refreshListOnlineStudents(){
+    $.ajax({
+        url: "/Controller/updateStudentsAjaxOnlineList.php",
+        method: "POST",
+        data: {
+            problemId: problemId,
+            sessionId: sessionId,
+        },
+        success: function (response) {
+            let students_connected = JSON.parse(response);//Estudiantes que hayan entrado a la sesión
+            let current_students_showing = $("*").find("a#btn-eamail.btn.email").text(); // Estudiantes que aparezcan al tutor en la lista de estudiante activos. Si no actualiza la página no aparecen los nuevos alumnos conectados
+
+            for (let i=0; i< students_connected.length; i++){
+                if(current_students_showing.search(students_connected[i]['user']) == -1){ // Estudiante se encuentra en sesión, pero aun no aparece en la lista de estudiantes activos en la sesión.
+                    location.reload();// Forzamos actualización de pantalla para que aparezcan en la lista de alumnos conectados los nuevos estudiantes conectados.
+                }
+            }
+            //https://www.tutorialrepublic.com/faq/how-to-add-li-in-an-existing-ul-using-jquery.php
+        }
+    })
+
+}
 function setSolutionEditingFalse() {
     // Set the solution's editing field as false before leaving the page
     $.ajax({
