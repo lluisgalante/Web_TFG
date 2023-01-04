@@ -13,11 +13,12 @@ $max_execution_time = $_POST['max_execution_time'];
 $visibility = $_POST['visibility'];
 $language = $_POST['language'];
 $subjectId = $_POST['subject'];
+isset($_POST['entregable']) ? $entregable = $_POST['entregable'] : $entregable = "off";
 
 # If the title already exists redirect the user to the error view.
 if (problemTitleExists($title)) {
     $_SESSION['error'] = "Un problema amb el mateix nom ja existeix: $title";
-    redirectLocation(query: VIEW_PROBLEMS_LIST, params: array('subject' => $subjectId, 'error' => 1));
+   // redirectLocation(query: VIEW_PROBLEMS_LIST, params: array('subject' => $subjectId, 'error' => 1));
     return;
 }
 
@@ -25,7 +26,7 @@ $subjectRoute = "./../app/problemes/$subjectId/";
 $problemRoute = $subjectRoute . $_POST['title'];
 $problemId = createProblem(route: $problemRoute, title: $title, description: $description,
     max_memory_usage: $max_memory_usage, visibility: $visibility, max_execution_time: $max_execution_time,
-    language: $language, subject: $subjectId);
+    language: $language, subject: $subjectId, entregable: $entregable);
 
 # If any problem arises when creating the problem redirect the user to the error view
 if ($problemId === -1) {

@@ -238,3 +238,17 @@ function getProblemSolutionVisibility(int $problemId ):string
     }
     return $visibility['solution_visibility'];
 }
+function getIfProblemIsEntregable(int $problemId):string
+{
+    try{
+        $connection = connectDB();
+        $statement = $connection->prepare("SELECT entregable FROM problem WHERE id=:problemId");
+        $statement->execute(array(':problemId' => $problemId));
+        $IsEntregable = $statement->fetch(PDO::FETCH_ASSOC);
+        $connection = null;
+
+    }catch (PDOException $e) {
+        echo 'Error updating the problem: ' . $e->getMessage();
+    }
+    return $IsEntregable['entregable'];
+}

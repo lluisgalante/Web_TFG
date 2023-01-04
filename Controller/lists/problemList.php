@@ -80,11 +80,6 @@ $listPage['modals'] = [
         'content'=> "L'operació serà immediata i sense possibilitat de retorn.",
         'buttonTitle' => 'Esborrar', 'buttonOnClick' => 'deleteProblem()', 'buttonText' => 'Esborrar',
         'dismissButtonText' => 'Cancel·lar'),
-    /*array('id' => 'pujar_solucio', 'title' => "Editar solució",
-        'content'=> "Seleccione Importar per a poder pujar una solució.",
-        'buttonTitle' => 'Importar', 'buttonOnClick' => 'receiveFile()', 'buttonText' => 'Importar',
-        'dismissButtonText' => 'Cancel·lar'),*/
-
 ];
 
 require_once __DIR__ . "/../../View/html/genericList.php";

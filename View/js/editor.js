@@ -285,9 +285,10 @@ function checkChanges() {
     })
 }
 
-function executeCode(email, session_id, userType, usuario_visualizado) {
+function executeCode(email, session_id, userType, usuario_visualizado, entregable) {
     console.log(email);
     console.log(session_id);
+    console.log(entregable);
     let text = editor.getSession().getValue();
     let answer = document.getElementById("answer");
     if (text.includes("import os") || text.includes("import sys")) {
@@ -312,15 +313,32 @@ function executeCode(email, session_id, userType, usuario_visualizado) {
             if(session_id !== "NO") {
                 Validation2(email, session_id, userType, response, usuario_visualizado);
             }
+            if(session_id === "NO " && entregable === "on"){
+
+                console.log("AQUI!!")
+                console.log(response);
+                let index = response.lastIndexOf(":=>>");
+
+
+                let grade = response[index + 5];
+                if (response[index + 6] !== " "){
+                    grade = grade.concat(response[index + 6]);
+                }
+
+                console.log(grade);
+                console.log(typeof response);
+
+                /*UpdateStudentProblemGrade(email,problemId,grade)*/
+            }
 
             answer.innerHTML = response;
-            console.log(response);
+
             /* Call the second validation */
 
         }
     })
     const Validation2 = (email, session_id, userType, response, usuario_visualizado) => {
-        console.log("DENTRO DE VALIDATION2()");
+
         $.ajax({
             url: "/Controller/online_visualization_improvements.php",
             method: "POST",

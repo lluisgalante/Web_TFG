@@ -47,7 +47,11 @@
     <?php if ($_SESSION['user_type'] == PROFESSOR && isset($_GET["edit"])) { ?>
         <p class="alert alert-warning" id="error_msg"><strong> Estas modificant el problema arrel </strong>
     <?php } ?>
-    
+
+    <?php if($_SESSION['user_type'] == STUDENT && is_null($session_id) && $entregable="on"){
+        print_r("Este problema es entregable");
+    }?>
+
     <?php if (isset($_GET["uploaded"])) { ?>
         <?php $negation = $_GET["uploaded"]? "": "no"; ?>
             <p class="alert alert-warning"><strong> <?php echo "El problema $negation s'ha pujat a GitHub." ?> </strong>
@@ -67,7 +71,7 @@
     <p id="programming_language" hidden><?php echo $problem["language"]; ?></p>
 
     <div class="editor-sub-container">
-        <button id="execute" class="btn" onclick="executeCode('<?php echo "{$_SESSION['email']}"?>', <?php if(isset($_GET['session'])){echo $_GET['session'];} else{ ?> '<?php echo "NO"; ?> ' <?php  }?>, <?php echo $_SESSION['user_type']?>, '<?php echo "{$_GET['user']}"?>')" title="Executar">
+        <button id="execute" class="btn" onclick="executeCode('<?php echo "{$_SESSION['email']}"?>', <?php if(isset($_GET['session'])){echo $_GET['session'];} else{ ?> '<?php echo "NO"; ?> ' <?php  }?>, <?php echo $_SESSION['user_type']?>, '<?php echo "{$_GET['user']}"?>', '<?php echo $entregable ?>')" title="Executar">
             <img class="icon" src="/View/images/execute.png" alt="Executar">
         </button>
         <?php if($problem["description"]) { ?>
@@ -371,7 +375,7 @@
         </style>
     <script>
         window.setInterval(refreshMessages, 2000);// To show in red chat icon of students that have sent new messages
-        window.setInterval(refreshListOnlineStudents,2000);// To update teachers' sesion page if a new student has join the session.
+        window.setInterval(refreshListOnlineStudents, 2000);// To update teachers' sesion page if a new student has join the session.
     </script>
     <?php } ?>
 </div>

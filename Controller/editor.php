@@ -107,6 +107,10 @@ $cleaned_user_solution_route = str_replace('\\', '/', realpath(__DIR__ . $user_s
 $folder_route = ($_SESSION['user_type'] == PROFESSOR && isset($_GET["edit"]))?
     $cleaned_problem_route: $cleaned_user_solution_route;
 
+//******START NUEVO*****
+$entregable = getIfProblemIsEntregable($problem_id);
+//*****END NUEVO*****
+
 if ($_SESSION['user_type'] == PROFESSOR && !is_null($session_id)) {
 
     $students = getStudentsWithSessionAndProblem(session_id: $session_id, problem_id: $problem_id);

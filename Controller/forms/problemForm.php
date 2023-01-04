@@ -15,5 +15,6 @@ $formPage['fields'] = [
         'options' => [ array('id' => 'C++', 'title' => 'C++'), array('id' => 'Python', 'title' => 'Python'),
             array('id' => 'Notebook', 'title' => 'Notebook')],
         'required' => 'required'),
+    array('type'=>'checkbox', 'id' => 'entregable' ),
 ];
 $formPage['submitText'] = 'Crear';
