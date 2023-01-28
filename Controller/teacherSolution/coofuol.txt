@@ -1,5 +1,0 @@
-1. Editar codigo en ruta solucion 
-2. Editar codigo en formulario
-4. Cambiar formulario de crear problema por el nuevo DONE
-5. Editar footer de manera personal DONE
-6. Descargar carpeta

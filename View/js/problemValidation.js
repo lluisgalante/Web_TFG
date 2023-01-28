@@ -39,6 +39,19 @@ $(document).ready(function () {
     let languageSelector = $("#language");
     let programingLanguage = languageSelector.attr('value');
     languageSelector.val(programingLanguage).change();
+
+    $('#entregable').mousedown(function() {
+
+        if($('#datepicker').length){
+            $('#datepicker').remove();
+        }
+        else{
+            $(this).closest(".input-container").append('<input class="input" id="datepicker" name="datepicker" placeholder="Data">');
+        }
+    });
+    $(document).on('mousedown', '#datepicker', function(){
+        $( "#datepicker" ).datepicker();
+    });
 })
 
 function validateProblem() {

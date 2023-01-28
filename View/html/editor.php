@@ -48,10 +48,6 @@
         <p class="alert alert-warning" id="error_msg"><strong> Estas modificant el problema arrel </strong>
     <?php } ?>
 
-    <?php if($_SESSION['user_type'] == STUDENT && is_null($session_id) && $entregable="on"){
-        print_r("Este problema es entregable");
-    }?>
-
     <?php if (isset($_GET["uploaded"])) { ?>
         <?php $negation = $_GET["uploaded"]? "": "no"; ?>
             <p class="alert alert-warning"><strong> <?php echo "El problema $negation s'ha pujat a GitHub." ?> </strong>
@@ -65,13 +61,22 @@
         <button id="error_msg_libraries_btn" type="button" class="close">&times;</button>
     </p>
     <p class="text-center font-weight-bold problem-title"><?php echo $problem["title"]; ?></p>
+
+    <?php if($_SESSION['user_type'] == STUDENT && is_null($session_id) && $entregable == "on"){
+        if($deadline != null){
+            echo "La data limit d'aquest problema entregable és: &nbsp $deadline";
+        }else {
+            echo "Problema entregable, no té data limit.";
+        }
+
+    }?>
 </div>
 
 <div id="editor-container" class="container-fluid">
     <p id="programming_language" hidden><?php echo $problem["language"]; ?></p>
 
     <div class="editor-sub-container">
-        <button id="execute" class="btn" onclick="executeCode('<?php echo "{$_SESSION['email']}"?>', <?php if(isset($_GET['session'])){echo $_GET['session'];} else{ ?> '<?php echo "NO"; ?> ' <?php  }?>, <?php echo $_SESSION['user_type']?>, '<?php echo "{$_GET['user']}"?>', '<?php echo $entregable ?>')" title="Executar">
+        <button id="execute" class="btn" onclick="executeCode('<?php echo "{$_SESSION['email']}"?>', <?php if(isset($_GET['session'])){echo $_GET['session'];} else{ ?> '<?php echo "NO"; ?>' <?php  }?>, <?php echo $_SESSION['user_type']?>, '<?php echo "{$_GET['user']}"?>', '<?php echo $entregable ?>')" title="Executar">
             <img class="icon" src="/View/images/execute.png" alt="Executar">
         </button>
         <?php if($problem["description"]) { ?>
@@ -101,6 +106,15 @@
                 <img class="icon" src="/View/images/view_solution.png" alt="veure solucio">
             </button>
         <?php } ?>
+
+        <?php if ($entregable == 'on' && $_SESSION['user_type'] == STUDENT ) {?>
+
+            <button type="button" class="btn" title="grade" id ="grade">
+                <?php echo "Grade: $grade";?>
+            </button>
+        <?php } ?>
+
+
 
         <?php if($problem["description"]) { ?>
             <div class="content"><p><?php echo htmlspecialchars($problem["description"]); ?></p></div>
@@ -376,7 +390,13 @@
     <script>
         window.setInterval(refreshMessages, 2000);// To show in red chat icon of students that have sent new messages
         window.setInterval(refreshListOnlineStudents, 2000);// To update teachers' sesion page if a new student has join the session.
+        window.setInterval(doNotEditMain,2000);
     </script>
+    <?php } ?>
+    <?php if($_SESSION['user_type'] == STUDENT && is_null($session_id) && $entregable == "on"){?>
+        <script>
+            window.setInterval(doNotEditMain,2000);
+        </script>
     <?php } ?>
 </div>
 

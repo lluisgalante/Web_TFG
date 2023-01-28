@@ -19,7 +19,7 @@ function problemTitleExists($title): bool
 }
 
 function createProblem($route, $title, $description, $max_memory_usage, $visibility, $max_execution_time,
-                       $language, $subject, $entregable) : int
+                       $language, $subject, $entregable, $deadline) : int
 {
     $problemId = -1;
     try {
@@ -27,14 +27,14 @@ function createProblem($route, $title, $description, $max_memory_usage, $visibil
 
         $statement = $connection->prepare(
             "INSERT INTO problem (route, title, description, visibility, memory, time, language, subject_id,
-                     edited, entregable)
+                     edited, entregable, deadline)
             VALUES (:route, :title, :description, :visibility, :max_memory_usage, :max_execution_time,
-                    :programming_language, :subject, :edited, :entregable)"
+                    :programming_language, :subject, :edited, :entregable, :deadline)"
         );
 
         $statement->execute(array(":route" => $route, ":title" => $title, ":description" => $description,
             ":visibility" => $visibility, ":max_memory_usage" => $max_memory_usage, ":edited" => 0,
-            ":max_execution_time" => $max_execution_time, ":programming_language" => $language, ":subject" => $subject, ":entregable" => $entregable)
+            ":max_execution_time" => $max_execution_time, ":programming_language" => $language, ":subject" => $subject, ":entregable" => $entregable, ":deadline" => $deadline)
         );
 
         $problemId = $connection->lastInsertId();

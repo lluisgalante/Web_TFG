@@ -74,6 +74,9 @@ switch ($query) {
     case VIEW_COMUN_MESSAGES:
         include __DIR__ . "/Controller/messagesComun.php";
         break;
+    case CREATE_CSV:
+        include __DIR__ . "/Controller/createCSV_Entregables.php";
+        break;
     default: //0
         include __DIR__ . "/Controller/lists/subjectList.php";
         break;

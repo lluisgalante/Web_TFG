@@ -8,7 +8,8 @@ include_once __DIR__ . "/../Model/problemsGet.php";
 include_once __DIR__ . "/../Model/constants.php";
 include_once __DIR__ . "/../Model/online_visualization.php";
 include_once __DIR__ . "/../Model/Messages.php";
-
+include_once __DIR__ . "/../Model/student.php";
+include_once __DIR__ . "/../Model/entregable_problem.php";
 
 # If only the query is set without indicating a problem return to the homepage
 if (!isset($_GET["problem"]) || !isset($_SESSION["user_type"])) {
@@ -16,6 +17,7 @@ if (!isset($_GET["problem"]) || !isset($_SESSION["user_type"])) {
 }
 $problem_id = $_GET["problem"];
 $problem = getProblemWithId($problem_id);
+
 // If a student is trying to access a private problem send him to the front page
 if ($problem['visibility'] === 'Private' && isset($_SESSION['user_type']) && $_SESSION['user_type'] === STUDENT) {
     redirectLocation();
@@ -107,9 +109,17 @@ $cleaned_user_solution_route = str_replace('\\', '/', realpath(__DIR__ . $user_s
 $folder_route = ($_SESSION['user_type'] == PROFESSOR && isset($_GET["edit"]))?
     $cleaned_problem_route: $cleaned_user_solution_route;
 
-//******START NUEVO*****
+//******Entregable*****
+
 $entregable = getIfProblemIsEntregable($problem_id);
-//*****END NUEVO*****
+if($entregable && $_SESSION['user_type'] == STUDENT){
+
+    $NIU = getNIUStudent($email);
+    $grade = getEntregableGrade($NIU, $problem_id);
+    $deadline = getEntregableDeadline($problem_id);
+}
+
+//**********
 
 if ($_SESSION['user_type'] == PROFESSOR && !is_null($session_id)) {
 

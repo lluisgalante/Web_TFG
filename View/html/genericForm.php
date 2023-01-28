@@ -16,6 +16,11 @@
         <script src="/View/js/external/bootstrap-toggle.min.js"></script>
         <script src="/View/js/external/all.min.js"></script>
 
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+        <link rel="stylesheet" href="/resources/demos/style.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
         <?php if(isset($formPage['validationJS'])) { ?>
             <script src="/View/js/<?php echo $formPage['validationJS'] ?>"></script>
         <?php } ?>

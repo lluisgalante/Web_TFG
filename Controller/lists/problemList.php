@@ -67,6 +67,11 @@ foreach ($problems as $problem) {
             'href' => buildUrl(VIEW_PROBLEM_SOLUTION, array('problem' => $problemId)),
             'image' => 'view_solution', 'alt' => 'Veure solució'
             );*/
+        if(getIfProblemIsEntregable($problemId) == "on") {
+            $item['buttons'][] = array('type' => 'a',
+                'href' => buildUrl(CREATE_CSV, array('problem' => $problemId)),
+                'image' => 'CSV', 'alt' => 'Create CSV');
+        }
         $visibilityImage = $problem['visibility'] == 'Private'? 'not-visible': 'visible';
         $item['buttons'][] = array('type' => 'js', 'classes' => 'change_visibility','title' => 'Canviar visibilitat',
             'image' => $visibilityImage, 'alt' => 'Canviar visibilitat');
@@ -80,6 +85,10 @@ $listPage['modals'] = [
         'content'=> "L'operació serà immediata i sense possibilitat de retorn.",
         'buttonTitle' => 'Esborrar', 'buttonOnClick' => 'deleteProblem()', 'buttonText' => 'Esborrar',
         'dismissButtonText' => 'Cancel·lar'),
+    /*array('id' => 'pujar_solucio', 'title' => "Editar solució",
+    'content'=> "Seleccione Importar per a poder pujar una solució.",
+    'buttonTitle' => 'Importar', 'buttonOnClick' => 'receiveFile()', 'buttonText' => 'Importar',
+    'dismissButtonText' => 'Cancel·lar'),*/
 ];
 
 require_once __DIR__ . "/../../View/html/genericList.php";

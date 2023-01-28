@@ -164,6 +164,18 @@ $(document).ready(function () {
         $(alert).attr("hidden", "");
     })
 });
+function doNotEditMain(){
+
+    const lastItem = currentDocumentPath.substring(currentDocumentPath.lastIndexOf('/') + 1)
+
+    if( lastItem.includes("main") || lastItem.includes(".txt")){
+        //disableEdit();
+        document.querySelector("textarea").setAttribute("disabled", "disabled");
+    }
+    else{
+        document.querySelector("textarea").removeAttribute("disabled");
+    }
+}
 
 function refreshMessages() {
 
@@ -286,9 +298,7 @@ function checkChanges() {
 }
 
 function executeCode(email, session_id, userType, usuario_visualizado, entregable) {
-    console.log(email);
-    console.log(session_id);
-    console.log(entregable);
+
     let text = editor.getSession().getValue();
     let answer = document.getElementById("answer");
     if (text.includes("import os") || text.includes("import sys")) {
@@ -313,12 +323,9 @@ function executeCode(email, session_id, userType, usuario_visualizado, entregabl
             if(session_id !== "NO") {
                 Validation2(email, session_id, userType, response, usuario_visualizado);
             }
-            if(session_id === "NO " && entregable === "on"){
+            if(session_id === "NO" && entregable === "on"){
 
-                console.log("AQUI!!")
-                console.log(response);
                 let index = response.lastIndexOf(":=>>");
-
 
                 let grade = response[index + 5];
                 if (response[index + 6] !== " "){
@@ -326,14 +333,12 @@ function executeCode(email, session_id, userType, usuario_visualizado, entregabl
                 }
 
                 console.log(grade);
-                console.log(typeof response);
+                $("#grade").html("Grade: " + grade);
 
-                /*UpdateStudentProblemGrade(email,problemId,grade)*/
+                UpdateStudentProblemGrade(email,problemId,grade);
             }
 
             answer.innerHTML = response;
-
-            /* Call the second validation */
 
         }
     })
@@ -350,6 +355,18 @@ function executeCode(email, session_id, userType, usuario_visualizado, entregabl
                 usuario_visualizado: usuario_visualizado,
                 problemId:problemId,
                 route:folderRoute
+            }
+        });
+    }
+    const UpdateStudentProblemGrade = (email, problemId, grade) => {
+
+        $.ajax({
+            url: "/Controller/uploadEntregableGradeAjax.php",
+            method: "POST",
+            data: {
+                email: email,
+                problemId: problemId,
+                grade: grade
             }
         });
     }

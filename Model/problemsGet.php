@@ -252,3 +252,17 @@ function getIfProblemIsEntregable(int $problemId):string
     }
     return $IsEntregable['entregable'];
 }
+function getEntregableDeadline($problemId){
+    try{
+        $connection = connectDB();
+        $statement = $connection->prepare("SELECT deadline FROM problem WHERE id=:problemId");
+        $statement->execute(array(':problemId' => $problemId));
+        $date = $statement->fetch(PDO::FETCH_ASSOC);
+        $connection = null;
+
+    }catch (PDOException $e) {
+        echo 'Error getting Problem Entregable deadline: ' . $e->getMessage();
+    }
+    return $date['deadline'];
+
+}
