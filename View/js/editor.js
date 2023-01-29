@@ -163,7 +163,18 @@ $(document).ready(function () {
         let alert = document.getElementById('error_msg_libraries');
         $(alert).attr("hidden", "");
     })
+    //Alert message when a deliverable problem deadline has expired
+    $('#alert').on('click', function () {
+
+        if($('#alertMessage').length){
+            $('#alertMessage').fadeOut(300, function(){ $(this).remove();});
+        }
+        else{
+            $('<p id="alertMessage">Entrega caducada</p>').hide().appendTo($(this).closest(".btn")).fadeIn(300);
+        }
+    })
 });
+
 function doNotEditMain(){
 
     const lastItem = currentDocumentPath.substring(currentDocumentPath.lastIndexOf('/') + 1)
@@ -297,7 +308,7 @@ function checkChanges() {
     })
 }
 
-function executeCode(email, session_id, userType, usuario_visualizado, entregable) {
+function executeCode(email, session_id, userType, usuario_visualizado, entregable, deadline, currentDate) {
 
     let text = editor.getSession().getValue();
     let answer = document.getElementById("answer");
@@ -326,20 +337,17 @@ function executeCode(email, session_id, userType, usuario_visualizado, entregabl
             if(session_id === "NO" && entregable === "on"){
 
                 let index = response.lastIndexOf(":=>>");
-
                 let grade = response[index + 5];
                 if (response[index + 6] !== " "){
                     grade = grade.concat(response[index + 6]);
                 }
-
-                console.log(grade);
-                $("#grade").html("Grade: " + grade);
-
-                UpdateStudentProblemGrade(email,problemId,grade);
+                if(deadline > currentDate || deadline.length == 0){ //Se actualizará la nota si el alumno se encuentra en el plazo de entrega, o si es un problema entregable sin deadline.
+                    $("#grade").html("Grade: " + grade);
+                    UpdateStudentProblemGrade(email, problemId, grade);
+                }
             }
 
             answer.innerHTML = response;
-
         }
     })
     const Validation2 = (email, session_id, userType, response, usuario_visualizado) => {

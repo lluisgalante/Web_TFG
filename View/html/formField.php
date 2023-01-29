@@ -1,6 +1,6 @@
 <?php if(isset($formField)) { ?>
     <div class="input-container">
-        <?php if($formField['type'] === "file") { ?>
+        <?php if($formField['type'] === "file") {   ?>
             <input id="<?php echo $formField['id'] ?>" name="<?php echo $formField['id'] ?>[]"
                    class="custom-file-input" type="<?php echo $formField['type'] ?>"
                    <?php echo $formField['required'] ?> multiple/>
@@ -21,9 +21,17 @@
                         </option>
                     <?php } ?>
                 </select>
-            <?php }else if($formField['type'] === "checkbox") { ?>
-                <input type="<?php echo $formField['type'] ?>" id="<?php echo $formField['id'] ?>" name="<?php echo $formField['id'] ?>" value = "on"/>
-                <label for="<?php echo $formField['id'] ?>"> Entregable </label>
+            <?php }else if($formField['type'] === "checkbox") {?>
+
+                <input type="<?php echo $formField['type'] ?>" id="<?php echo $formField['id'] ?>" name="<?php echo $formField['id'] ?>" value = "on"
+                 <?php if($_GET['query'] == "Editar Problemas"){ if($problem['entregable'] == 'on'){?> checked <?php } } ?> />
+
+                <label for="<?php echo $formField['id'] ?>" id = "entregableLabel"> Entregable </label>
+
+                <?php if($_GET['query'] == "Editar Problemas"){ if($problem['entregable'] == 'on' && isset($problem['deadline'])){?>
+                    <p id="hiddenDeadline" hidden> <?php echo $problem['deadline']?> </p>
+                <?php } } ?>
+
             <?php }
                 else { ?>
 

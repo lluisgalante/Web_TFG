@@ -13,6 +13,7 @@ $password = $_POST["password"];
 $password2 = $_POST["password_confirmation"];
 $hash_password = password_hash($password, PASSWORD_DEFAULT);
 $token = $_POST["token"];
+$NIU = intval($_POST["NIU"]);
 
 $taken = isEmailTaken($email);
 if($taken) {
@@ -34,7 +35,7 @@ if (isset($token)) {
 
     $registered = registerProfessor($name, $surname, $email, $hash_password);
 } else {
-    $registered = registerStudent($name, $surname, $email, $hash_password);
+    $registered = registerStudent($name, $surname, $email, $hash_password, $NIU);
 }
 
 if (!$registered) {

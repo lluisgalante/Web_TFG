@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/connection.php';
 
-function registerStudent($name, $surname, $email, $hash_password) : bool
+function registerStudent($name, $surname, $email, $hash_password, $NIU) : bool
 {
     $created = false;
     try {
@@ -13,12 +13,12 @@ function registerStudent($name, $surname, $email, $hash_password) : bool
         }
 
         $statement = $connection->prepare(
-            "INSERT INTO student(name, surname, email, password) 
-            VALUES (:student_name, :surname, :email, :password)"
+            "INSERT INTO student(name, surname, email, NIU, password) 
+            VALUES (:student_name, :surname, :email, :NIU, :password)"
         );
 
         $statement->execute(array(":student_name" => $name, ":surname" => $surname, ":email" => $email,
-            ":password" => $hash_password));
+            ":NIU"=>$NIU, ":password" => $hash_password));
 
         $statement->closeCursor();
         $connection = null;

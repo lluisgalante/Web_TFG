@@ -187,18 +187,17 @@ function unsetSolutionEdited($id, $mail) : bool
     return $updated;
 }
 
-
-function updateProblem($problem_id, $description, $max_memory_usage, $max_execution_time, $programming_language) : bool
+function updateProblem($problem_id, $description, $max_memory_usage, $max_execution_time, $programming_language, $entregable, $deadline) : bool
 {
     $updated = false;
     try {
         $connection = connectDB();
         $statement = $connection->prepare("UPDATE problem SET description=:description, memory=:max_memory_usage,
-                   time=:max_execution_time, language=:programming_language WHERE id= :problem_id");
+                   time=:max_execution_time, language=:programming_language, entregable= :entregable, deadline= :deadline WHERE id= :problem_id");
 
         $statement->execute(array(':description'=>$description, ':max_memory_usage'=>$max_memory_usage,
             ':max_execution_time'=>$max_execution_time, ':programming_language' => $programming_language,
-            ':problem_id'=>$problem_id));
+            ':entregable' => $entregable , ':deadline' => $deadline , ':problem_id'=>$problem_id));
         $statement->fetch();
         $connection = null;
 

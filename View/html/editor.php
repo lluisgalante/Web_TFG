@@ -63,20 +63,27 @@
     <p class="text-center font-weight-bold problem-title"><?php echo $problem["title"]; ?></p>
 
     <?php if($_SESSION['user_type'] == STUDENT && is_null($session_id) && $entregable == "on"){
+
         if($deadline != null){
             echo "La data limit d'aquest problema entregable és: &nbsp $deadline";
+            echo "<br>";
+            //If deliverable date has expired show alert
+            if ($currentDate > $deadline) {?>
+                <button id="alert" class="btn" title="alert" style="margin:10px 0px 10px 0px">
+                    <img class="icon" src="/View/images/alert.png">
+                </button>
+            <?php }
         }else {
-            echo "Problema entregable, no té data limit.";
+            echo "Problema entregable,&nbsp no té data limit.";
         }
-
-    }?>
+    } ?>
 </div>
 
 <div id="editor-container" class="container-fluid">
     <p id="programming_language" hidden><?php echo $problem["language"]; ?></p>
 
     <div class="editor-sub-container">
-        <button id="execute" class="btn" onclick="executeCode('<?php echo "{$_SESSION['email']}"?>', <?php if(isset($_GET['session'])){echo $_GET['session'];} else{ ?> '<?php echo "NO"; ?>' <?php  }?>, <?php echo $_SESSION['user_type']?>, '<?php echo "{$_GET['user']}"?>', '<?php echo $entregable ?>')" title="Executar">
+        <button id="execute" class="btn" onclick="executeCode('<?php echo "{$_SESSION['email']}"?>', <?php if(isset($_GET['session'])){echo $_GET['session'];} else{ ?> '<?php echo "NO"; ?>' <?php  }?>, <?php echo $_SESSION['user_type']?>, '<?php echo "{$_GET['user']}"?>', '<?php echo $entregable ?>','<?php echo $deadline ?>', '<?php echo $currentDate?>')" title="Executar">
             <img class="icon" src="/View/images/execute.png" alt="Executar">
         </button>
         <?php if($problem["description"]) { ?>

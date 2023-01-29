@@ -112,6 +112,8 @@ $folder_route = ($_SESSION['user_type'] == PROFESSOR && isset($_GET["edit"]))?
 //******Entregable*****
 
 $entregable = getIfProblemIsEntregable($problem_id);
+$deadline = null;
+$currentDate = date("Y-m-d");
 if($entregable && $_SESSION['user_type'] == STUDENT){
 
     $NIU = getNIUStudent($email);

@@ -40,15 +40,25 @@ $(document).ready(function () {
     let programingLanguage = languageSelector.attr('value');
     languageSelector.val(programingLanguage).change();
 
-    $('#entregable').mousedown(function() {
+    if ($('#entregable').is(":checked")) //Si estamos editando los datos de un problema y es entregable, que aparezca por defecto la casilla de entregable seleccionada y con la fecha si tiene deadline.
+    {
+        let deadline = "Data (Opcional)";
+        if($('#hiddenDeadline').length){
+            deadline = $('#hiddenDeadline').text();
+        }
+        $('#entregable').closest(".input-container").append('<input class="input" id="datepicker" name="datepicker" placeholder='+ deadline +'>');
+    }
+
+    $('#entregable, #entregableLabel').mousedown(function() {
 
         if($('#datepicker').length){
             $('#datepicker').remove();
         }
         else{
-            $(this).closest(".input-container").append('<input class="input" id="datepicker" name="datepicker" placeholder="Data">');
+            $(this).closest(".input-container").append('<input class="input" id="datepicker" name="datepicker" placeholder="Data (Opcional)">');
         }
     });
+
     $(document).on('mousedown', '#datepicker', function(){
         $( "#datepicker" ).datepicker();
     });

@@ -13,14 +13,12 @@ $max_execution_time = $_POST['max_execution_time'];
 $visibility = $_POST['visibility'];
 $language = $_POST['language'];
 $subjectId = $_POST['subject'];
-isset($_POST['entregable']) ? $entregable = $_POST['entregable'] : $entregable = "off";
+$entregable = isset($_POST['entregable']) ? $_POST['entregable'] : "off";
 $deadline="";
 if(isset($_POST['datepicker'])){
-    if( $_POST['datepicker'] != "" ){$deadline = date('Y-m-d',strtotime($_POST['datepicker'])); }
-    else{ $deadline = null; }
-}else {
-    $deadline = null;
-}
+
+    $deadline = ($_POST['datepicker'] != "")? date('Y-m-d',strtotime($_POST['datepicker'])) : null;
+}else {$deadline = null; }
 
 # If the title already exists redirect the user to the error view.
 if (problemTitleExists($title)) {

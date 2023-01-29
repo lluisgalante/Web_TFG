@@ -24,6 +24,7 @@ $formPage['fields'] = [
         array('type' => 'text', 'id' => 'last_name', 'placeholder' => 'Cognoms', 'required' => 'required'),
     ]),
     array('type' => 'email', 'id' => 'email', 'placeholder' => 'Email', 'required' => 'required'),
+    array('type' => 'text', 'id' => 'NIU', 'placeholder' => 'NIU (obligatori alumnes)', 'required' => 'required'),
     array('type' => 'row', 'fields' => [
         array('type' => 'password', 'id' => 'password', 'placeholder' => 'Contrasenya', 'required' => 'required',
             'minlength' => 8, 'maxlength' => 24),
