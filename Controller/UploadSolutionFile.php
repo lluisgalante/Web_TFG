@@ -18,10 +18,11 @@ $sessionId = $_POST['session'];
 $rootEdited = filter_var($_POST['root_edited'], FILTER_VALIDATE_BOOLEAN); //De momento no se usa.
 $problem = getProblemWithId($problemId);
 $subjectId = $problem['subject_id'];
+$problem_title = $problem["title"];#NUEVO
 
 if (basename($route) == "teacherSolution") {/*La ruta para guardar la solucion ya fue creada antes, osea ya han subido algun archivo*/}
 else{
-    $route = $route . '/teacherSolution';
+    $route = "./../app/problemes/$subjectId/$problem_title" . '/teacherSolution'; //$route . '/teacherSolution';
     mkdir($route, 0777, true);
 }
 
