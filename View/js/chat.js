@@ -1,4 +1,3 @@
-
 window.setInterval(refreshMessages, 2000);
 function refreshMessages(){
     let outgoing_email= document.getElementById("o_mail").value;
@@ -82,7 +81,7 @@ function refreshMessages(){
                     if(repeated_messages[key] === repeated_trim_screenMessages[key]){
                         //Todo correcto
                     }
-                    else if ( repeated_messages[key] >repeated_trim_screenMessages[key]){
+                    else if ( repeated_messages[key] > repeated_trim_screenMessages[key]){
                         $('.messages').append('<div class="other"><p>\n '+key+'</p></div>');
                     }
                 }

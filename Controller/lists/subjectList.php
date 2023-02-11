@@ -53,6 +53,12 @@ foreach ($subjects as $subject) {
         $groupItem['buttons'][] = array('type' => 'a',
             'href' => buildUrl(VIEW_SESSION_FORM, array('subject'=>$subjectId)),
             'classes' => 'add-object', 'image' => 'session', 'alt' => 'Crear sessió');
+
+        if ($subject['has_active_sessions']) {
+            $groupItem['buttons'][] = array('type' => 'a',
+            'href' => buildUrl(SESSIONS_TO_EDIT, array('subject'=>$subjectId)),
+            'classes' => '', 'image' => 'editSession', 'alt' => 'Editar sessions');}
+
         $groupItem['buttons'][] = array('type' => 'modalToggle', 'title' => 'Esborrar',
             'target' => 'delete_subject_modal', 'image' => 'trash', 'alt' => 'Esborrar assignatura');
     }

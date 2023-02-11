@@ -31,12 +31,16 @@
 
 <div class="chat-popup" id="myForm">
     <div class="form-container">
-        <h1>Chat Comú </h1><p>Sessió <?php echo $_GET['session']?> - Problema  <?php echo$_GET['problem']?></p>
+        <h1>Chat Comú</h1><p>Sessió: <?php echo "&nbsp $sessionName"?> - Problema: <?php echo "&nbsp $problemName" ?></p>
         <br>
         <div class="messages">
             <?php if(!empty($messages)){
-                foreach($messages as $message){?>
-                    <div class="<?php if($message['incoming_mail_id']==$_SESSION['email']){echo "other"; }else{echo "self";} ?>"><p><?php echo $message['msg']?></p></div>
+                foreach($messages as $message){
+                    $class = ($message['incoming_mail_id'] == $_SESSION['email'])? "self": "other"; ?>
+                    <div class="<?php echo $class ?>">
+                        <p><?php echo $message['msg']?></p>
+                        <div class="<?php echo "message-timestamp-$class" ?>"><?php echo $message['date']?></div>
+                    </div>
                 <?php }
             }?>
         </div>

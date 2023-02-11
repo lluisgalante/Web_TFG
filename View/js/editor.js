@@ -16,18 +16,70 @@ let containerPort;
 $(document).ready(function () {
 
     $(".showPro").click(function () {
-        console.log("click");
+
         var more =$(this).parent().next();
-        console.log(more);
-        if(more.css("display")==="none"){
+        if(more.css("display") === "none"){
             more.css("display","block");
             var button = $(this);
             button.children().replaceWith('<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-minus" viewBox="0 0 16 16"><path d="M11 8H4V7H11V8Z"/> </svg>');
+
+            let email = $(this).siblings('a').first().text();
+            let std_executions = $(this).parent().next('.follow_up_student_info').children(".executed_count");
+            let std_output = $(this).parent().next('.follow_up_student_info').find(".extra");
+            //console.log(std_output);
+            let number_lines = $(this).parent().next('.follow_up_student_info').children(".solution_lines");
+            let table_code_quality = $(this).parent().next('.follow_up_student_info').children('.table_code_quality');
+
+            let if_student = table_code_quality.find(".if_student");
+            let for_student = table_code_quality.find(".for_student");
+            let while_student = table_code_quality.find(".while_student");
+            let switch_student = table_code_quality.find(".switch_student");
+
+            $.ajax({
+                url: "/Controller/online_v_i_show_Ajax.php",
+                method: "POST",
+                data: {
+                    email: email,
+                    id: sessionId,
+                    problemId: problemId,
+                },
+                    success: function (response) {
+
+                        let json = JSON.parse(response);
+
+                        let number_lines_file = json['number_lines_file'];
+                        let solution_quality = json['solution_quality'];
+                        let student_lines_percentage = json['student_lines_percentage'];
+                        let output_student = json['student_output'];
+                        let student_executions= json['student_executions'];
+
+
+                        if (student_lines_percentage === null){
+                            number_lines.text("Linies solució: " + number_lines_file);
+                        }
+                        else {
+                            number_lines.text("Linies solució: " + number_lines_file + " ≈ " + student_lines_percentage + "%");
+                        }
+
+                        std_executions.text("Execucions alumne: " + student_executions);
+                        std_output.text('');
+                        std_output.append(output_student);
+
+                        if_student.text(solution_quality[0]);
+                        for_student.text(solution_quality[1]);
+                        while_student.text(solution_quality[2]);
+                        switch_student.text(solution_quality[3]);
+
+
+                    }
+            });
+
         }else{
             more.css("display","none");
             var button = $(this);
             button.children().replaceWith('<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16"> <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/> </svg>');
         }
+
     });
 
     if (ace === undefined) {
@@ -176,7 +228,6 @@ $(document).ready(function () {
 });
 
 function doNotEditMain(){
-
     const lastItem = currentDocumentPath.substring(currentDocumentPath.lastIndexOf('/') + 1)
 
     if( lastItem.includes("main") || lastItem.includes(".txt")){
@@ -188,7 +239,7 @@ function doNotEditMain(){
     }
 }
 
-function refreshMessages() {
+function refreshMessagesTeacher() {
 
     $.ajax({
         url: "/Controller/updateChatsAjaxRedColor.php",
@@ -201,8 +252,7 @@ function refreshMessages() {
             let unviwed_chats = Object.values(JSON.parse(response)); // This array keeps the emails of the students that have messages that the teacher has not read yet.
             for (let i=0; i< unviwed_chats.length; i++){
                 let all_emails = $("*").find("a#btn-eamail.btn.email").text();
-                console.log(all_emails);
-                console.log(unviwed_chats[i]);
+                //console.log(all_emails); //console.log(unviwed_chats[i]);
                 if(all_emails.search(unviwed_chats[i]) != -1){
                     $('a#btn-eamail.btn.email:contains('+unviwed_chats[i]+')').next().next().find('svg').attr("fill","red");
                 }
@@ -331,10 +381,10 @@ function executeCode(email, session_id, userType, usuario_visualizado, entregabl
             file_to_execute: currentDocumentName
         },
         success: function (response) {
-            if(session_id !== "NO") {
-                Validation2(email, session_id, userType, response, usuario_visualizado);
-            }
-            if(session_id === "NO" && entregable === "on"){
+
+            Validation2(email, session_id, userType, response, usuario_visualizado);
+
+            if(entregable === "on"){
 
                 let index = response.lastIndexOf(":=>>");
                 let grade = response[index + 5];
@@ -342,6 +392,11 @@ function executeCode(email, session_id, userType, usuario_visualizado, entregabl
                     grade = grade.concat(response[index + 6]);
                 }
                 if(deadline > currentDate || deadline.length == 0){ //Se actualizará la nota si el alumno se encuentra en el plazo de entrega, o si es un problema entregable sin deadline.
+
+                    if(isNaN(grade)){
+                        grade = 0;
+                    }// returns true if the variable does NOT contain a valid number
+
                     $("#grade").html("Grade: " + grade);
                     UpdateStudentProblemGrade(email, problemId, grade);
                 }
@@ -378,6 +433,25 @@ function executeCode(email, session_id, userType, usuario_visualizado, entregabl
             }
         });
     }
+}
+
+function updateStudentQualityCode(email, session_id, userType, usuario_visualizado) {
+    //This function saves students' new problem files and gets the quality code.
+    save();
+    let response = null;
+    $.ajax({
+        url: "/Controller/online_visualization_improvements.php",
+        method: "POST",
+        data: {
+            email: email,
+            id: session_id,
+            userType: userType,
+            output: response,
+            usuario_visualizado: usuario_visualizado,
+            problemId: problemId,
+            route: folderRoute
+        },
+    });
 }
 
 function openFile(fileName) {
@@ -438,7 +512,7 @@ function openFile(fileName) {
 function openFolder() {
     post("dir.php", {folder: encodeURIComponent(folderRoute)}, function (data) {
         document.getElementById('files').innerHTML = data;
-
+        //console.log($('*').find('.files'));
         // Open the first file of the folder's available files
         let container = document.querySelector('#files');
         let matches = container.querySelectorAll('ul > li');
@@ -495,7 +569,7 @@ function deleteFile() {
     })
 }
 function receiveFile2() {
-    //console.log(document.getElementById('new_file'))
+
     let control = document.getElementById('new_file2');
     control.click();
     control.onchange = function (event) {
@@ -544,8 +618,111 @@ function acceptChanges(id) {
         }
     })
 }
+
+function refreshMessagesStudent(){
+    let outgoing_email= document.getElementById("o_mail").value;
+    let sessionId = document.getElementById("sessionId").value;
+    let problemId = document.getElementById("problem").value;
+
+    $.ajax({
+        url: "/Controller/UpdateChatsAjaxStudent.php",
+        method: "POST",
+        data:{
+            outgoing_email: outgoing_email,
+            sessionId: sessionId,
+            problemId: problemId,
+        },
+        success: function(response) {
+            let messages_aux= JSON.parse(response);
+            let messages= [];
+            for(let i=0; i < messages_aux.length; i++){
+                messages.push(messages_aux[i]['msg']);
+            }
+            //console.log(messages);
+            var text = $.trim($('.messages-child').text());//to remove the leading and trailing whitespace only
+
+            screenMessages = text.split('\n ');
+            let trim_screenMessages =[];
+            for(let i=0; i < screenMessages.length; i++){
+                trim_screenMessages.push(screenMessages[i].trimStart());
+            }
+            //console.log(trim_screenMessages);//Mensajes en la pantalla
+            //console.log(messages);//Mensajes en la BD.
+            //messages.push("PRUEBA");
+            let difference = messages.filter(x => !trim_screenMessages.includes(x));//https://stackoverflow.com/questions/1187518/how-to-get-the-difference-between-two-arrays-in-javascript
+            //console.log("Difernecias:" + difference);
+            messages_n= [];
+            repeated_messages={};
+
+            trim_screenMessages_n=[];
+            repeated_trim_screenMessages={};
+
+            trim_screenMessages.push(difference);
+
+            if(trim_screenMessages==0 &&difference.length > 0){
+                $('.messages-child').append('<div class="self"><p>\n '+difference+'</p></div>');
+                $('.form-inline').append('<input placeholder="Type message.." type="text" id="message" name="message" required="">');
+
+            }
+
+            if(difference.length > 0) {
+                $('.messages-child').append('<div class="self"><p>\n '+difference+'</p></div>');
+            }
+
+            for(let i = 0; i < messages.length; i++){
+
+                if(messages_n.includes(messages[i]))
+                {
+                    if(Object.keys(repeated_messages).includes(messages[i])){
+
+                        repeated_messages[messages[i]] = repeated_messages[messages[i]] + 1;
+                    }
+                    else{
+                        repeated_messages[messages[i]] = 1;
+                    }
+                }
+                else{ messages_n.push(messages[i]); }
+            }
+
+            for(let i = 0; i < trim_screenMessages.length; i++){
+
+                if(trim_screenMessages_n.includes(trim_screenMessages[i]))
+                {
+                    if(Object.keys(repeated_trim_screenMessages).includes(trim_screenMessages[i])){
+
+                        repeated_trim_screenMessages[trim_screenMessages[i]] = repeated_trim_screenMessages[trim_screenMessages[i]] + 1;
+
+                    }
+                    else{
+                        repeated_trim_screenMessages[trim_screenMessages[i]] = 1;
+                    }
+                }
+                else{ trim_screenMessages_n.push(trim_screenMessages[i]); }
+            }
+
+            for (const [key, value] of Object.entries(repeated_messages)) {
+                //console.log(key, value);
+                if (Object.keys(repeated_trim_screenMessages).includes(key)){
+                    if(repeated_messages[key] === repeated_trim_screenMessages[key]){
+                        //Todo correcto
+                    }
+                    else if ( repeated_messages[key] >repeated_trim_screenMessages[key]){
+                        $('.messages-child').append('<div class="self"><p>\n '+key+'</p></div>');
+                    }
+                }
+                else{
+                    //Repetida en la BD, pero no en la Screen
+                    //console.log("Mensaje repetido: "+ repeated_messages[key]);
+
+                    $('.messages-child').append('<div class="self"><p>\n '+key+'</p></div>');
+                }
+            }
+        },
+    })
+}
+
 function disableEdit(){ //This function will remove from students the avility to edit in the editor. It will be activated when users enter to a deactivated session.
-    //console.log("Dentro disableEdit");
+
     document.querySelector("textarea").setAttribute("disabled", "disabled");
 
 }

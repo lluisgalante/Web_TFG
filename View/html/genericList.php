@@ -57,7 +57,14 @@
                             <button <?php echo isset($button['id'])? 'id='.$button['id']: '' ?>
                                     class="btn <?php echo $button['classes'] ?>" type="button" data-placement="top"
                                     title="<?php echo $button['title'] ?>"
-                                    <?php echo isset($button['onClick'])? 'onclick='.$button['onClick']: '' ?>>
+                                    <?php if(isset($button['parameter'])){
+                                        echo 'onclick='.$button['onClick'].'(\''. $button['parameter'].'\')';//For cases when we need to send string to onclick.
+                                    }
+                                    else{
+                                        echo isset($button['onClick'])? 'onclick='.$button['onClick']: '' ?>
+                                    <?php } ?>>
+
+
                         <?php } ?>
                         <img class="icon" src="/View/images/<?php echo $button['image'] ?>.png"
                              alt="<?php echo $button['alt'] ?>" title="<?php echo $button['alt'] ?>">

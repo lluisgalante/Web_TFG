@@ -20,8 +20,7 @@ if (isset($_SESSION["email"])) {
         header("Location:/index.php?error=1");
     }
 }
-//var_export($_SESSION);
-//print_r($query); //print_r($_POST);
+
 switch ($query) {
     case VIEW_PROBLEMS_LIST: //1
         include __DIR__ . "/Controller/lists/problemList.php";
@@ -76,6 +75,12 @@ switch ($query) {
         break;
     case CREATE_CSV:
         include __DIR__ . "/Controller/createCSV_Entregables.php";
+        break;
+    case SESSIONS_TO_EDIT:
+        include __DIR__ . "/Controller/lists/sessionsToEdit.php";
+        break;
+    case EDIT_SESSION:
+        include __DIR__ . "/Controller/forms/editSession.php";
         break;
     default: //0
         include __DIR__ . "/Controller/lists/subjectList.php";

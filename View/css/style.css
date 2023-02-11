@@ -18,7 +18,8 @@
     --themeDarkSwitchColor: rgb(0, 0, 0);
     --themeDarkBGColor: rgb(25, 25, 25);
     --themeDarkTextColor: rgb(255, 255, 255);
-    --themeDarkBreadcrumbColor:rgb(192,192,192);/*SILVER
+    --themeDarkBreadcrumbColor:rgb(192,192,192);/*SILVER*/
+    --themeDarkFollow_up_student_info: rgba(130,163,255, 0.6);
 
     /* Colors used in the light theme */
     --themeLightCollapseIcon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3e%3cpath stroke='rgba%280, 0, 0, 0.5%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
@@ -37,7 +38,8 @@
     --themeLightSwitchColor: rgb(120, 120 ,120);
     --themeLightBGColor: rgb(245, 245, 245);
     --themeLightTextColor: rgb(0, 0, 0);
-    --themeLightBreadcrumbColor:rgb(255,255,255);/*WHITE
+    --themeLightBreadcrumbColor:rgb(255,255,255);/*WHITE*/
+    --themeLightFollow_up_student_info: rgba(100, 149, 237,0.9);
 
     /* Colors of the active active theme, initially light */
     --invertIconColor: 0;
@@ -58,6 +60,8 @@
     --themeActiveBGColor: var(--themeLightBGColor);
     --themeActiveTextColor: var(--themeLightTextColor);
     --themeBreadcrumbColor:var(--themeLightBreadcrumbColor);/*Breadcrumb*/
+    --themeFollow_up_student_info: var(--themeLightFollow_up_student_info)
+
 }
 
 .dark-theme {
@@ -80,6 +84,7 @@
     --themeActiveBGColor: var(--themeDarkBGColor);
     --themeActiveTextColor: var(--themeDarkTextColor);
     --themeBreadcrumbColor:var(--themeDarkBreadcrumbColor);/*Breadcrumb*/
+    --themeFollow_up_student_info: var(--themeDarkFollow_up_student_info);
 }
 
 /*** Style of generic elements ***/
@@ -316,4 +321,3 @@ button:focus {
     outline: 0;
     box-shadow: none !important
 }
-

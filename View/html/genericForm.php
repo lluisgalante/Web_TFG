@@ -66,6 +66,15 @@
                         include __DIR__ . '/formField.php';
                     }
                 } ?>
+
+                <div class = "groups">
+                    <?php foreach ($item['buttons'] as $button) {?>
+                        <button class="btn <?php echo $button['classes'] ?>" type="button" data-placement="top">
+                            <?php if (isset($button['value'])){ echo $button['value'];}?>
+                        </button>
+                    <?php } ?>
+                </div>
+
                 <div id="form-buttons-container">
                     <?php foreach($formPage['extraOptions'] as $option) { ?>
                         <a href="<?php echo $option['href'] ?>" class="btn">

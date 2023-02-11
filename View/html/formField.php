@@ -10,7 +10,17 @@
                 <textarea id="<?php echo $formField['id'] ?>" class='input text-input'
                           name="<?php echo $formField['id'] ?>" type="text" rows="<?php echo $formField['rows'] ?>"
                           <?php echo $formField['required'] ?> placeholder=" "><?php echo $formField['value'] ?></textarea>
-            <?php } else if($formField['type'] === "selector") { ?>
+            <?php } else if($formField['type'] === "selector") {
+
+                if (isset($problems_session_string)) { ?>
+                    <div class="session_problems">
+                        <p class="subtitle" style="text-align: left; margin-bottom: 20px"> Problemes Actuals:</p>
+                         <p style="color: var(--themeActiveFormTextColor);"><?php echo $problems_session_string;?></p>
+                    </div>
+
+                    <p class="subtitle" style="text-align: left"> Afegir problema:</p>
+                <?php } ?>
+
                 <select id="<?php echo $formField['id'] ?>" class="input" name="<?php echo $formField['name'] ?>"
                     <?php echo $formField['required'] ?>
                     <?php echo $formField['multiple']? 'multiple='.$formField['multiple']: "" ?>
@@ -33,10 +43,9 @@
                 <?php } } ?>
 
             <?php }
-                else { ?>
+                else {
 
-
-                    <?php if( $formField['id'] == "class_group"){?>
+                    if( $formField['id'] == "class_group"){?>
 
                         <div id="wrapper">
                             <div id="first">

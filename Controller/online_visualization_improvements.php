@@ -12,28 +12,28 @@ $directory = $_POST['route'];
 $files_scanned_directory = array_diff(scandir($directory), array('..', '.','__pycache__'));
 $file_text=[];
 
-//*******START NEW************
 foreach ($files_scanned_directory as $file) {
+    if(!str_contains($file,'.txt')) { //Avoid .txt files
+        $file_text_dict = file($directory . "/" . $file); //Returns the file in an array. Each element of the array corresponds to a line in the file. Upon failure, file() returns false.
 
-    $file_text_dict = file($directory . "/" . $file); //Returns the file in an array. Each element of the array corresponds to a line in the file. Upon failure, file() returns false.
-
-    if($file_text_dict) {
-        $trim_file_text =  array_values(array_filter($file_text_dict , "trim"));
-        foreach ($trim_file_text as $k => $v) {
-            array_push($file_text, $v);
+        if ($file_text_dict) {
+            $trim_file_text = array_values(array_filter($file_text_dict, "trim"));
+            foreach ($trim_file_text as $k => $v) {
+                array_push($file_text, $v);
+            }
+        } else {
+            echo "Error leyendo el fichero: " . $file;
         }
-    }
-    else{
-        echo "Error leyendo el fichero: " . $file;
     }
 }
 $problemLines = count($file_text);
 $str_file_text = implode($file_text);
-$problemQualityInfo = implode([substr_count($str_file_text ,'if ') + substr_count($str_file_text ,'if(')
-    , substr_count($str_file_text ,'for ')+ substr_count($str_file_text ,'for('),
-    substr_count($str_file_text ,'while ') + substr_count($str_file_text ,'while('),
-    substr_count($str_file_text ,'switch ') + substr_count($str_file_text ,'switch(')]);
-//*********** END NEW************
+$problemQualityInfo = implode([substr_count($str_file_text ,'if (') + substr_count($str_file_text ,'if('),
+    "-", substr_count($str_file_text ,'for (')+ substr_count($str_file_text ,'for('),
+    "-", substr_count($str_file_text ,'while ( ') + substr_count($str_file_text ,'while('),
+    "-", substr_count($str_file_text ,'switch (') + substr_count($str_file_text ,'switch(')]);
+
+echo $problemQualityInfo;
 
 if($user_type == 1) {// STUDENT
     $array_student_sessions = getStudentSessionRelation();
@@ -45,9 +45,11 @@ if($user_type == 1) {// STUDENT
         }
     }
     if (!$exists) { //Student-Sesion aun no existe
-        createStudentSessionRelation($user_email, $session_id, $output, $problemId, $problemLines, $problemQualityInfo);
+        if($output != null) { createStudentSessionRelation($user_email, $session_id, $output, $problemId, $problemLines, $problemQualityInfo); }
+        else{ createStudentSessionRelationNoOutput($user_email, $session_id, $problemId, $problemLines, $problemQualityInfo); }
     } else {
-        updateData($user_email, $session_id, $output, $problemId, $problemLines, $problemQualityInfo);
+        if($output != null) { updateData($user_email, $session_id, $output, $problemId, $problemLines, $problemQualityInfo); }
+        else{ updateDataNoOutput($user_email, $session_id, $problemId, $problemLines, $problemQualityInfo); }
     }
 }
 else{ //$user_type == 0 -> El profesor está editando el código de un alunmno guardado en la variable $_POST['usuario_visualizado']

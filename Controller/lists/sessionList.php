@@ -6,7 +6,6 @@ require_once __DIR__ . "/../../Model/session.php";
 
 $subjectId = $_GET['subject'];
 $group = $_GET['group'];
-//echo $group;
 $sessions = getActiveSessionsFromGroup(subjectId: $subjectId, class_group: $group);
 
 $listPage['title'] = 'Sessions disponibles';
@@ -16,8 +15,6 @@ $listPage['customJS'] = 'session.js';
 foreach ($sessions as $session) {
     $sessionId = $session['id'];
 
-
-    /*if($session['status'] == 'deactivated' && isset($_SESSION['user_type']) && $_SESSION['user_type'] == STUDENT){}*/
 
     $item = array('id' => $sessionId,
         'href' => buildUrl(VIEW_SESSION_PROBLEMS_LIST, array('session' => $sessionId)),
@@ -40,7 +37,6 @@ foreach ($sessions as $session) {
 
     }
     $listPage['items'][] = $item;
-
 }
 
 $listPage['modals'] = [

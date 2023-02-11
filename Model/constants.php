@@ -25,6 +25,8 @@ const VIEW_SESSION_LIST_GROUPS="Grups amb sessions";#=19;
 const VIEW_MESSAGES_CHAT = "Ver chat";
 const VIEW_COMUN_MESSAGES="Chat comu";
 const CREATE_CSV = "Crear CSV";
+const SESSIONS_TO_EDIT = "Sessions per editar";
+const EDIT_SESSION = "Editar sessió";
 
 
 CONST STUDENT_VIEWS = [VIEW_SUBJECT_LIST, VIEW_PROBLEMS_LIST, VIEW_EDITOR, VIEW_SESSION_LIST,

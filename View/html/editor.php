@@ -62,7 +62,7 @@
     </p>
     <p class="text-center font-weight-bold problem-title"><?php echo $problem["title"]; ?></p>
 
-    <?php if($_SESSION['user_type'] == STUDENT && is_null($session_id) && $entregable == "on"){
+    <?php if($_SESSION['user_type'] == STUDENT && $entregable == "on"){
 
         if($deadline != null){
             echo "La data limit d'aquest problema entregable és: &nbsp $deadline";
@@ -121,8 +121,6 @@
             </button>
         <?php } ?>
 
-
-
         <?php if($problem["description"]) { ?>
             <div class="content"><p><?php echo htmlspecialchars($problem["description"]); ?></p></div>
         <?php } ?>
@@ -133,15 +131,19 @@
         <div id="answer"></div>
     </div>
 
-
    <?php if ($_SESSION['user_type'] == STUDENT && isset($_GET['session'])) { ?>
+
     <div class="messages" style="width:350px">
         <h2 style="text-align: center">Chat</h2>
         <br>
         <div class="messages-child">
             <?php if(!empty($messages)){
-                foreach($messages as $message){?>
-                    <div class="<?php if($message['incoming_mail_id']==$_SESSION['email']){echo "other"; }else{echo "self";} ?>"><p><?php echo $message['msg']?></p></div>
+                foreach($messages as $message){
+                    $class = ($message['incoming_mail_id'] == $_SESSION['email'])? "self": "other"; ?>
+                    <div class="<?php echo $class ?>">
+                        <p><?php echo $message['msg']?></p>
+                        <div class="<?php echo "message-timestamp-$class" ?>"><?php echo $message['date']?></div>
+                    </div>
                 <?php }
             }?>
         </div>
@@ -159,151 +161,11 @@
             </button>
         </div>
     </div>
-        <script>
-            window.setInterval(refreshMessages, 2000);
-            function refreshMessages(){
-                let outgoing_email= document.getElementById("o_mail").value;
-                let sessionId = document.getElementById("sessionId").value;
-                let problemId = document.getElementById("problem").value;
+    <script>
+        window.setInterval(refreshMessagesStudent, 5000);
 
-                $.ajax({
-                    url: "/Controller/UpdateChatsAjaxStudent.php",
-                    method: "POST",
-                    data:{
-                        outgoing_email: outgoing_email,
-                        sessionId: sessionId,
-                        problemId: problemId,
-                    },
-                    success: function(response) {
-                        let messages_aux= JSON.parse(response);
-                        let messages= [];
-                        for(let i=0; i < messages_aux.length; i++){
-                            messages.push(messages_aux[i]['msg']);
-                        }
-                        console.log(messages);
-                        var text = $.trim($('.messages-child').text());//to remove the leading and trailing whitespace only
-
-                        screenMessages = text.split('\n ');
-                        let trim_screenMessages =[];
-                        for(let i=0; i < screenMessages.length; i++){
-                            trim_screenMessages.push(screenMessages[i].trimStart());
-                        }
-                        console.log(trim_screenMessages);//Mensajes en la pantalla
-                        console.log(messages);//Mensajes en la BD.
-                        //messages.push("PRUEBA");
-                        let difference = messages.filter(x => !trim_screenMessages.includes(x));//https://stackoverflow.com/questions/1187518/how-to-get-the-difference-between-two-arrays-in-javascript
-                        console.log("Difernecias:" + difference);
-                        messages_n= [];
-                        repeated_messages={};
-
-                        trim_screenMessages_n=[];
-                        repeated_trim_screenMessages={};
-
-                        trim_screenMessages.push(difference);
-
-                        if(trim_screenMessages==0 &&difference.length > 0){
-                            $('.messages-child').append('<div class="other"><p>\n '+difference+'</p></div>');
-                            $('.form-inline').append('<input placeholder="Type message.." type="text" id="message" name="message" required="">');
-
-                        }
-
-                        if(difference.length > 0) {
-                            $('.messages-child').append('<div class="other"><p>\n '+difference+'</p></div>');
-                        }
-
-                        for(let i = 0; i < messages.length; i++){
-
-                            if(messages_n.includes(messages[i]))
-                            {
-                                if(Object.keys(repeated_messages).includes(messages[i])){
-
-                                    repeated_messages[messages[i]] = repeated_messages[messages[i]] + 1;
-                                }
-                                else{
-                                    repeated_messages[messages[i]] = 1;
-                                }
-                            }
-                            else{ messages_n.push(messages[i]); }
-                        }
-
-                        for(let i = 0; i < trim_screenMessages.length; i++){
-
-                            if(trim_screenMessages_n.includes(trim_screenMessages[i]))
-                            {
-                                if(Object.keys(repeated_trim_screenMessages).includes(trim_screenMessages[i])){
-
-                                    repeated_trim_screenMessages[trim_screenMessages[i]] = repeated_trim_screenMessages[trim_screenMessages[i]] + 1;
-
-                                }
-                                else{
-                                    repeated_trim_screenMessages[trim_screenMessages[i]] = 1;
-                                }
-                            }
-                            else{ trim_screenMessages_n.push(trim_screenMessages[i]); }
-                        }
-
-                        for (const [key, value] of Object.entries(repeated_messages)) {
-                            console.log(key, value);
-                            if (Object.keys(repeated_trim_screenMessages).includes(key)){
-                                if(repeated_messages[key] === repeated_trim_screenMessages[key]){
-                                    //Todo correcto
-                                }
-                                else if ( repeated_messages[key] >repeated_trim_screenMessages[key]){
-                                    $('.messages-child').append('<div class="other"><p>\n '+key+'</p></div>');
-                                }
-                            }
-                            else{
-                                //Repetida en la BD, pero no en la Screen
-                                console.log("Mensaje repetido: "+ repeated_messages[key]);
-
-                                $('.messages-child').append('<div class="other"><p>\n '+key+'</p></div>');
-                            }
-                        }
-                    },
-                })
-            }
-        </script>
-    <style>
-        .messages{
-            margin:10px;
-        }
-        #submit{
-            border:none !important;
-            border-radius:50px !important;
-            background-color: transparent !important;
-        }
-        .form-inline{
-            display: flex;
-            justify-content: center;
-
-        }
-        input[type=text] {
-            border: 0;
-            background-color: white;
-            border-radius: 5px;
-            padding:10px;
-            width:50%;
-            transition: 200ms all ease-in;
-        }
-        input[type=text]:hover{
-            width: 70%;
-        }
-        p{
-            padding: 12px;
-            text-align: center;
-        }
-        .self{
-            margin-left:20%;
-            background-color: rgba(60, 179, 113, 0.8) !important;
-            border-radius: 10px;
-
-        }
-        .other{
-            margin-right:20%;
-            background-color: rgba(105, 150, 255, 0.8) !important;
-            border-radius: 10px;
-        }
-    </style>
+        window.setInterval(function(){ updateStudentQualityCode('<?php echo "{$_SESSION['email']}"?>', '<?php echo $_GET['session'] ?>', '<?php echo $_SESSION['user_type']?>', '<?php echo "{$_GET['user']}"?>') }, 5000);
+    </script>
 
     <?php } ?>
     <?php if ($_SESSION['user_type'] == PROFESSOR) { ?>
@@ -332,75 +194,58 @@
                             <a class = "btn showPro" id ="showPro" title="Informació extra"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16"> <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/> </svg></a>
                         </li>
                         <h6 class="follow_up_student_info">
-                                <li id = "executed_count">Execucions alumne:  <?php echo $student["executed_times_count"]?></li><hr />
-                                <li id = "teacher_executed_count">Execucions tutor:  <?php echo $student["teacher_executed_times_count"]?></li><hr />
-                                <li id = "teacher_executed_count">Linees solucio:  <?php echo $student["number_lines_file"] . " ≈ " . $student["lines_percentage"] . "%"?></li><hr />
-                                <li id = "teacher_executed_count">
+                                <li class = "executed_count">Execucions alumne:  <?php echo $student["executed_times_count"]?></li><hr />
+                                <li class = "teacher_executed_count">Execucions tutor:  <?php echo $student["teacher_executed_times_count"]?></li><hr />
+                                <li class = "solution_lines">Linies solució:  <?php echo !is_null($student["lines_percentage"])? $student["number_lines_file"] . " ≈ " . $student["lines_percentage"] . "%" : $student["number_lines_file"] ?></li><hr />
+                                <li class = "table_code_quality">
                                     <table>
-                                        <caption style="caption-side:top; text-align: center;padding-top:0px; color:inherit">Qualitat del codi</caption>
+                                        <caption style="caption-side:top; text-align: center; padding-top:0px; color:inherit">Qualitat del codi</caption>
                                         <tr>
                                             <th> Statements </th>
                                             <th> Estudiant </th>
                                             <th> Professor </th>
+                                            <?php
+                                                $statements_student = explode("-", $student["solution_quality"]);
+                                                $statements_teacher = explode("-", $official_solution_quality);
+                                            ?>
                                         </tr>
                                         <tr>
                                             <td>If</td>
-                                            <td><?php echo $student["solution_quality"][0]?></td>
-                                            <td><?php echo $official_solution_quality[0]?></td>
+                                            <td class="if_student"><?php echo $statements_student[0]?></td>
+                                            <td><?php echo $statements_teacher[0]?></td>
                                         </tr>
                                         <tr>
                                             <td>For</td>
-                                            <td><?php echo $student["solution_quality"][1]?></td>
-                                            <td><?php echo $official_solution_quality[1]?></td>
+                                            <td class="for_student"><?php echo $statements_student[1]?></td>
+                                            <td><?php echo $statements_teacher[1]?></td>
                                         </tr>
                                         <tr>
                                             <td>While</td>
-                                            <td><?php echo $student["solution_quality"][2]?></td>
-                                            <td><?php echo $official_solution_quality[2]?></td>
+                                            <td class="while_student"><?php echo $statements_student[2]?></td>
+                                            <td><?php echo $statements_teacher[2]?></td>
 
                                         </tr>
                                         <tr>
                                             <td>Switch</td>
-                                            <td><?php echo $student["solution_quality"][3]?></td>
-                                            <td><?php echo $official_solution_quality[3]?></td>
+                                            <td class="switch_student"><?php echo $statements_student[3]?></td>
+                                            <td><?php echo $statements_teacher[3]?></td>
 
                                         </tr>
                                     </table>
                                 </li><hr />
-                                <p>Output: <span class= "extra"> <?php echo $student["output"]?></span></p>
+                                <p>Output:</p> <span class= "extra"> <?php echo $student["output"]?></span>
                         </h6>
                     <?php }
                 } ?>
             </ul>
         </div>
-        <style>
-            table{
-                margin: 0 auto;
-            }
-            table, th, td {
-                border:1px solid #404040;
-            }
-            .follow_up_student_info{
-                display:none;
-                margin-top: 10px;
-                background-color: rgba(130,163,255, 0.5) !important;
-                padding: 10px 10px 5px 10px;
-                border-radius: 10px;
-                font-size: 1rem;
-                max-width: 315px;
-                min-width: 315px;
-            }
-            .showPro:hover~#follow_up_student_info{
-                display: block;
-            }
-        </style>
+
     <script>
-        window.setInterval(refreshMessages, 2000);// To show in red chat icon of students that have sent new messages
-        window.setInterval(refreshListOnlineStudents, 2000);// To update teachers' sesion page if a new student has join the session.
-        window.setInterval(doNotEditMain,2000);
+        window.setInterval(refreshMessagesTeacher, 2000);// To show in red chat icon of students that have sent new messages
+        window.setInterval(refreshListOnlineStudents, 4000);// To update teachers' sesion page if a new student has join the session.
     </script>
     <?php } ?>
-    <?php if($_SESSION['user_type'] == STUDENT && is_null($session_id) && $entregable == "on"){?>
+    <?php if($_SESSION['user_type'] == STUDENT && $entregable == "on"){?>
         <script>
             window.setInterval(doNotEditMain,2000);
         </script>

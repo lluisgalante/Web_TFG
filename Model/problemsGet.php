@@ -114,7 +114,9 @@ function getStudentsWithSessionAndProblem(int $session_id, int $problem_id): arr
     } catch (PDOException $e) {
         echo 'Error retrieving the students: ' . $e->getMessage();
     }
-    return $students;
+
+    //https://stackoverflow.com/questions/24138034/array-unique-showing-error-array-to-string-conversion
+    return array_unique($students, SORT_REGULAR);
 }
 
 function setSolutionAsEditing($problem_id, $student_email, $editing_before, $editing_after) : void

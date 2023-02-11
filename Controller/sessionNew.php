@@ -21,11 +21,14 @@ $class_groups_array= explode( ',', $class_groups );//Each group is an element of
 $professorEmail = $_SESSION['email'];
 $professor = getProfessor(professorEmail: $professorEmail);
 $professorId = $professor['id'];
-foreach ($class_groups_array as $class_group) {
-    $sessionId = createSession(name:$name, professorId:$professorId, subjectId: $subjectId, problemIds:$problemIds, class_group: $class_group);
+if(sessionExists($name)){
+    redirectLocation(VIEW_SESSION_FORM,array("subject" =>$subjectId));
+}else {
+    foreach ($class_groups_array as $class_group) {
+        $sessionId = createSession(name:$name, professorId:$professorId, subjectId: $subjectId, problemIds:$problemIds, class_group: $class_group);
+    }
 }
 if ($sessionId === 0) {
     redirectLocation();
 }
-
 redirectLocation(VIEW_SESSION_PROBLEMS_LIST, array("session" => $sessionId));

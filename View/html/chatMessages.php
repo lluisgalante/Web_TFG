@@ -27,22 +27,23 @@
 
 </head>
 <body  class="d-flex flex-column min-vh-100" <?php echo $_SESSION['theme'] ?> >
-<?php include_once(__DIR__ . '/header.php');
-include_once __DIR__ . "/../Model/connection.php";
-include_once __DIR__ . "/../Model/Messages.php";?>
-
+<?php include_once(__DIR__ . '/header.php'); ?>
 
 <div class="chat-popup" id="myForm">
     <div class="form-container">
         <h1><?php echo $teacher_data['name'] . " ". $teacher_data['surname']?> - <?php echo $student_data['name'] . " ". $student_data['surname'] ?></h1>
-        <p>Chat Sessió <?php echo $_GET['session']?> - Problema  <?php echo$_GET['problem']?></p>
+        <p>Sessió: <?php echo "&nbsp $sessionName"?> - Problema: <?php echo "&nbsp $problemName" ?></p>
         <br>
         <div class="messages">
-        <?php if(!empty($messages)){
-            foreach($messages as $message){?>
-                <div class="<?php if($message['incoming_mail_id']==$_SESSION['email']){echo "other"; }else{echo "self";} ?>"><p><?php echo $message['msg']?></p></div>
-            <?php }
-        }?>
+            <?php if(!empty($messages)){
+                foreach($messages as $message){
+                    $class = ($message['incoming_mail_id'] == $_SESSION['email'])? "self": "other"; ?>
+                    <div class="<?php echo $class ?>">
+                        <p><?php echo $message['msg']?></p>
+                        <div class="<?php echo "message-timestamp-$class" ?>"><?php echo $message['date']?></div>
+                    </div>
+                <?php }
+            } ?>
         </div>
 
         <form action="/Controller/sendMessageTeacher.php" method="POST"">
