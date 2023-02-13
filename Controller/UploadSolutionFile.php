@@ -9,7 +9,6 @@ session_start();
 
 $files = array_filter($_FILES['file']['name']);
 
-
 $route = str_replace('\\', '/', realpath($_POST['solution_path']));
 
 $problemId = $_POST['problem'];
@@ -39,23 +38,25 @@ try {
     return;
 }
 
-print(addProblemTeacherSolutionRoute($problemId,$route));
-//******NUEVO*********
+addProblemTeacherSolutionRoute($problemId,$route);
+
 $directory = $route;
 $files_scanned_directory = array_diff(scandir($directory), array('..', '.','__pycache__'));
 $file_text=[];
 foreach ($files_scanned_directory as $file) {
 
-    $file_text_dict = file($directory . "/" . $file); //Returns the file in an array. Each element of the array corresponds to a line in the file. Upon failure, file() returns false.
+    if(!str_contains($file,'.txt')) { //Avoid .txt files
+        $file_text_dict = file($directory . "/" . $file); //Returns the file in an array. Each element of the array corresponds to a line in the file. Upon failure, file() returns false.
 
-    if($file_text_dict) {
-        $trim_file_text =  array_values(array_filter($file_text_dict , "trim"));
-        foreach ($trim_file_text as $k => $v) {
-            array_push($file_text, $v);
+        if($file_text_dict) {
+            $trim_file_text =  array_values(array_filter($file_text_dict , "trim"));
+            foreach ($trim_file_text as $k => $v) {
+                array_push($file_text, $v);
+            }
         }
-    }
-    else{
-        echo "Error leyendo el fichero: " . $file;
+        else{
+            echo "Error leyendo el fichero: " . $file;
+        }
     }
 }
 $problemLines = count($file_text);
@@ -66,7 +67,6 @@ $problemQualityInfo =[substr_count($str_file_text ,'if (') + substr_count($str_f
     "-", substr_count($str_file_text ,'switch (') + substr_count($str_file_text ,'switch(')];
 
 addProblemExtraData($problemId, $problemLines, implode($problemQualityInfo));
-//////////
 
 if($sessionId!=NULL) {
     $params = array("problem" => $problemId, "session" => $sessionId);// OJO Pude dar conflicto si estamos en una sesión.???
@@ -83,4 +83,3 @@ elseif($_POST["query"] == VIEW_PROBLEM_SOLUTION){
 
    redirectLocation(VIEW_PROBLEM_SOLUTION, params: $params);
 }
-

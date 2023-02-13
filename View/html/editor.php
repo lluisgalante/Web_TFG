@@ -45,7 +45,7 @@
     <?php } ?>
     
     <?php if ($_SESSION['user_type'] == PROFESSOR && isset($_GET["edit"])) { ?>
-        <p class="alert alert-warning" id="error_msg"><strong> Estas modificant el problema arrel </strong>
+        <p class="alert alert-warning" id="error_msg"><strong> Estas modificant el problema arrel. El problema arrel és la versió que els alumnes han d'omplir </strong>
     <?php } ?>
 
     <?php if (isset($_GET["uploaded"])) { ?>
@@ -106,10 +106,17 @@
             <img class="icon github" src="/View/images/save.png" alt="Pujar a GitHub">
         </button>
 
+        <?php if ($_SESSION['user_type'] == PROFESSOR && !isset($_GET['edit'])) {?>
+
+            <button type="button" class="btn" title="Editar problema arrel" onclick="window.location.href='<?php echo "/index.php?query=Editor Problemas&problem=".$_GET['problem']."&edit=1"; ?>'">
+                <img class="icon" src="/View/images/edit-source.png" alt="editar codi arrel">
+            </button>
+
+        <?php } ?>
 
         <?php if (($_SESSION['user_type'] == STUDENT && $teacher_solution_visibility == 'Public') || $_SESSION['user_type'] == PROFESSOR) {?>
 
-            <button type="button" class="btn" title="Veure solució" onclick="window.location.href='<?php if(isset($_GET['session'])){echo "/index.php?query=Solucio Problema&problem=".$_GET['problem']."&session=".$_GET['session'];}else{echo "/index.php?query=Solucio Problema&problem=".$_GET['problem'];}?>'">
+            <button type="button" class="btn" title="Veure solució" onclick="window.location.href='<?php if(isset($_GET['session'])){echo "/index.php?query=Solucio Problema&problem=".$_GET['problem']."&session=".$_GET['session'];}else{ echo "/index.php?query=Solucio Problema&problem=".$_GET['problem']; }?>'">
                 <img class="icon" src="/View/images/view_solution.png" alt="veure solucio">
             </button>
         <?php } ?>

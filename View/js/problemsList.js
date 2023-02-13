@@ -10,7 +10,7 @@ $(document).ready(function () {
     $('.change_visibility').on('click', function () {
         let image = $(this).children('img').attr('src');
         // Find in the shown image name if it's visible or not and toggle it
-        let newVisibility = image.search('not-visible') === -1? 'Private': 'Public';
+        let newVisibility = image.search('not-visible') === -1? 'private': 'public';
         let problemId = $(this).closest('.card').attr('id');
         $.ajax({
             url: "/Model/changeVisibility.php",

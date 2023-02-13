@@ -1,5 +1,4 @@
 <?php
-
 function createSession(string $name, int $professorId, int $subjectId, array $problemIds, string $class_group) : int
 {
     $sessionId = 0;
@@ -335,4 +334,19 @@ function getSessionName($sessionId):string
         echo 'Error getting session name by Id: ' . $e->getMessage();
     }
     return $session_id['name'];
+}
+function deleteAllSessionsByName($sessionName):bool
+{
+    $deleted = false;
+    try {
+        $connection = connectDB();
+        // Since the relation between Session and SessionProblems is CASCADE, the relation will be deleted as well
+        $statement = $connection->prepare("DELETE FROM session WHERE name=:sessionName");
+        $statement->execute(array(":sessionName" => $sessionName));
+        $connection = null;
+        $deleted = True;
+    } catch (PDOException $e) {
+        echo 'Error deleting the session: ' . $e->getMessage();
+    }
+    return $deleted;
 }
