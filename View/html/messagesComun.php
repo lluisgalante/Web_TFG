@@ -36,7 +36,7 @@
         <div class="messages">
             <?php if(!empty($messages)){
                 foreach($messages as $message){
-                    $class = ($message['incoming_mail_id'] == $_SESSION['email'])? "self": "other"; ?>
+                    $class = ($message['incoming_mail_id'] == $_SESSION['email'])? "other-t" : "self-t"; ?>
                     <div class="<?php echo $class ?>">
                         <p><?php echo $message['msg']?></p>
                         <div class="<?php echo "message-timestamp-$class" ?>"><?php echo $message['date']?></div>

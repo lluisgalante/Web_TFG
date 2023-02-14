@@ -31,13 +31,13 @@
 
 <div class="chat-popup" id="myForm">
     <div class="form-container">
-        <h1><?php echo $teacher_data['name'] . " ". $teacher_data['surname']?> - <?php echo $student_data['name'] . " ". $student_data['surname'] ?></h1>
+        <h1><?php echo $student_data['name'] . " ". $student_data['surname'] ?> - <?php echo $teacher_data['name'] . " ". $teacher_data['surname'] ?></h1>
         <p>Sessió: <?php echo "&nbsp $sessionName"?> - Problema: <?php echo "&nbsp $problemName" ?></p>
         <br>
         <div class="messages">
             <?php if(!empty($messages)){
                 foreach($messages as $message){
-                    $class = ($message['incoming_mail_id'] == $_SESSION['email'])? "self": "other"; ?>
+                    $class = ($message['incoming_mail_id'] == $_SESSION['email'])? "other-t" : "self-t"; ?>
                     <div class="<?php echo $class ?>">
                         <p><?php echo $message['msg']?></p>
                         <div class="<?php echo "message-timestamp-$class" ?>"><?php echo $message['date']?></div>

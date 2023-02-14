@@ -114,6 +114,7 @@ $(document).ready(function () {
         keys[event.code] = true;
         if ((event.ctrlKey || event.metaKey) && keys["KeyS"]) {
             event.preventDefault();
+            console.log(addEventListener());
             save();
         }
     });
@@ -129,18 +130,19 @@ $(document).ready(function () {
         success: function (response) {
             let json = JSON.parse(response);
             userType = json['userType'];
-            containerPort = json['containerPort'];
+            //containerPort = json['containerPort'];
         }
     })
     // Set the auto check options depending on the user and his actions
     // User type 1 is student and 0 professor
     if (userType === 1) {
-        setInterval(checkChanges, 3000);
+        setInterval(checkChanges, 2000);
     } else if (userType === 0) {
         viewMode = urlParams.get('view-mode');
         // View mode 1 is edit mode and 2 read only
         if (viewMode === "1") {
-            setInterval(save, 4000);
+            console.log("Teacher");
+            setInterval(save, 3000);
         } else if (viewMode === "2") {
             editor.setReadOnly(true);
         }
@@ -301,8 +303,11 @@ function rmJupyterDocker() {
 }
 
 function exitFunction () {
-    setSolutionEditingFalse();
-    rmJupyterDocker();
+    //console.log("EXIT FUNCTION");
+    if( userType === 0) {
+        setSolutionEditingFalse();
+    }
+    //rmJupyterDocker();
 }
 
 function post(url, data, callback) {
@@ -346,12 +351,16 @@ function checkChanges() {
                 if (readOnly === false) {
                     readOnly = true;
                     checkChangesInterval = setInterval(openFiler, 4000);
-                    document.getElementById("root_modified").classList.remove('hide');
+                    $('#root_modified').removeAttr("hidden");
+
                 }
             } else {
+                if($('#root_modified').attr("hidden") === undefined) {
+                    $('#root_modified').attr("hidden", true);
+                    location.reload();
+                }
                 readOnly = false;
                 clearInterval(checkChangesInterval);
-                document.getElementById("root_modified").classList.add('hide');
             }
             editor.setReadOnly(readOnly);
         }
@@ -437,21 +446,37 @@ function executeCode(email, session_id, userType, usuario_visualizado, entregabl
 
 function updateStudentQualityCode(email, session_id, userType, usuario_visualizado) {
     //This function saves students' new problem files and gets the quality code.
-    save();
-    let response = null;
     $.ajax({
-        url: "/Controller/online_visualization_improvements.php",
+        url: "/Model/checkStudent.php",
         method: "POST",
         data: {
-            email: email,
-            id: session_id,
-            userType: userType,
-            output: response,
-            usuario_visualizado: usuario_visualizado,
-            problemId: problemId,
-            route: folderRoute
+            route: folderRoute,
         },
-    });
+        success: function (response) {
+            // Check if the professor is editing the solution
+            if (response === "1") {
+
+            } else {
+                save();
+                let response = null;
+                $.ajax({
+                    url: "/Controller/online_visualization_improvements.php",
+                    method: "POST",
+                    data: {
+                        email: email,
+                        id: session_id,
+                        userType: userType,
+                        output: response,
+                        usuario_visualizado: usuario_visualizado,
+                        problemId: problemId,
+                        route: folderRoute
+                    },
+                });
+
+            }
+
+        }
+    })
 }
 
 function openFile(fileName) {

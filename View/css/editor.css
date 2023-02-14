@@ -336,3 +336,15 @@ table, th, td {
     display: block;
 }
 /*****************************************/
+
+#root_modified{
+    text-align: center;
+    border-radius: 20px;
+    border-color: transparent;
+    background-color: rgb(0, 113, 227);
+    color: white;
+    margin-left: 350px;
+    margin-right: 350px;
+    font-size: 18px;
+    font-family: sans-serif;
+}

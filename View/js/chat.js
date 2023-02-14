@@ -28,11 +28,11 @@ function refreshMessages(){
             for(let i=0; i < screenMessages.length; i++){
                 trim_screenMessages.push(screenMessages[i].trimStart());
             }
-            console.log("Trim message(Screen): " + trim_screenMessages);//Mensajes en la pantalla
-            console.log("BD messages (DataBase): " +  messages);//Mensajes en la BD.
+            //console.log("Trim message(Screen): " + trim_screenMessages);//Mensajes en la pantalla
+            //console.log("BD messages (DataBase): " +  messages);//Mensajes en la BD.
             //messages.push("PRUEBA");
             let difference = messages.filter(x => !trim_screenMessages.includes(x));//https://stackoverflow.com/questions/1187518/how-to-get-the-difference-between-two-arrays-in-javascript
-            console.log("Difernecias:" + difference);
+            //console.log("Difernecias:" + difference);
             messages_n= [];
             repeated_messages={};
 
@@ -76,24 +76,24 @@ function refreshMessages(){
             }
 
             for (const [key, value] of Object.entries(repeated_messages)) {
-                console.log(key, value);
+                //console.log(key, value);
                 if (Object.keys(repeated_trim_screenMessages).includes(key)){
                     if(repeated_messages[key] === repeated_trim_screenMessages[key]){
                         //Todo correcto
                     }
                     else if ( repeated_messages[key] > repeated_trim_screenMessages[key]){
-                        $('.messages').append('<div class="other"><p>\n '+key+'</p></div>');
+                        $('.messages').append('<div class="other-t"><p>\n '+key+'</p></div>');
                     }
                 }
                 else{
                     //Repetida en la BD, pero no en la Screen
-                    console.log("Mensaje repetido: "+ repeated_messages[key]);
+                    //console.log("Mensaje repetido: "+ repeated_messages[key]);
 
-                    $('.messages').append('<div class="other"><p>\n '+key+'</p></div>');
+                    $('.messages').append('<div class="other-t"><p>\n '+key+'</p></div>');
                 }
             }
             if(difference.length > 0) {
-                $('.messages').append('<div class="other"><p>\n '+difference+'</p></div>');
+                $('.messages').append('<div class="other-t"><p>\n '+difference+'</p></div>');
             }
         },
     })
