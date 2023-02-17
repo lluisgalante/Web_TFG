@@ -30,11 +30,8 @@ $problemLines = count($file_text);
 $str_file_text = implode($file_text);
 $problemQualityInfo = implode([substr_count($str_file_text ,'if (') + substr_count($str_file_text ,'if('),
     "-", substr_count($str_file_text ,'for (')+ substr_count($str_file_text ,'for('),
-    "-", substr_count($str_file_text ,'while ( ') + substr_count($str_file_text ,'while('),
+    "-", substr_count($str_file_text ,'while (') + substr_count($str_file_text ,'while('),
     "-", substr_count($str_file_text ,'switch (') + substr_count($str_file_text ,'switch(')]);
-
-echo $problemQualityInfo;
-
 if($user_type == 1) {// STUDENT
     $array_student_sessions = getStudentSessionRelation();
     $exists = false;
