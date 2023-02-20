@@ -35,15 +35,14 @@
             }
             .breadcrumb {
                 /*centering*/
-
                 display: inline-block;
                 box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.35);
                 overflow: hidden;
                 border-radius: 7px;
                 /*Lets add the numbers for each link using CSS counters. flag is the name of the counter. to be defined using counter-reset in the parent element of the links*/
                 counter-reset: flag;
+                background-color: var(--themeActiveHeaderBGColor);
             }
-
             .breadcrumb a {
                 background-color:var(--themeBreadcrumbColor) !important;
                 text-decoration: none;
@@ -78,9 +77,6 @@
                 /*same dimension as the line-height of .breadcrumb a */
                 width: 36px;
                 height: 36px;
-                /*as you see the rotated square takes a larger height. which makes it tough to position it properly. So we are going to scale it down so that the diagonals become equal to the line-height of the link. We scale it to 70.7% because if square's:
-                length = 1; diagonal = (1^2 + 1^2)^0.5 = 1.414 (pythagoras theorem)
-                if diagonal required = 1; length = 1/1.414 = 0.707*/
                 transform: scale(0.707) rotate(45deg);
                 /*we need to prevent the arrows from getting buried under the next link*/
                 z-index: 1;
@@ -91,9 +87,7 @@
                 box-shadow:
                         2px -2px 0 2px rgba(0, 0, 0, 0.4),
                         3px -3px 0 2px rgba(255, 255, 255, 0.1);
-                /*
-                    5px - for rounded arrows and
-                    50px - to prevent hover glitches on the border created using shadows*/
+
                 border-radius: 0 5px 0 50px;
             }
             /*we dont need an arrow after the last link*/
@@ -118,7 +112,6 @@
                 background: linear-gradient(#444, #222);
                 font-weight: bold;
             }
-
             .flat a, .flat a:after {
                 background: white;
                 color: black;
@@ -136,7 +129,6 @@
         </style>
 
     </div>
-
 
     <ul class="navbar-nav align-items-center">
         <?php if (isset($_SESSION['user'])) { ?>
@@ -178,7 +170,6 @@
         <?php } ?>
 
     </ul>
-
 </header>
 
 <?php
@@ -211,4 +202,3 @@ $token = bin2hex($token); ?>
         </div>
     </div>
 <?php } ?>
-

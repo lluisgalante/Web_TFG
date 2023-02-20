@@ -43,35 +43,35 @@ $(document).ready(function () {
                     id: sessionId,
                     problemId: problemId,
                 },
-                    success: function (response) {
+                success: function (response) {
 
-                        let json = JSON.parse(response);
+                    let json = JSON.parse(response);
 
-                        let number_lines_file = json['number_lines_file'];
-                        let solution_quality = json['solution_quality'];
-                        let student_lines_percentage = json['student_lines_percentage'];
-                        let output_student = json['student_output'];
-                        let student_executions= json['student_executions'];
-
-
-                        if (student_lines_percentage === null){
-                            number_lines.text("Linies solució: " + number_lines_file);
-                        }
-                        else {
-                            number_lines.text("Linies solució: " + number_lines_file + " ≈ " + student_lines_percentage + "%");
-                        }
-
-                        std_executions.text("Execucions alumne: " + student_executions);
-                        std_output.text('');
-                        std_output.append(output_student);
-
-                        if_student.text(solution_quality[0]);
-                        for_student.text(solution_quality[1]);
-                        while_student.text(solution_quality[2]);
-                        switch_student.text(solution_quality[3]);
+                    let number_lines_file = json['number_lines_file'];
+                    let solution_quality = json['solution_quality'];
+                    let student_lines_percentage = json['student_lines_percentage'];
+                    let output_student = json['student_output'];
+                    let student_executions= json['student_executions'];
 
 
+                    if (student_lines_percentage === null){
+                        number_lines.text("Linies solució: " + number_lines_file);
                     }
+                    else {
+                        number_lines.text("Linies solució: " + number_lines_file + " ≈ " + student_lines_percentage + "%");
+                    }
+
+                    std_executions.text("Execucions alumne: " + student_executions);
+                    std_output.text('');
+                    std_output.append(output_student);
+
+                    if_student.text(solution_quality[0]);
+                    for_student.text(solution_quality[1]);
+                    while_student.text(solution_quality[2]);
+                    switch_student.text(solution_quality[3]);
+
+
+                }
             });
 
         }else{
@@ -141,8 +141,7 @@ $(document).ready(function () {
         viewMode = urlParams.get('view-mode');
         // View mode 1 is edit mode and 2 read only
         if (viewMode === "1") {
-            console.log("Teacher");
-            setInterval(save, 3000);
+            setInterval(save, 2000);
         } else if (viewMode === "2") {
             editor.setReadOnly(true);
         }

@@ -63,16 +63,16 @@
     <p class="text-center font-weight-bold problem-title"><?php echo $problem["title"]; ?></p>
 
     <?php if($_SESSION['user_type'] == STUDENT && $entregable == "on"){
-
         if($deadline != null){
-            echo "La data limit d'aquest problema entregable és: &nbsp $deadline";
-            echo "<br>";
-            //If deliverable date has expired show alert
             if ($currentDate > $deadline) {?>
                 <button id="alert" class="btn" title="alert" style="margin:10px 0px 10px 0px">
                     <img class="icon" src="/View/images/alert.png">
                 </button>
             <?php }
+            echo "<br>";
+            echo "La data limit d'aquest problema entregable és: &nbsp $deadline";
+            echo "<br>";
+            //If deliverable date has expired show alert
         }else {
             echo "Problema entregable,&nbsp no té data limit.";
         }
